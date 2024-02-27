@@ -31,9 +31,10 @@ export default class TXRepository {
     ) => {
         return new Promise(async (resolve, reject) => {
             try {
+                const nonce = await api.rpc.system.accountNextIndex(owner.address);
                 await api.tx[pallet][method](
                 ...params
-                ).signAndSend(owner, async (result: any) => {
+                ).signAndSend(owner, {nonce}, async (result: any) => {
                     console.log(result.status.toHuman());
                     const isBroadcast = await this.isBroadcast(result.status.isBroadcast);
                     if (result.dispatchError) {
