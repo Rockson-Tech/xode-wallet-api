@@ -11,7 +11,7 @@ services:
     ports:
       - 3008:3008
 
-  copy-language-env:
+  copy-xode-wallet-env:
     build:
         dockerfile: Dockerfile
     container_name: copy-xode-wallet-env
