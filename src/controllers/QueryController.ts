@@ -5,6 +5,7 @@ import {
     IGetNFTByIdRequestParams,
 } from '../schemas/NFTSchemas';
 import QueryRepository from '../repositories/QueryRepository';
+import EnergyRepository from '../repositories/EnergyRepository';
 
 export const getMarketplaceNftsHandler = async (
     request: FastifyRequest,
@@ -78,12 +79,48 @@ export const dashboardNftHandler = async (
     }
 
     try {
-        const [nfts] = await Promise.all([
+        const [nfts, energy] = await Promise.all([
             QueryRepository.getUserNFTRepo(requestParams.wallet_address),
+            EnergyRepository.getEnergyRepo(requestParams.wallet_address),
         ]);
+        let result: any;
+        if (energy == null) {
+            const data = {
+                owner: requestParams.wallet_address,
+                energy: 20,
+            };
+            await EnergyRepository.setEnergyRepo(data);
+            result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+        } else {
+            result = energy;
+            if (result.resetable) {
+                await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+                result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+            }
+        }
+        if (result != null) {
+            const nftEntry: any = {
+                nftTokenId: 0,
+                imagePath: result.imagePath || '',
+                name: 'Energy Capsule',
+                description: 'An energy capsule that can be used to use characters.',
+                price: result.currentEnergy,
+                isForSale: false,
+                isEquipped: true,
+                category: 'Capsule',
+                collection: 'AstroChibbi Conquest: Galactic Delight',
+                astroType: 'None',
+                rarity: 'None',
+                network: 'None',
+                blockchainId: 'None',
+                collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
+                tokenOwner: requestParams.wallet_address,
+            };
+            nfts.push(nftEntry);
+        }
         return reply.send(nfts);
     } catch (error) {
         console.error(`dashboardNftHandler: error trying to get NFT: ${error}`);
         reply.internalServerError(String(error || 'Unknown error occurred.'));
-    }    
+    } 
 };
