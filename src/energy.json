@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x0f6323496bd25f606cd4bc82ebf6b5b8136bd7dfee51576f78258563bf613710",
+    "hash": "0x62f756c9cd1a3ed33ce5b4ee5bd4c791ff3bcd6d18554fe40186837d27629ee5",
     "language": "ink! 4.3.0",
     "compiler": "rustc 1.69.0",
     "build_info": {
@@ -14,7 +14,7 @@
     }
   },
   "contract": {
-    "name": "astroeconomy",
+    "name": "energy",
     "version": "0.1.0",
     "authors": [
       "[your_name] <[your_email]>"
@@ -25,12 +25,21 @@
       {
         "args": [
           {
-            "label": "initial_supply",
+            "label": "max_energy",
             "type": {
               "displayName": [
-                "Balance"
+                "u32"
               ],
               "type": 0
+            }
+          },
+          {
+            "label": "image_path",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 1
             }
           },
           {
@@ -39,12 +48,14 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 1
+              "type": 2
             }
           }
         ],
         "default": false,
-        "docs": [],
+        "docs": [
+          "Default constructor"
+        ],
         "label": "new",
         "payable": false,
         "returnType": {
@@ -52,7 +63,7 @@
             "ink_primitives",
             "ConstructorResult"
           ],
-          "type": 4
+          "type": 5
         },
         "selector": "0x9bae9d5e"
       }
@@ -63,38 +74,38 @@
         "displayName": [
           "AccountId"
         ],
-        "type": 1
+        "type": 2
       },
       "balance": {
         "displayName": [
           "Balance"
         ],
-        "type": 0
+        "type": 17
       },
       "blockNumber": {
         "displayName": [
           "BlockNumber"
         ],
-        "type": 14
+        "type": 0
       },
       "chainExtension": {
         "displayName": [
           "ChainExtension"
         ],
-        "type": 15
+        "type": 19
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 11
+        "type": 16
       },
       "maxEventTopics": 4,
       "timestamp": {
         "displayName": [
           "Timestamp"
         ],
-        "type": 13
+        "type": 18
       }
     },
     "events": [
@@ -102,42 +113,29 @@
         "args": [
           {
             "docs": [],
-            "indexed": true,
+            "indexed": false,
             "label": "from",
             "type": {
               "displayName": [
-                "Option"
+                "AccountId"
               ],
-              "type": 12
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "label": "to",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 12
+              "type": 2
             }
           },
           {
             "docs": [],
             "indexed": false,
-            "label": "value",
+            "label": "new_energy",
             "type": {
               "displayName": [
-                "Balance"
+                "u32"
               ],
               "type": 0
             }
           }
         ],
-        "docs": [
-          "Event emitted when a token transfer occurs."
-        ],
-        "label": "Transfer"
+        "docs": [],
+        "label": "EnergyEvent"
       }
     ],
     "lang_error": {
@@ -145,14 +143,201 @@
         "ink",
         "LangError"
       ],
-      "type": 6
+      "type": 7
     },
     "messages": [
       {
+        "args": [
+          {
+            "label": "max",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Reduce energy on the wallet address"
+        ],
+        "label": "set_max_energy",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 8
+        },
+        "selector": "0xd32a664b"
+      },
+      {
+        "args": [
+          {
+            "label": "decrease",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "owner",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "timestamp",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Reduce energy on the wallet address"
+        ],
+        "label": "decrease_energy",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 8
+        },
+        "selector": "0x8cfc653c"
+      },
+      {
+        "args": [
+          {
+            "label": "energy",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "owner",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "timestamp",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Set energy for first time use"
+        ],
+        "label": "set_energy",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 8
+        },
+        "selector": "0x031f9275"
+      },
+      {
+        "args": [
+          {
+            "label": "owner",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "timestamp",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Simply returns the current value of current_energy."
+        ],
+        "label": "get_energy",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 11
+        },
+        "selector": "0xe533d0d3"
+      },
+      {
+        "args": [
+          {
+            "label": "image_url",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Reset energy into 100"
+        ],
+        "label": "set_energy_image",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 8
+        },
+        "selector": "0xfa5ef4f4"
+      },
+      {
         "args": [],
         "default": false,
-        "docs": [],
-        "label": "total_supply",
+        "docs": [
+          " Simply returns the energy image path."
+        ],
+        "label": "get_energy_image",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -160,69 +345,36 @@
             "ink",
             "MessageResult"
           ],
-          "type": 7
+          "type": 15
         },
-        "selector": "0xdb6375a8"
+        "selector": "0xefb301e4"
       },
       {
         "args": [
           {
-            "label": "account",
+            "label": "owner",
             "type": {
               "displayName": [
                 "AccountId"
+              ],
+              "type": 2
+            }
+          },
+          {
+            "label": "timestamp",
+            "type": {
+              "displayName": [
+                "String"
               ],
               "type": 1
             }
           }
         ],
         "default": false,
-        "docs": [],
-        "label": "balance_of",
-        "mutates": false,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 7
-        },
-        "selector": "0x0f755a56"
-      },
-      {
-        "args": [
-          {
-            "label": "caller",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "to",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "value",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 0
-            }
-          }
+        "docs": [
+          " Reset users energy by checking date"
         ],
-        "default": false,
-        "docs": [],
-        "label": "mint",
+        "label": "reset_energy",
         "mutates": true,
         "payable": false,
         "returnType": {
@@ -232,95 +384,7 @@
           ],
           "type": 8
         },
-        "selector": "0xcfdd9aa2"
-      },
-      {
-        "args": [
-          {
-            "label": "caller",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "from",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "value",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "burn",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 8
-        },
-        "selector": "0xb1efc17b"
-      },
-      {
-        "args": [
-          {
-            "label": "caller",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "to",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "label": "value",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 0
-            }
-          }
-        ],
-        "default": false,
-        "docs": [],
-        "label": "transfer",
-        "mutates": true,
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
-          "type": 8
-        },
-        "selector": "0x84a15da1"
+        "selector": "0x810a32ed"
       },
       {
         "args": [
@@ -330,15 +394,12 @@
               "displayName": [
                 "Hash"
               ],
-              "type": 11
+              "type": 16
             }
           }
         ],
         "default": false,
-        "docs": [
-          " Updates the contract code using `set_code_hash()`",
-          " Returns `Unauthorized` error if the caller is not an owner"
-        ],
+        "docs": [],
         "label": "set_code",
         "mutates": true,
         "payable": false,
@@ -365,21 +426,21 @@
                   "ty": 0
                 }
               },
-              "name": "total_supply"
+              "name": "max_energy"
             },
             {
               "layout": {
                 "root": {
                   "layout": {
                     "leaf": {
-                      "key": "0x0cf548c6",
+                      "key": "0xdecd47b5",
                       "ty": 0
                     }
                   },
-                  "root_key": "0x0cf548c6"
+                  "root_key": "0xdecd47b5"
                 }
               },
-              "name": "balances"
+              "name": "current_energy"
             },
             {
               "layout": {
@@ -388,10 +449,33 @@
                   "ty": 1
                 }
               },
+              "name": "image_path"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x89ef3088",
+                      "ty": 1
+                    }
+                  },
+                  "root_key": "0x89ef3088"
+                }
+              },
+              "name": "timestamp"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 2
+                }
+              },
               "name": "contract_owner"
             }
           ],
-          "name": "Economy"
+          "name": "Energy"
         }
       },
       "root_key": "0x00000000"
@@ -402,7 +486,7 @@
       "id": 0,
       "type": {
         "def": {
-          "primitive": "u128"
+          "primitive": "u32"
         }
       }
     },
@@ -410,10 +494,18 @@
       "id": 1,
       "type": {
         "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
           "composite": {
             "fields": [
               {
-                "type": 2,
+                "type": 3,
                 "typeName": "[u8; 32]"
               }
             ]
@@ -427,21 +519,13 @@
       }
     },
     {
-      "id": 2,
+      "id": 3,
       "type": {
         "def": {
           "array": {
             "len": 32,
-            "type": 3
+            "type": 4
           }
-        }
-      }
-    },
-    {
-      "id": 3,
-      "type": {
-        "def": {
-          "primitive": "u8"
         }
       }
     },
@@ -449,12 +533,20 @@
       "id": 4,
       "type": {
         "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
           "variant": {
             "variants": [
               {
                 "fields": [
                   {
-                    "type": 5
+                    "type": 6
                   }
                 ],
                 "index": 0,
@@ -463,7 +555,7 @@
               {
                 "fields": [
                   {
-                    "type": 6
+                    "type": 7
                   }
                 ],
                 "index": 1,
@@ -475,11 +567,11 @@
         "params": [
           {
             "name": "T",
-            "type": 5
+            "type": 6
           },
           {
             "name": "E",
-            "type": 6
+            "type": 7
           }
         ],
         "path": [
@@ -488,7 +580,7 @@
       }
     },
     {
-      "id": 5,
+      "id": 6,
       "type": {
         "def": {
           "tuple": []
@@ -496,7 +588,7 @@
       }
     },
     {
-      "id": 6,
+      "id": 7,
       "type": {
         "def": {
           "variant": {
@@ -511,48 +603,6 @@
         "path": [
           "ink_primitives",
           "LangError"
-        ]
-      }
-    },
-    {
-      "id": 7,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "fields": [
-                  {
-                    "type": 0
-                  }
-                ],
-                "index": 0,
-                "name": "Ok"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 6
-                  }
-                ],
-                "index": 1,
-                "name": "Err"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 0
-          },
-          {
-            "name": "E",
-            "type": 6
-          }
-        ],
-        "path": [
-          "Result"
         ]
       }
     },
@@ -574,7 +624,7 @@
               {
                 "fields": [
                   {
-                    "type": 6
+                    "type": 7
                   }
                 ],
                 "index": 1,
@@ -590,7 +640,7 @@
           },
           {
             "name": "E",
-            "type": 6
+            "type": 7
           }
         ],
         "path": [
@@ -607,7 +657,7 @@
               {
                 "fields": [
                   {
-                    "type": 5
+                    "type": 6
                   }
                 ],
                 "index": 0,
@@ -628,7 +678,7 @@
         "params": [
           {
             "name": "T",
-            "type": 5
+            "type": 6
           },
           {
             "name": "E",
@@ -652,14 +702,30 @@
               },
               {
                 "index": 1,
-                "name": "NotEnough"
+                "name": "NotEnoughEnergy"
+              },
+              {
+                "index": 2,
+                "name": "EnergyNotFound"
+              },
+              {
+                "index": 3,
+                "name": "EnergyCannotReset"
+              },
+              {
+                "index": 4,
+                "name": "CannotSetEnergy"
+              },
+              {
+                "index": 5,
+                "name": "CannotSetHashCode"
               }
             ]
           }
         },
         "path": [
-          "astroeconomy",
-          "economy",
+          "energy",
+          "energy",
           "Error"
         ]
       }
@@ -668,19 +734,41 @@
       "id": 11,
       "type": {
         "def": {
-          "composite": {
-            "fields": [
+          "variant": {
+            "variants": [
               {
-                "type": 2,
-                "typeName": "[u8; 32]"
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
               }
             ]
           }
         },
+        "params": [
+          {
+            "name": "T",
+            "type": 12
+          },
+          {
+            "name": "E",
+            "type": 7
+          }
+        ],
         "path": [
-          "ink_primitives",
-          "types",
-          "Hash"
+          "Result"
         ]
       }
     },
@@ -697,7 +785,7 @@
               {
                 "fields": [
                   {
-                    "type": 1
+                    "type": 13
                   }
                 ],
                 "index": 1,
@@ -709,7 +797,7 @@
         "params": [
           {
             "name": "T",
-            "type": 1
+            "type": 13
           }
         ],
         "path": [
@@ -721,20 +809,121 @@
       "id": 13,
       "type": {
         "def": {
-          "primitive": "u64"
-        }
+          "composite": {
+            "fields": [
+              {
+                "name": "energy",
+                "type": 0,
+                "typeName": "u32"
+              },
+              {
+                "name": "image_path",
+                "type": 1,
+                "typeName": "String"
+              },
+              {
+                "name": "resetable",
+                "type": 14,
+                "typeName": "bool"
+              }
+            ]
+          }
+        },
+        "path": [
+          "energy",
+          "energy",
+          "EnergyResult"
+        ]
       }
     },
     {
       "id": 14,
       "type": {
         "def": {
-          "primitive": "u32"
+          "primitive": "bool"
         }
       }
     },
     {
       "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 1
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 1
+          },
+          {
+            "name": "E",
+            "type": 7
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 3,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 19,
       "type": {
         "def": {
           "variant": {}

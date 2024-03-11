@@ -75,15 +75,15 @@ export default class QueryRepository {
             "2": "Epic",
             "3": "Legend"
           };
-          const response: NFT[] = result.ok;
-          const data = response.map((item) => {
-            console.log(item.stats);
-            return {
-              ...item,
-              rarity: rarityMapping[item.stats.rarity]
-            };
-          });
           if (result !== undefined) {
+            const response: NFT[] = result.ok;
+            const data = response.map((item) => {
+              console.log(item.stats);
+              return {
+                ...item,
+                rarity: rarityMapping[item.stats.rarity]
+              };
+            });
             return data;
           } else {
             return [{
