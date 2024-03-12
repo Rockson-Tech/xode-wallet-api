@@ -22,7 +22,7 @@ export default class EconomyRepository {
   contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.ASSET_ID as string;
-  astroPrice = '1';
+  astroPrice = '0';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
