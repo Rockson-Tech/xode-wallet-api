@@ -56,7 +56,7 @@ export default class ChainRepository {
       const parsedBalance = parseFloat(balances);
       return {
         balance: parsedBalance,
-        price: '10',
+        price: '0',
         symbol: tokens[0]
       }
     } catch (error) {
