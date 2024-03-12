@@ -29,36 +29,6 @@ export default class EconomyRepository {
 
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
-    // const instance = new EconomyRepository();
-    // const api = await instance.api;
-    // try {
-    //   const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    //   const owner = keyring.addFromUri(instance.ownerSeed);
-    //   const metadata: any = await api.query.assets.metadata(
-    //     instance.assetId,
-    //   );
-    //   if (metadata.toHuman() == null) {
-    //     throw String('No corresponding asset found.');
-    //   }
-    //   const { decimals } = metadata.toJSON();
-    //   const value = data.value * 10 ** decimals;
-    //   const result = await TXRepository.sendApiTransaction(
-    //     api,
-    //     'assets',
-    //     'mint',
-    //     owner,
-    //     [
-    //       instance.assetId,
-    //       data.to, 
-    //       value
-    //     ]
-    //   );
-    //   return result;
-    // } catch (error) {
-    //   throw String(error || 'mintRepo error occurred.');
-    // } finally {
-    //   await api.disconnect();
-    // }
     try {
       const instance = new EconomyRepository();
       const api = await instance.api;
@@ -92,177 +62,73 @@ export default class EconomyRepository {
 
   static async transferRepo(data: ITransferRequestBody) {
     console.log('transferRepo function was called');
-    const instance = new EconomyRepository();
-    const api = await instance.api;
     try {
-      
+      const instance = new EconomyRepository();
+      const api = await instance.api;
+      const contractAddress = instance.economyAddress;
+      const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
-      const metadata: any = await api.query.assets.metadata(
-        instance.assetId,
-      );
-      if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+      const storageDepositLimit = null;
+      if (contract !== undefined) {
+        const result = await TXRepository.sendContractTransaction(
+          api,
+          contract,
+          'transfer',
+          owner,
+          [ 
+            data.to,
+            data.value
+          ],
+          instance,
+          storageDepositLimit
+        );
+        await api.disconnect();
+        return result;
       }
-      const { decimals } = metadata.toJSON();
-      const value = data.value * 10 ** decimals;
-      const result = await TXRepository.sendApiTransaction(
-        api,
-        'assets',
-        'forceTransfer',
-        owner,
-        [
-          instance.assetId,
-          data.from, 
-          data.to, 
-          value
-        ]
-      );
-      return result;
+      return;
     } catch (error) {
       throw String(error || 'transferRepo error occurred.');
-    } finally {
-      await api.disconnect();
     }
-    // try {
-    //   const instance = new EconomyRepository();
-    //   const api = await instance.api;
-    //   const contractAddress = instance.economyAddress;
-    //   const contract = await TXRepository.getContract(api, abi, contractAddress);
-    //   const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    //   const owner = keyring.addFromUri(instance.ownerSeed);
-    //   const storageDepositLimit = null;
-    //   if (contract !== undefined) {
-    //     const result = await TXRepository.sendContractTransaction(
-    //       api,
-    //       contract,
-    //       'transfer',
-    //       owner,
-    //       [ 
-    //         data.to,
-    //         data.value
-    //       ],
-    //       instance,
-    //       storageDepositLimit
-    //     );
-    //     await api.disconnect();
-    //     return result;
-    //   }
-    //   return;
-    // } catch (error) {
-    //   throw String(error || 'transferRepo error occurred.');
-    // }
   }
 
   static async burnRepo(data: IBurnRequestBody) {
     console.log('burnRepo function was called');
-    const instance = new EconomyRepository();
-    const api = await instance.api;
     try {
       const instance = new EconomyRepository();
       const api = await instance.api;
+      const contractAddress = instance.economyAddress;
+      const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
-      const metadata: any = await api.query.assets.metadata(
-        instance.assetId,
-      );
-      if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+      const storageDepositLimit = null;
+      if (contract !== undefined) {
+        const result = await TXRepository.sendContractTransaction(
+          api,
+          contract,
+          'burn',
+          owner,
+          [ 
+            data.from,
+            data.value
+          ],
+          instance,
+          storageDepositLimit
+        );
+        await api.disconnect();
+        return result;
       }
-      const { decimals } = metadata.toJSON();
-      const value = data.value * 10 ** decimals;
-      const result = await TXRepository.sendApiTransaction(
-        api,
-        'assets',
-        'burn',
-        owner,
-        [
-          instance.assetId,
-          data.from, 
-          value
-        ]
-      );
-      return result;
+      return;
     } catch (error) {
       throw String(error || 'burnRepo error occurred.');
-    } finally {
-      await api.disconnect();
     }
-    // try {
-    //   const instance = new EconomyRepository();
-    //   const api = await instance.api;
-    //   const contractAddress = instance.economyAddress;
-    //   const contract = await TXRepository.getContract(api, abi, contractAddress);
-    //   const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    //   const owner = keyring.addFromUri(instance.ownerSeed);
-    //   const storageDepositLimit = null;
-    //   if (contract !== undefined) {
-    //     const result = await TXRepository.sendContractTransaction(
-    //       api,
-    //       contract,
-    //       'burn',
-    //       owner,
-    //       [ 
-    //         data.from,
-    //         data.value
-    //       ],
-    //       instance,
-    //       storageDepositLimit
-    //     );
-    //     await api.disconnect();
-    //     return result;
-    //   }
-    //   return;
-    // } catch (error) {
-    //   throw String(error || 'burnRepo error occurred.');
-    // }
   }
 
   static async balanceOfRepo(account: string) {
     console.log('balanceOfRepo function was called');
-    // const instance = new EconomyRepository();
-    // const api = await instance.api;
-    // try {
-    //   const price = instance.astroPrice;
-    //   const accountInfo: any = await api.query.assets.account(
-    //     instance.assetId,
-    //     account
-    //   );
-    //   const metadata: any = await api.query.assets.metadata(
-    //     instance.assetId,
-    //   );
-    //   if (accountInfo.toHuman() != null) {
-    //     const { balance } = accountInfo.toJSON();
-    //     const { decimals, symbol } = metadata.toHuman();
-    //     formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
-    //     formatBalance.getDefaults();
-    //     const bal = formatBalance(
-    //       balance, 
-    //       { 
-    //         forceUnit: symbol, 
-    //         withUnit: false 
-    //       }
-    //     );
-    //     const balances = parseFloat(bal).toFixed(4);
-    //     return {
-    //       balance: balances,
-    //       price: price,
-    //       symbol: symbol
-    //     };
-    //   } else {
-    //     return {
-    //       balance: '0.0000',
-    //       price: price,
-    //       symbol: 'ASTRO'
-    //     };
-    //   };
-    // } catch (error) {
-    //   throw String(error || 'balanceOfRepo error occurred.');
-    // } finally {
-    //   await api.disconnect();
-    // }
     try {
       const instance = new EconomyRepository();
+      const price = instance.astroPrice;
       const api = await instance.api;
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
@@ -280,7 +146,9 @@ export default class EconomyRepository {
         instance
       );
       return { 
-        balance: energy.ok
+        balance: energy.ok,
+        price: price,
+        symbol: 'ASTRO'
       };
     } catch (error) {
       throw String(error || 'balanceOfRepo error occurred.');
@@ -289,24 +157,6 @@ export default class EconomyRepository {
   
   static async totalSupplyRepo() {
     console.log('totalSupplyRepo function was called');
-    // const instance = new EconomyRepository();
-    // const api = await instance.api;
-    // try {
-    //   const assetInfo: any = await api.query.assets.asset(
-    //     instance.assetId
-    //   );
-    //   if (assetInfo.toHuman() == null) {
-    //     throw String('No corresponding asset found.');
-    //   }
-    //   const { supply } = assetInfo.toJSON();
-    //   return {
-    //     total_supply: supply
-    //   };
-    // } catch (error) {
-    //   throw String(error || 'totalSupplyRepo error occurred.');
-    // } finally {
-    //   await api.disconnect();
-    // }
     try {
       const instance = new EconomyRepository();
       const api = await instance.api;
