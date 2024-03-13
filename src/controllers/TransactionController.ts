@@ -43,7 +43,7 @@ export const updateNFTHandler = async (
         return reply.send(targetNFT);
     } catch (error) {
         console.error(`updateNFTHandler: error trying to update nft: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -66,6 +66,6 @@ export const transferFromWOANFTHandler = async (
         return reply.send(result);
     } catch (error) {
         console.error(`transferFromWOANFTHandler: error trying to transfer-from-woa nft: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };

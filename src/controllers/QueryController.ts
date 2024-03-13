@@ -22,7 +22,7 @@ export const getMarketplaceNftsHandler = async (
         return reply.send(nfts);
     } catch (error) {
         console.error(`getMarketplaceNftsHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -41,7 +41,7 @@ export const getUserNftsHandler = async (
         return reply.send(nfts);
     } catch (error) {
         console.error(`getUserNftsHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -64,7 +64,7 @@ export const getNftByIdHandler = async (
         }
     } catch (error) {
         console.error(`getNftByIdHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -121,6 +121,6 @@ export const dashboardNftHandler = async (
         return reply.send(nfts);
     } catch (error) {
         console.error(`dashboardNftHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     } 
 };

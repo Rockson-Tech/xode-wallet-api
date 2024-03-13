@@ -22,7 +22,7 @@ export const balanceTransferHandler = async (
     return reply.send(result);
   } catch (error) {
     console.error(`balanceTransferHandler: error trying to transfer balance: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 
@@ -35,6 +35,6 @@ export const signedTransactionController = async (
     await NFTRepository.signedTransactionRepo(requestBody);
   } catch (error) {
     console.error(`signedTransactionController: error trying to mint NFT: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };

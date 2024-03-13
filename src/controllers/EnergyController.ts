@@ -94,7 +94,7 @@ export const setEnergyImageController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`setEnergyImageController: error trying to set image energy: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 

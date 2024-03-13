@@ -25,7 +25,7 @@ export const mintController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`decreaseEnergyController: error trying to decrease energy: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 
@@ -49,7 +49,7 @@ export const transferController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`transferController: error trying to transfer balance: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 
@@ -71,7 +71,7 @@ export const burnController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`burnController: error trying to decrease energy: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 
@@ -84,7 +84,7 @@ export const totalSupplyController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`totalSupplyController: error trying to transfer balance: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
 
@@ -103,6 +103,6 @@ export const balanceOfController = async (
     return await reply.send(result);
   } catch (error) {
     console.error(`balanceOfController: error trying to transfer balance: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };

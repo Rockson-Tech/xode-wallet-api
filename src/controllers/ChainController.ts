@@ -13,7 +13,7 @@ export const getSmartContractController = async (
         return await reply.send(result);
     } catch (error) {
         console.error(`getSmartContractController: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -26,7 +26,7 @@ export const getABIController = async (
         return await reply.send(result);
     } catch (error) {
         console.error(`getSmartContractController: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error');
     }
 };
 
@@ -48,6 +48,6 @@ export const getTokensController = async (
     return await reply.send(tokens);
   } catch (error) {
     console.error(`balanceOfController: error trying to transfer balance: ${error}`);
-    reply.internalServerError(String(error || 'Unknown error occurred.'));
+    reply.status(500).send('Internal Server Error');
   }
 };
