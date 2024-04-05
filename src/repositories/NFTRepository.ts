@@ -5,6 +5,7 @@ import {
 import TXRepository from '../modules/TXRepository';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 import '@polkadot/api-augment';
 
 export default class NFTRepository {
@@ -26,6 +27,21 @@ export default class NFTRepository {
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
 
+  static async apiInitialization() {
+    try {
+      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
+      const api = ApiPromise.create({ 
+        types: { 
+        AccountInfo: 'AccountInfoWithDualRefCount'
+        }, 
+        provider: wsProvider 
+      });
+      return await api;
+    } catch (error) {
+      throw String(error || 'apiInitialization error occurred.');
+    }
+  }
+  
   static readContractFee = async (
     api: any,
     contract: any,
@@ -50,8 +66,10 @@ export default class NFTRepository {
   static async balanceTransferRepo(data: IBalanceTransferRequestBody) {
     console.log('balanceTransferRepo function was called');
     const instance = new NFTRepository();
-    const api = await instance.api; 
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const chainDecimals = api.registry.chainDecimals[0];
       const value = data.amount * 10 ** chainDecimals;
@@ -64,21 +82,24 @@ export default class NFTRepository {
         [data.from, value]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'balanceTransferRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'balanceTransferRepo error occurred.');
     } finally {
       await api.disconnect();
     }
   }
 
   static signedTransactionRepo = async (nftData: ISignedTransactionRequestBody) => {
+    const isntance = new NFTRepository();
+    var api: any;
     try {
-      const isntance = new NFTRepository();
       const api = await isntance.api;
       await api.rpc.author.submitExtrinsic(nftData.sign);
       return;
-    } catch (error) {
-      throw String(error || 'signedTransactionRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'signedTransactionRepo error occurred.');
+    } finally {
+      await api.disconnect();
     }
   };
 }

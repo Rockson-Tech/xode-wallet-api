@@ -78,7 +78,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
         '\n' + 'AstroChibbi: ' + process.env.CONTRACT_ADDRESS as string +
         '\n' + 'Energy Capsule: ' + process.env.ENERGY_ADDRESS as string +
         '\n' + 'Astro Economy: ' + process.env.ECONOMY_ADDRESS as string,
-        version: '0.0.3'
+        version: '0.0.4'
       },
       externalDocs: {
         url: 'https://docs.google.com/document/d/1n-jd_0BXUCzcrUL9df1_uUgGUpkkDADLMRw_fgx41ko',
