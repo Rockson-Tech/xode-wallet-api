@@ -20,7 +20,6 @@ export const balanceOf = {
             type: 'object',
             properties: {
                 balance: { type: 'string' },
-                price: { type: 'string' },
                 symbol: { type: 'string' },
             },
         },
