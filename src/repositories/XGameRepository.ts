@@ -149,26 +149,24 @@ export default class XGameRepository {
     try {
       await cryptoWaitReady();
       api = await this.apiInitialization();
-      const accountInfo: any = await api.query.assets.account(
-        instance.assetId,
-        account
-      );
-      const metadata: any = await api.query.assets.metadata(
-        instance.assetId,
-      );
+      const [accountInfo, metadata] = await Promise.all([
+        api.query.assets.account(instance.assetId, account),
+        api.query.assets.metadata(instance.assetId)
+      ]);
       if (accountInfo.toHuman() != null) {
-        const { balance } = accountInfo.toJSON();
+        const { balance } = accountInfo.toHuman();
         const { decimals, symbol } = metadata.toHuman();
+        const bigintbalance = BigInt(balance.replace(/,/g, ''));
         formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
         formatBalance.getDefaults();
         const bal = formatBalance(
-          balance, 
+          bigintbalance, 
           { 
             forceUnit: symbol, 
             withUnit: false 
           }
         );
-        const balances = parseFloat(bal).toFixed(4);
+        const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
         return {
           balance: balances,
           symbol: symbol
