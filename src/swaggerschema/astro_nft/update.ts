@@ -1,24 +1,44 @@
-// Schema for getting NFTs
-export const burnEconomy = {
-    summary: 'Burn astrochibbi economy token',
-    tags: ['AstroChibbi Economy: Send Transaction'],
-    description: 'Schema for burning astrochibbi economy token.',
+// Schema for updating NFT
+export const schemaPutUpdate = {
+    summary: 'Update an NFT',
+    tags: ['AstroChibbi NFT'],
+    description: 'Schema for updating NFT.',
+    // Request parameters schema
+    params: {
+        type: 'object',
+        properties: {
+            id: { type: 'number' },
+        },
+        required: ['id'],
+    },
     // Request body schema
     body: {
         type: 'object',
         properties: {
-            from: { type: 'string' },
-            value: { type: 'number' },
+            name: { type: 'string' },
+            category: { type: 'string' },
+            collection: { type: 'string' },
+            description: { type: 'string' },
+            image_path: { type: 'string' },
+            price: { type: 'number' },
+            is_for_sale: { type: 'boolean' },
+            astro_type: { type: 'string' }
         },
         required: [
-            'from',
-            'value',
+            'name',
+            'category',
+            'collection',
+            'description',
+            'image_path',
+            'price',
+            'is_for_sale',
+            'astro_type',
         ],
     },
     // Response schema for success
     response: {
         200: {
-            description: 'Success response after burning token.',
+            description: 'Successful response after updating NFT',
             type: 'object',
             properties: {
                 status: { type: 'number' },

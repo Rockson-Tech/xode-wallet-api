@@ -1,6 +1,6 @@
 export const schemaBalanceTransfer = {
     summary: 'Transfer balance from one account to another',
-    tags: ['AstroChibbi NFT: Send Transaction'],
+    tags: ['AstroChibbi NFT'],
     description: 'Schema for transferring balance of one account to another.',
     // Request body schema
     body: {
@@ -97,7 +97,7 @@ export const schemaReadGasFee = {
 
 export const schemaExample = {
     summary: 'Transfer balance from one account to another',
-    tags: ['NFT: Send Transaction'],
+    tags: ['NFT'],
     description: 'Schema for transferring balance of one account to another.',
     // Request body schema
     // Response schema for success

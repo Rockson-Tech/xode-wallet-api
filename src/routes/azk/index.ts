@@ -5,7 +5,7 @@ import {
   burnController,
   totalSupplyController,
   balanceOfController
-} from '../../controllers/AstroController';
+} from '../../controllers/AssetController';
 import { 
   IBalanceOfRequestParams, 
   IBalanceOfResponseError, 
@@ -22,14 +22,14 @@ import {
   ITransferResponseError, 
   ITransferResponseSuccessful, 
   ITransferRequestBody 
-} from '../../schemas/AstroSchemas';
-import { mint } from '../../swaggerschema/astro/mint';
-import { transfer } from '../../swaggerschema/astro/transfer';
-import { burn } from '../../swaggerschema/astro/burn';
-import { totalSupply } from '../../swaggerschema/astro/totalSupply';
-import { balanceOf } from '../../swaggerschema/astro/balanceOf';
+} from '../../schemas/AssetSchemas';
+import { mint } from '../../swaggerschema/azk/mint';
+import { transfer } from '../../swaggerschema/azk/transfer';
+import { burn } from '../../swaggerschema/azk/burn';
+import { totalSupply } from '../../swaggerschema/azk/totalSupply';
+import { balanceOf } from '../../swaggerschema/azk/balanceOf';
 
-const economy: FastifyPluginAsync = async (fastify, opts) => {
+const azk: FastifyPluginAsync = async (fastify, opts) => {
   fastify.post<{
     Querystring: IMintRequestBody;
     Reply: IMintResponseSuccessful | IMintResponseError;
@@ -76,4 +76,4 @@ const economy: FastifyPluginAsync = async (fastify, opts) => {
   );
 };
 
-export default economy;
+export default azk;

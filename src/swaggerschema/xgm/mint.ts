@@ -1,8 +1,8 @@
 // Schema for getting NFTs
-export const mintEconomy = {
-    summary: 'Mint astrochibbi economy token',
-    tags: ['AstroChibbi Economy: Send Transaction'],
-    description: 'Schema for mint token on astrochibbi economy.',
+export const mint = {
+    summary: 'Mint XGM token',
+    tags: ['XGame Utility Token'],
+    description: 'Schema for minting XGM token.',
     // Request body schema
     body: {
         type: 'object',

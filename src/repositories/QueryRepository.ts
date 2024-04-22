@@ -1,5 +1,5 @@
 import TXRepository from '../modules/TXRepository';
-import abi from '../astrochibbismartcontract.json';
+import abi from '../smartcontracts/astrochibbismartcontract.json';
 import { ApiPromise } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { cryptoWaitReady } from '@polkadot/util-crypto';

@@ -89,8 +89,11 @@ const app: FastifyPluginAsync<AppOptions> = async (
       consumes: ['application/json'],
       produces: ['application/json'],
       tags: [
-        { name: 'AstroChibbi Economy: Send Transaction', description: 'Economy related end-points to transact on chain' },
-        { name: 'AstroChibbi Economy: Send Query', description: 'Economy related end-points to query on chain' },
+        { name: 'AstroChibbi NFT', description: 'AstroChibbi NFT related end-points to transact and query on chain' },
+        { name: 'Astro Economy Token', description: 'ASTRO related end-points to transact and query on chain' },
+        { name: 'Azkal Meme Token', description: 'AZK related end-points to transact and query on chain' },
+        { name: 'Xaver Utility Token', description: 'XAV related end-points to transact and query on chain' },
+        { name: 'XGame Utility Token', description: 'XGM related end-points to transact and query on chain' },
       ],
       definitions: {},
       securityDefinitions: {

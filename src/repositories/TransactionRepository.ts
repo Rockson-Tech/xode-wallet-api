@@ -6,7 +6,7 @@ import TXRepository from '../modules/TXRepository';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../astrochibbismartcontract.json';
+import abi from '../smartcontracts/astrochibbismartcontract.json';
 
 export default class TransactionRepository {
     wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);

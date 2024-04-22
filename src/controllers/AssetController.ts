@@ -4,8 +4,8 @@ import {
   ITransferRequestBody,
   IBurnRequestBody,
   IBalanceOfRequestParams
-} from '../schemas/EconomySchemas';
-import EconomyRepository from '../repositories/EconomyRepository';
+} from '../schemas/AssetSchemas';
+import AzkalRepository from '../repositories/AzkalRepository';
 
 export const mintController = async (
   request: FastifyRequest,
@@ -21,7 +21,7 @@ export const mintController = async (
       return reply.badRequest("Invalid request body. Required fields: 'to', 'value'");
     }
 
-    const result = await EconomyRepository.mintRepo(requestBody);
+    const result = await AzkalRepository.mintRepo(requestBody);
     return await reply.send(result);
   } catch (error) {
     reply.status(500).send('Internal Server Error: ' + error);
@@ -44,7 +44,7 @@ export const transferController = async (
       return reply.badRequest("Invalid request body.");
     }
     
-    const result = await EconomyRepository.transferRepo(requestBody);
+    const result = await AzkalRepository.transferRepo(requestBody);
     return await reply.send(result);
   } catch (error) {
     reply.status(500).send('Internal Server Error: ' + error);
@@ -65,7 +65,7 @@ export const burnController = async (
       return reply.badRequest("Invalid request body. Required fields: 'to', 'value'");
     }
     
-    const result = await EconomyRepository.burnRepo(requestBody);
+    const result = await AzkalRepository.burnRepo(requestBody);
     return await reply.send(result);
   } catch (error) {
     reply.status(500).send('Internal Server Error: ' + error);
@@ -77,7 +77,7 @@ export const totalSupplyController = async (
   reply: FastifyReply
 ) => {
   try {
-    const result = await EconomyRepository.totalSupplyRepo();
+    const result = await AzkalRepository.totalSupplyRepo();
     return await reply.send(result);
   } catch (error) {
     console.error(`totalSupplyController: error trying to transfer balance: ${error}`);
@@ -96,7 +96,7 @@ export const balanceOfController = async (
       return reply.badRequest("Invalid request parameter. Required fields: 'account'");
     }
     
-    const result = await EconomyRepository.balanceOfRepo(requestParams.account);
+    const result = await AzkalRepository.balanceOfRepo(requestParams.account);
     return await reply.send(result);
   } catch (error) {
     reply.status(500).send('Internal Server Error: ' + error);

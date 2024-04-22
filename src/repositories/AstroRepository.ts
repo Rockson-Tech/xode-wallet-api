@@ -6,11 +6,11 @@ import {
   IMintRequestBody,
   ITransferRequestBody,
   IBurnRequestBody,
-} from '../schemas/EconomySchemas';
+} from '../schemas/AstroSchemas';
 // import { formatBalance } from '@polkadot/util';
-import abi from './../astroeconomy.json';
+import abi from '../smartcontracts/astroeconomy.json';
 
-export default class EconomyRepository {
+export default class AstroRepository {
   keypair = process.env.KEYPAIR;
   economyAddress = process.env.ECONOMY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
@@ -38,7 +38,7 @@ export default class EconomyRepository {
 
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
-    const instance = new EconomyRepository();
+    const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -74,7 +74,7 @@ export default class EconomyRepository {
 
   static async transferRepo(data: ITransferRequestBody) {
     console.log('transferRepo function was called');
-    const instance = new EconomyRepository();
+    const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -109,7 +109,7 @@ export default class EconomyRepository {
 
   static async burnRepo(data: IBurnRequestBody) {
     console.log('burnRepo function was called');
-    const instance = new EconomyRepository();
+    const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -144,7 +144,7 @@ export default class EconomyRepository {
 
   static async balanceOfRepo(account: string) {
     console.log('balanceOfRepo function was called');
-    const instance = new EconomyRepository();
+    const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -179,7 +179,7 @@ export default class EconomyRepository {
   
   static async totalSupplyRepo() {
     console.log('totalSupplyRepo function was called');
-    const instance = new EconomyRepository();
+    const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();

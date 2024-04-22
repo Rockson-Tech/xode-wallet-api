@@ -2,7 +2,7 @@ import TXRepository from '../modules/TXRepository';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../energy.json';
+import abi from '../smartcontracts/energy.json';
 import date from 'date-and-time';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 

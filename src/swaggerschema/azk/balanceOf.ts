@@ -1,8 +1,8 @@
 // Schema for getting NFTs
-export const balanceOfEconomy = {
-    summary: 'Get astro balance of the account',
-    tags: ['AstroChibbi Economy: Send Query'],
-    description: 'Schema for getting astro balance of the account.',
+export const balanceOf = {
+    summary: 'Get AZK balance of the account',
+    tags: ['Azkal Meme Token'],
+    description: 'Schema for getting AZK balance of the account.',
     // Request body schema
     params: {
         type: 'object',

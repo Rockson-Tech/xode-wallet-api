@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import ChainRepository from '../repositories/ChainRepository';
-import EconomyRepository from '../repositories/EconomyRepository';
+import AstroRepository from '../repositories/AstroRepository';
 import { ITokensRequestParams } from '../schemas/ChainSchemas';
 
 // Get smart contract
@@ -40,7 +40,7 @@ export const getTokensController = async (
         
         let tokens = [];
         const native = await ChainRepository.getTokensRepo(requestParams.wallet_address);
-        const astro = await EconomyRepository.balanceOfRepo(requestParams.wallet_address);
+        const astro = await AstroRepository.balanceOfRepo(requestParams.wallet_address);
         tokens.push(native);
         tokens.push(astro);
         return await reply.send(tokens);
