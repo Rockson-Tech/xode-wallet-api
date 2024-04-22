@@ -24,8 +24,8 @@ export default class ChainRepository {
     try {
       const smartcontract: string = process.env.CONTRACT_ADDRESS as string;
       return { smartcontract };
-    } catch (error) {
-      throw String(error || 'getSmartContractRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'getSmartContractRepo error occurred.');
     }
   }
 
@@ -35,8 +35,8 @@ export default class ChainRepository {
       const instance = new ChainRepository();
       const abi: JSON = instance.abi;
       return { abi };
-    } catch (error) {
-      throw String(error || 'getSmartContractRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'getSmartContractRepo error occurred.');
     }
   }
 
@@ -54,13 +54,14 @@ export default class ChainRepository {
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
       const balances = free.split(',').join('');
       const parsedBalance = parseFloat(balances);
+      await api.disconnect();
       return {
         balance: parsedBalance,
         price: '0',
         symbol: tokens[0]
       }
-    } catch (error) {
-      throw String(error || 'getSmartContractRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'getSmartContractRepo error occurred.');
     }
   }
 }

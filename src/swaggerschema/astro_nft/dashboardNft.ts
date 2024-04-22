@@ -1,8 +1,8 @@
 // Schema for getting user NFTs
-export const schemaGetUserNft = {
-    summary: 'Get user NFTs',
-    tags: ['AstroChibbi NFT: Send Query'],
-    description: 'Schema for getting user NFTs by wallet address. ',
+export const dashboardNft = {
+    summary: 'Get user NFTs for dashboard',
+    tags: ['AstroChibbi NFT'],
+    description: 'Schema for getting user NFTs by wallet address for dashboard. ',
     // Request body schema
     params: {
         type: 'object',

@@ -1,21 +1,27 @@
 // Schema for getting NFTs
-export const totalSupplyEconomy = {
-    summary: 'Get total supply on the economy',
-    tags: ['AstroChibbi Economy: Send Query'],
-    description: 'Schema for getting total supply of economy.',
+export const balanceOf = {
+    summary: 'Get ASTRO balance of the account',
+    tags: ['Astro Economy Token'],
+    description: 'Schema for getting ASTRO balance of the account.',
     // Request body schema
     params: {
         type: 'object',
-        properties: {},
-        required: [],
+        properties: {
+            account: { type: 'string' }
+        },
+        required: [
+            'account'
+        ],
     },
     // Response schema for success
     response: {
         200: {
-            description: 'Success response after getting total supply.',
+            description: 'Success response after getting balance.',
             type: 'object',
             properties: {
-                total_supply: { type: 'number' },
+                balance: { type: 'string' },
+                price: { type: 'string' },
+                symbol: { type: 'string' },
             },
         },
         // Response schema for unspecified code

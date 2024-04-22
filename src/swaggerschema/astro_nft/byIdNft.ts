@@ -1,6 +1,6 @@
 export const schemaGetNftById = {
     summary: 'Get an NFT by ID',
-    tags: ['AstroChibbi NFT: Send Query'],
+    tags: ['AstroChibbi NFT'],
     description: 'Schema for getting NFT by token ID. ',
     // Request body schema
     params: {

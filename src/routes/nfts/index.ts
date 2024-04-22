@@ -37,12 +37,12 @@ import {
 } from '../../schemas/NFTSchemas';
 import { 
   schemaBalanceTransfer,
-} from '../../swaggerschema';
-import { schemaGetNftById } from '../../swaggerschema/byIdNft';
-import { schemaPutUpdate } from '../../swaggerschema/update';
-import { schemaGetUserNft } from '../../swaggerschema/userNft';
-import { dashboardNft } from '../../swaggerschema/dashboardNft';
-import { schemaPostMarketplace } from '../../swaggerschema/marketplaceNft';
+} from '../../swaggerschema/astro_nft/balance_transfer';
+import { schemaGetNftById } from '../../swaggerschema/astro_nft/byIdNft';
+import { schemaPutUpdate } from '../../swaggerschema/astro_nft/update';
+import { schemaGetUserNft } from '../../swaggerschema/astro_nft/userNft';
+import { dashboardNft } from '../../swaggerschema/astro_nft/dashboardNft';
+import { schemaPostMarketplace } from '../../swaggerschema/astro_nft/marketplaceNft';
 
 const nfts: FastifyPluginAsync = async (fastify, opts) => {
   fastify.put<{

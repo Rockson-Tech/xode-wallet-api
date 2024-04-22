@@ -1,6 +1,6 @@
 export const schemaPostMarketplace = {
     summary: 'Get an NFT for marketplace',
-    tags: ['AstroChibbi NFT: Send Query'],
+    tags: ['AstroChibbi NFT'],
     description: 'Schema for getting NFTs for marketplace using collection ID.',
     // Request body schema
     body: {

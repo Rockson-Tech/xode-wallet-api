@@ -5,7 +5,8 @@ import {
 import TXRepository from '../modules/TXRepository';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
-import abi from '../astrochibbismartcontract.json';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+import abi from '../smartcontracts/astrochibbismartcontract.json';
 
 export default class TransactionRepository {
     wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
@@ -84,43 +85,60 @@ export default class TransactionRepository {
       return this.getRandomRange(ranges, rarity);
     }
     
+    static async apiInitialization() {
+      try {
+        const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
+        const api = ApiPromise.create({ 
+          types: { 
+          AccountInfo: 'AccountInfoWithDualRefCount'
+          }, 
+          provider: wsProvider 
+        });
+        return await api;
+      } catch (error) {
+        throw String(error || 'apiInitialization error occurred.');
+      }
+    }
+
     static async updateNFTRepo(nftData: IUpdateNFTRequestBody, id: number) {
         console.log('updateNFTRepo function was called');
         const instance = new TransactionRepository();
-        const api = await instance.api;
+        var api: any;
         try {
+          await cryptoWaitReady();
+          api = await this.apiInitialization();
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
           const owner = keyring.addFromUri(instance.ownerSeed);
           const storageDepositLimit = null;
-          if (contract !== undefined) { 
-            const result = await TXRepository.sendContractTransaction(
-              api,
-              contract,
-              'updateToken',
-              owner,
-              [
-                id,
-                nftData.image_path,
-                nftData.name,
-                nftData.description,
-                nftData.price,
-                nftData.is_for_sale,
-                nftData.category,
-                nftData.collection,
-                nftData.astro_type,
-                nftData.specs,
-                nftData.blockchain_id,
-              ],
-              instance,
-              storageDepositLimit
-            );
-            return result;
+          if (contract === undefined) { 
+            return Error('Contract undefined');
           }
-          return;
-        } catch (error) {
-          throw String(error || 'updateNFTRepo error occurred.');
+          const result = await TXRepository.sendContractTransaction(
+            api,
+            contract,
+            'updateToken',
+            owner,
+            [
+              id,
+              nftData.image_path,
+              nftData.name,
+              nftData.description,
+              nftData.price,
+              nftData.is_for_sale,
+              nftData.category,
+              nftData.collection,
+              nftData.astro_type,
+              nftData.specs,
+              nftData.blockchain_id,
+            ],
+            instance,
+            storageDepositLimit
+          );
+          return result;
+        } catch (error: any) {
+          return Error(error || 'updateNFTRepo error occurred.');
         } finally {
           await api.disconnect();
         }
@@ -131,62 +149,30 @@ export default class TransactionRepository {
       ) => {
         console.log('transferNFTFromWithoutApprovalRepo function was called');
         const instance = new TransactionRepository();
-        const api = await instance.api;
+        var api: any;
         try {
+          await cryptoWaitReady();
+          api = await this.apiInitialization();
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
           const owner = keyring.addFromUri(instance.ownerSeed);
           const storageDepositLimit = null;
-          if (contract !== undefined) {
-            const result = await TXRepository.sendContractTransaction(
-              api,
-              contract,
-              'transferFromWithoutApproval',
-              owner,
-              [data.from, data.to, data.id],
-              instance,
-              storageDepositLimit
-            );
-            return result;
+          if (contract === undefined) {
+            return Error('Contract undefined');
           }
-          return;
-        } catch (error) {
-          throw String(error || 'transferNFTFromWithoutApprovalRepo error occurred.');
-        } finally {
-          await api.disconnect();
-        }
-    }
-    
-    static instantiateContractRepo = async () => {
-        console.log('instantiateContractRepo function was called');
-        const instance = new TransactionRepository();
-        const api = await instance.api;
-        try {
-          const contractAddress = instance.contractAddress;
-          const contract = await TXRepository.getContract(api, abi, contractAddress);
-          const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-          const owner = keyring.addFromUri(instance.ownerSeed);
-          const storageDepositLimit = null;
-          const recipient = 'AliceAccountId';
-          const close_duration = 3600;
-          const signature = 'InitialSignature';
-          const initValue = [recipient, close_duration, owner, signature];
-          if (contract !== undefined) {
-            const result = await TXRepository.sendContractTransaction(
-              api,
-              contract,
-              'new',
-              owner,
-              initValue,
-              instance,
-              storageDepositLimit
-            );
-            return result;
-          }
-          return;
-        } catch (error) {
-          throw String(error || 'burnRepo error occurred.');
+          const result = await TXRepository.sendContractTransaction(
+            api,
+            contract,
+            'transferFromWithoutApproval',
+            owner,
+            [data.from, data.to, data.id],
+            instance,
+            storageDepositLimit
+          );
+          return result;
+        } catch (error: any) {
+          return Error(error || 'transferNFTFromWithoutApprovalRepo error occurred.');
         } finally {
           await api.disconnect();
         }

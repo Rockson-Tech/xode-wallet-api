@@ -1,7 +1,8 @@
 import TXRepository from '../modules/TXRepository';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
-import abi from '../energy.json';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+import abi from '../smartcontracts/energy.json';
 import date from 'date-and-time';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
@@ -21,11 +22,28 @@ export default class EnergyRepository {
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
 
+  static async apiInitialization() {
+    try {
+      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
+      const api = ApiPromise.create({ 
+        types: { 
+        AccountInfo: 'AccountInfoWithDualRefCount'
+        }, 
+        provider: wsProvider 
+      });
+      return await api;
+    } catch (error) {
+      throw String(error || 'apiInitialization error occurred.');
+    }
+  }
+
   static async decreaseEnergyRepo(data: IDecreaseEnergyRequestBody) {
     console.log('decreaseEnergyRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -34,7 +52,7 @@ export default class EnergyRepository {
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
       if (contract === undefined) {
-        throw String('decreaseEnergyRepo contract undefined.');
+        return Error('decreaseEnergyRepo contract undefined.');
       }
       const result = await TXRepository.sendContractTransaction(
         api,
@@ -50,8 +68,8 @@ export default class EnergyRepository {
         storageDepositLimit
       );
       return result;
-    } catch (error) {
-      throw String(error || 'decreaseEnergyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'decreaseEnergyRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -60,8 +78,10 @@ export default class EnergyRepository {
   static async resetEnergyRepo(ownerAddress: string) {
     console.log('resetEnergyRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -70,7 +90,7 @@ export default class EnergyRepository {
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
       if (contract === undefined) {
-        throw String('resetEnergyRepo contract undefined.');
+        return Error('resetEnergyRepo contract undefined.');
       }
       const result = await TXRepository.sendContractTransaction(
         api,
@@ -85,8 +105,8 @@ export default class EnergyRepository {
         storageDepositLimit
       );
       return result;
-    } catch (error) {
-      throw String(error || 'resetEnergyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'resetEnergyRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -95,8 +115,10 @@ export default class EnergyRepository {
   static async setEnergyRepo(data: any) {
     console.log('setEnergyRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -105,7 +127,7 @@ export default class EnergyRepository {
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
       if (contract === undefined) {
-        throw String('setEnergyRepo contract undefined.');
+        return Error('setEnergyRepo contract undefined.');
       }
       const result = await TXRepository.sendContractTransaction(
         api,
@@ -121,8 +143,8 @@ export default class EnergyRepository {
         storageDepositLimit
       );
       return result;
-    } catch (error) {
-      throw String(error || 'setEnergyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'setEnergyRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -131,15 +153,17 @@ export default class EnergyRepository {
   static async setEnergyImageRepo(image_url: string) {
     console.log('setEnergyImageRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const storageDepositLimit = null;
       if (contract === undefined) {
-        throw String('setEnergyImageRepo contract undefined.');
+        return Error('setEnergyImageRepo contract undefined.');
       }
       const result = await TXRepository.sendContractTransaction(
         api,
@@ -151,8 +175,8 @@ export default class EnergyRepository {
         storageDepositLimit
       );
       return result;
-    } catch (error) {
-      throw String(error || 'setEnergyImageRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'setEnergyImageRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -161,14 +185,16 @@ export default class EnergyRepository {
   static async getEnergyRepo(ownerAddress: String) {
     console.log('getEnergyRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
-        throw new Error('Contract not initialized.');
+        return Error('Contract not initialized.');
       }
       if (!contract.query || !contract.query.getEnergy) {
-        throw new Error('getEnergyRepo function not found in the contract ABI.');
+        return Error('getEnergyRepo function not found in the contract ABI.');
       }
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
@@ -193,8 +219,8 @@ export default class EnergyRepository {
       } else {
         return result;
       }
-    } catch (error) {
-      throw String(error || 'getEnergyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'getEnergyRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -203,14 +229,16 @@ export default class EnergyRepository {
   static async getEnergyImageRepo() {
     console.log('getEnergyRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
-        throw new Error('Contract not initialized.');
+        return Error('Contract not initialized.');
       }
       if (!contract.query || !contract.query.getEnergyImage) {
-        throw new Error('getEnergyImage function not found in the contract ABI.');
+        return Error('getEnergyImage function not found in the contract ABI.');
       }
       const energy = await TXRepository.sendContractQuery(
         api,
@@ -220,8 +248,8 @@ export default class EnergyRepository {
         instance
       );
       return { image_path: energy.ok };
-    } catch (error) {
-      throw String(error || 'getEnergyImageRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'getEnergyImageRepo error occurred.');
     } finally {
       await api.disconnect();
     }
@@ -230,16 +258,18 @@ export default class EnergyRepository {
   static async checkTimeRepo(owner: String) {
     console.log('checkTimeRepo function was called');
     const instance = new EnergyRepository();
-    const api = await instance.api;
+    var api: any;
     try {
+      await cryptoWaitReady();
+      api = await this.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
       if (!contract) {
-        throw new Error('Contract not initialized.');
+        return Error('Contract not initialized.');
       }
       if (!contract.query || !contract.query.getEnergyImage) {
-        throw new Error('getEnergyImage function not found in the contract ABI.');
+        return Error('getEnergyImage function not found in the contract ABI.');
       }
       const energy = await TXRepository.sendContractQuery(
         api,
@@ -252,8 +282,8 @@ export default class EnergyRepository {
         instance
       );
       return { reset_energy: energy.ok };
-    } catch (error) {
-      throw String(error || 'checkTimeRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'checkTimeRepo error occurred.');
     } finally {
       await api.disconnect();
     }

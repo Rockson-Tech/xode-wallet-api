@@ -1,8 +1,8 @@
 // Schema for getting NFTs
-export const transferEconomy = {
-    summary: 'Transfer astrochibbi economy token',
-    tags: ['AstroChibbi Economy: Send Transaction'],
-    description: 'Schema for transferring astrochibbi economy token.',
+export const transfer = {
+    summary: 'Transfer XAV token',
+    tags: ['Xaver Utility Token'],
+    description: 'Schema for transferring XAV token.',
     // Request body schema
     body: {
         type: 'object',

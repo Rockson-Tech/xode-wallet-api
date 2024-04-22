@@ -11,18 +11,15 @@ export const getMarketplaceNftsHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-
-    const requestBody = request.body as IGetMarketplaceNFTRequestBody;
-    if (!requestBody || !requestBody.collection_id) {
-        return reply.badRequest("Invalid request body. Required fields: 'collection_id'.");
-    }
-
     try {
+        const requestBody = request.body as IGetMarketplaceNFTRequestBody;
+        if (!requestBody || !requestBody.collection_id) {
+            return reply.badRequest("Invalid request body. Required fields: 'collection_id'.");
+        }
         const nfts = await QueryRepository.getMarketplaceNftsByCollectionIdRepo(requestBody);
         return reply.send(nfts);
     } catch (error) {
-        console.error(`getMarketplaceNftsHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error: ' + error);
     }
 };
 
@@ -30,18 +27,15 @@ export const getUserNftsHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-
-    const requestParams = request.params as IGetUserNFTRequestParams;
-    if (!requestParams || !requestParams.wallet_address) {
-        return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
-    }
-
     try {
+        const requestParams = request.params as IGetUserNFTRequestParams;
+        if (!requestParams || !requestParams.wallet_address) {
+            return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
+        }
         const nfts: any = await QueryRepository.getUserNFTRepo(requestParams.wallet_address);
         return reply.send(nfts);
     } catch (error) {
-        console.error(`getUserNftsHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error: ' + error);
     }
 };
 
@@ -49,13 +43,11 @@ export const getNftByIdHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-
-    const requestParams = request.params as IGetNFTByIdRequestParams;
-    if (!requestParams || !requestParams.token_id) {
-        return reply.badRequest("Invalid request parameters. Required parameter: token ID");
-    }
-
     try {
+        const requestParams = request.params as IGetNFTByIdRequestParams;
+        if (!requestParams || !requestParams.token_id) {
+            return reply.badRequest("Invalid request parameters. Required parameter: token ID");
+        }
         const nfts = await QueryRepository.getNFTByIdRepo(requestParams.token_id);
         if (nfts == null) {
             return reply.send([]);
@@ -63,8 +55,7 @@ export const getNftByIdHandler = async (
             return reply.send(nfts);
         }
     } catch (error) {
-        console.error(`getNftByIdHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error: ' + error);
     }
 };
 
@@ -72,13 +63,11 @@ export const dashboardNftHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
-
-    const requestParams = request.params as IGetUserNFTRequestParams;
-    if (!requestParams || !requestParams.wallet_address) {
-        return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
-    }
-
     try {
+        const requestParams = request.params as IGetUserNFTRequestParams;
+        if (!requestParams || !requestParams.wallet_address) {
+            return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
+        }
         const [nfts, energy] = await Promise.all([
             QueryRepository.getUserNFTRepo(requestParams.wallet_address),
             EnergyRepository.getEnergyRepo(requestParams.wallet_address),
@@ -120,7 +109,6 @@ export const dashboardNftHandler = async (
         }
         return reply.send(nfts);
     } catch (error) {
-        console.error(`dashboardNftHandler: error trying to get NFT: ${error}`);
-        reply.internalServerError(String(error || 'Unknown error occurred.'));
+        reply.status(500).send('Internal Server Error: ' + error);
     } 
 };

@@ -1,7 +1,8 @@
 import TXRepository from '../modules/TXRepository';
-import abi from '../astrochibbismartcontract.json';
+import abi from '../smartcontracts/astrochibbismartcontract.json';
 import { ApiPromise } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 import NFT from '../models/nft';
 
 export default class QueryRepository {
@@ -23,11 +24,28 @@ export default class QueryRepository {
     REFTIME: number = 300000000000;
     PROOFSIZE: number = 500000;
     
+    static async apiInitialization() {
+      try {
+        const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
+        const api = ApiPromise.create({ 
+          types: { 
+          AccountInfo: 'AccountInfoWithDualRefCount'
+          }, 
+          provider: wsProvider 
+        });
+        return await api;
+      } catch (error) {
+        throw String(error || 'apiInitialization error occurred.');
+      }
+    }
+
     static async getMarketplaceNftsByCollectionIdRepo(data: any) {
         console.log('getMarketplaceNftsByCollectionIdRepo function was called');
         const instance = new QueryRepository();
-        const api = await instance.api;
+        var api: any;
         try {
+          await cryptoWaitReady();
+          api = await this.apiInitialization();
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           if (contract !== undefined) {
             const nft = await TXRepository.sendContractQuery(
@@ -39,8 +57,8 @@ export default class QueryRepository {
             );
             return nft.ok;
           }
-        } catch (error) {
-          throw String(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
+        } catch (error: any) {
+          throw Error(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
         } finally {
           await api.disconnect();
         }
@@ -49,8 +67,10 @@ export default class QueryRepository {
     static async getUserNFTRepo(wallet_address: string) {
         console.log('getUserNFTRepo function was called');
         const instance = new QueryRepository();
-        const api = await instance.api;
+        var api: any;
         try {
+          await cryptoWaitReady();
+          api = await this.apiInitialization();
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const player_wallet_address = wallet_address;
       
@@ -77,8 +97,7 @@ export default class QueryRepository {
           };
           if (result !== undefined) {
             const response: NFT[] = result.ok;
-            const data = response.map((item) => {
-              console.log(item.stats);
+            const data = response.map(async (item) => {
               return {
                 ...item,
                 rarity: rarityMapping[item.stats.rarity]
@@ -104,8 +123,8 @@ export default class QueryRepository {
               tokenOwner: ""
             }]
           }
-        } catch (error) {
-          throw String(error || 'getUserNFTRepo error occurred.');
+        } catch (error: any) {
+          throw Error(error || 'getUserNFTRepo error occurred.');
         } finally {
           await api.disconnect();
         }
@@ -114,18 +133,19 @@ export default class QueryRepository {
     static async getNFTByIdRepo(token_id: string) {
         console.log('getNFTByIdRepo function was called');
         const instance = new QueryRepository();
-        const api = await instance.api;
+        var api: any;
         try {
-          
+          await cryptoWaitReady();
+          api = await this.apiInitialization();
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const tokenId = token_id;
       
           if (!contract) {
-            throw new Error('Contract not initialized.');
+            return Error('Contract not initialized.');
           }
       
           if (!contract.query || !contract.query.getNftById) {
-            throw new Error('getNFTById function not found in the contract ABI.');
+            return Error('getNFTById function not found in the contract ABI.');
           }
       
           const result = await TXRepository.sendContractQuery(
@@ -150,10 +170,10 @@ export default class QueryRepository {
           if (result.ok != null) {
             return data;
           } else {
-            throw new Error('Token Not Found');
+            return Error('Token Not Found');
           }
-        } catch (error) {
-          throw String(error || 'getNFTByIdRepo error occurred.');
+        } catch (error: any) {
+          return Error(error || 'getNFTByIdRepo error occurred.');
         } finally {
           await api.disconnect();
         }
