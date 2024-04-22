@@ -14,7 +14,7 @@ export default class XGameRepository {
   economyAddress = process.env.ECONOMY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
-  assetId = process.env.ASSET_ID as string;
+  assetId = process.env.XGM_ASSET_ID as string ?? '1';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
