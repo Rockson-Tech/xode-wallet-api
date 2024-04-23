@@ -13,12 +13,13 @@ export default class WebsocketHeader {
             if (Array.isArray(websocket)) {
                 websocket = websocket.join(',');
             }
-
+            
             const mainnetEnv = process.env.MAINNET_WS_PROVIDER_ENDPOINT as string;
             const testnetEnv = process.env.TESTNET_WS_PROVIDER_ENDPOINT as string;
             const devnetEnv = process.env.DEVNET_WS_PROVIDER_ENDPOINT as string;
             const localEnv = process.env.LOCAL_WS_PROVIDER_ENDPOINT as string;
 
+            process.env.WS_PROVIDER_ENDPOINT = websocket;
             if (websocket === mainnetEnv) {
                 this.setEnvAddresses(
                     process.env.MAINNET_ASTROCHIBBI_ADDRESS as string,
