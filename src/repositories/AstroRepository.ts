@@ -68,7 +68,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'mintRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -103,7 +105,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -138,7 +142,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'burnRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -173,7 +179,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
   
@@ -205,7 +213,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'totalSupplyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 }

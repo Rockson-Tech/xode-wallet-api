@@ -66,7 +66,9 @@ export default class XGameRepository {
     } catch (error) {
       throw String(error || 'mintRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -102,7 +104,9 @@ export default class XGameRepository {
     } catch (error) {
       throw String(error || 'transferRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -138,7 +142,9 @@ export default class XGameRepository {
     } catch (error) {
       throw String(error || 'burnRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -180,7 +186,9 @@ export default class XGameRepository {
     } catch (error) {
       throw String(error || 'balanceOfRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
   
@@ -204,7 +212,9 @@ export default class XGameRepository {
     } catch (error) {
       throw String(error || 'totalSupplyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 }

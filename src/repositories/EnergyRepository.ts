@@ -71,7 +71,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'decreaseEnergyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -108,7 +110,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'resetEnergyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -146,7 +150,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'setEnergyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -178,7 +184,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'setEnergyImageRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
   
@@ -222,7 +230,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'getEnergyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -251,7 +261,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'getEnergyImageRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -285,7 +297,9 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'checkTimeRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 }

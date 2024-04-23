@@ -60,7 +60,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (api) {
+        await api.disconnect();
+      }
         }
     }
     
@@ -126,7 +128,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getUserNFTRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (api) {
+        await api.disconnect();
+      }
         }
     }
     
@@ -175,7 +179,9 @@ export default class QueryRepository {
         } catch (error: any) {
           return Error(error || 'getNFTByIdRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (api) {
+        await api.disconnect();
+      }
         }
     }
 }

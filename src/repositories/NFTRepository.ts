@@ -59,7 +59,9 @@ export default class NFTRepository {
       { gasLimit: gasLimit },
       ...params
     );
-    await api.disconnect();
+    if (api) {
+        await api.disconnect();
+      }
     return gasRequired?.toJSON();
   }
 
@@ -85,7 +87,9 @@ export default class NFTRepository {
     } catch (error: any) {
       return Error(error || 'balanceTransferRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -99,7 +103,9 @@ export default class NFTRepository {
     } catch (error: any) {
       return Error(error || 'signedTransactionRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
     }
   };
 }

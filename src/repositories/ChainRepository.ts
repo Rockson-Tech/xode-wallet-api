@@ -54,7 +54,9 @@ export default class ChainRepository {
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
       const balances = free.split(',').join('');
       const parsedBalance = parseFloat(balances);
-      await api.disconnect();
+      if (api) {
+        await api.disconnect();
+      }
       return {
         balance: parsedBalance,
         price: '0',

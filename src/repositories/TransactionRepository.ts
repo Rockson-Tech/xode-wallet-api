@@ -140,7 +140,9 @@ export default class TransactionRepository {
         } catch (error: any) {
           return Error(error || 'updateNFTRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (api) {
+        await api.disconnect();
+      }
         }
     }
 
@@ -174,7 +176,9 @@ export default class TransactionRepository {
         } catch (error: any) {
           return Error(error || 'transferNFTFromWithoutApprovalRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (api) {
+        await api.disconnect();
+      }
         }
     }
 }
