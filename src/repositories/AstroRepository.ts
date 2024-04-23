@@ -11,7 +11,7 @@ import {
 import abi from '../smartcontracts/astroeconomy.json';
 
 export default class AstroRepository {
-  economyAddress = process.env.ECONOMY_ADDRESS as string;
+  economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
   ownerSeed = process.env.OWNER_SEED as string;
   astroPrice = '0';
   // These are required and changeable

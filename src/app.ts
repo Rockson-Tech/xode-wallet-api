@@ -75,10 +75,10 @@ const app: FastifyPluginAsync<AppOptions> = async (
       info: {
         title: 'XODE Wallet',
         description: 'Fastify swagger of XODE to smart contract.\n\n' +
-        '\n' + 'AstroChibbi: ' + process.env.CONTRACT_ADDRESS as string +
-        '\n' + 'Energy Capsule: ' + process.env.ENERGY_ADDRESS as string +
-        '\n' + 'Astro Economy: ' + process.env.ECONOMY_ADDRESS as string,
-        version: '0.0.4'
+        '\n' + 'AstroChibbi: ' + process.env.TESTNET_ASTROCHIBBI_ADDRESS as string +
+        '\n' + 'Energy Capsule: ' + process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string +
+        '\n' + 'Astro Economy: ' + process.env.TESTNET_ASTRO_ECONOMY_ADDRESS as string,
+        version: '0.0.5'
       },
       externalDocs: {
         url: 'https://docs.google.com/document/d/1n-jd_0BXUCzcrUL9df1_uUgGUpkkDADLMRw_fgx41ko',

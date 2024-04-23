@@ -7,7 +7,7 @@ export default class ChainRepository {
   static async getSmartContractRepo() {
     console.log('getSmartContractRepo function was called');
     try {
-      const smartcontract: string = process.env.CONTRACT_ADDRESS as string;
+      const smartcontract: string = process.env.ASTROCHIBBI_ADDRESS as string;
       return { smartcontract };
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');

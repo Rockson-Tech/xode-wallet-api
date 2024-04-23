@@ -5,7 +5,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import NFT from '../models/nft';
 
 export default class QueryRepository {
-    contractAddress = process.env.CONTRACT_ADDRESS as string;
+    contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
     ownerSeed = process.env.OWNER_SEED as string;
     // These are required and changeable
     REFTIME: number = 300000000000;
