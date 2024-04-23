@@ -10,7 +10,6 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class AzkalRepository {
-  keypair = process.env.KEYPAIR;
   economyAddress = process.env.ECONOMY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;

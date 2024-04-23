@@ -9,11 +9,8 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import abi from '../smartcontracts/astrochibbismartcontract.json';
 
 export default class TransactionRepository {
-    keypair = process.env.KEYPAIR;
     contractAddress = process.env.CONTRACT_ADDRESS as string;
-    contractOwner = process.env.CONTRACT_OWNER as string;
     ownerSeed = process.env.OWNER_SEED as string;
-    nftStorageToken = process.env.NFT_STORAGE_TOKEN as string;
     // These are required and changeable
     REFTIME: number = 300000000000;
     PROOFSIZE: number = 500000;

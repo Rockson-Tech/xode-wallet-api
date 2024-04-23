@@ -7,9 +7,7 @@ import date from 'date-and-time';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
 export default class EnergyRepository {
-  keypair = process.env.KEYPAIR;
   energyAddress = process.env.ENERGY_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
   // These are required and changeable
   REFTIME: number = 300000000000;

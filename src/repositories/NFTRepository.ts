@@ -9,13 +9,8 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import '@polkadot/api-augment';
 
 export default class NFTRepository {
-  keypair = process.env.KEYPAIR;
   contractAddress = process.env.CONTRACT_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
-  walletAddress: any;
-  injector: any;
-  filePath = '../';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
