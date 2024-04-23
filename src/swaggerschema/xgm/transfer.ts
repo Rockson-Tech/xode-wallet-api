@@ -7,16 +7,12 @@ export const transfer = {
     body: {
         type: 'object',
         properties: {
-            to: { type: 'string' },
-            from: { type: 'string' },
+            target: { type: 'string' },
             value: { type: 'number' },
-            token: { type: 'string' },
         },
         required: [
-            'to',
-            'from',
+            'target',
             'value',
-            'token',
         ],
     },
     // Response schema for success

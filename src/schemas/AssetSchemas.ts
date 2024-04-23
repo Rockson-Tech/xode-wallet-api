@@ -42,10 +42,8 @@ export interface IMintResponseError {
 
 // ----- TRANSFER -----
 export interface ITransferRequestBody {
-  to: string;
-  from: string;
+  target: string;
   value: number;
-  token: string;
 }
 export interface ITransferResponseSuccessful {
   status: number;

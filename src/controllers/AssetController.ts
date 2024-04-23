@@ -39,10 +39,8 @@ export const transferController = async (
     const requestBody = request.body as ITransferRequestBody;
     if (
       !requestBody || 
-      !requestBody.to ||
-      !requestBody.from ||
-      !requestBody.value ||
-      !requestBody.token
+      !requestBody.target ||
+      !requestBody.value
     ) {
       return reply.badRequest("Invalid request body.");
     }

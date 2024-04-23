@@ -80,7 +80,7 @@ export default class AzkalRepository {
         owner,
         [
           instance.assetId,
-          data.to, 
+          data.target, 
           value
         ]
       );

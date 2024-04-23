@@ -78,7 +78,7 @@ export default class XGameRepository {
         owner,
         [
           instance.assetId,
-          data.to, 
+          data.target, 
           value
         ]
       );
