@@ -1,6 +1,6 @@
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
@@ -19,28 +19,13 @@ export default class XGameRepository {
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
 
-  static async apiInitialization() {
-    try {
-      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-      const api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: wsProvider 
-      });
-      return await api;
-    } catch (error) {
-      throw String(error || 'apiInitialization error occurred.');
-    }
-  }
-
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
     const instance = new XGameRepository();
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
@@ -78,7 +63,7 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
@@ -116,7 +101,7 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
@@ -154,7 +139,7 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const [accountInfo, metadata] = await Promise.all([
         api.query.assets.account(instance.assetId, account),
         api.query.assets.metadata(instance.assetId)
@@ -198,7 +183,7 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const assetInfo: any = await api.query.assets.asset(
         instance.assetId
       );

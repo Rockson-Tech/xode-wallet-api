@@ -1,19 +1,12 @@
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import abi from '../smartcontracts/energy.json';
 import date from 'date-and-time';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
 export default class EnergyRepository {
-  wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-  api = ApiPromise.create({ 
-      types: { 
-      AccountInfo: 'AccountInfoWithDualRefCount'
-      }, 
-      provider: this.wsProvider 
-  });
   keypair = process.env.KEYPAIR;
   energyAddress = process.env.ENERGY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
@@ -22,28 +15,13 @@ export default class EnergyRepository {
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
 
-  static async apiInitialization() {
-    try {
-      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-      const api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: wsProvider 
-      });
-      return await api;
-    } catch (error) {
-      throw String(error || 'apiInitialization error occurred.');
-    }
-  }
-
   static async decreaseEnergyRepo(data: IDecreaseEnergyRequestBody) {
     console.log('decreaseEnergyRepo function was called');
     const instance = new EnergyRepository();
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -83,7 +61,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -122,7 +100,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -162,7 +140,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -196,7 +174,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
         return Error('Contract not initialized.');
@@ -242,7 +220,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
         return Error('Contract not initialized.');
@@ -273,7 +251,7 @@ export default class EnergyRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');

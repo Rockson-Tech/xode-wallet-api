@@ -6,12 +6,14 @@ import {
   IBalanceOfRequestParams
 } from '../schemas/AssetSchemas';
 import AzkalRepository from '../repositories/AzkalRepository';
+import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const mintController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as IMintRequestBody;
     if (
       !requestBody || 
@@ -33,6 +35,7 @@ export const transferController = async (
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as ITransferRequestBody;
     if (
       !requestBody || 
@@ -56,6 +59,7 @@ export const burnController = async (
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as IBurnRequestBody;
     if (
       !requestBody || 
@@ -77,6 +81,7 @@ export const totalSupplyController = async (
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const result = await AzkalRepository.totalSupplyRepo();
     return await reply.send(result);
   } catch (error) {
@@ -91,6 +96,7 @@ export const balanceOfController = async (
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestParams = request.params as IBalanceOfRequestParams;
     if (!requestParams || !requestParams.account) {
       return reply.badRequest("Invalid request parameter. Required fields: 'account'");

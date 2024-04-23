@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import ChainRepository from '../repositories/ChainRepository';
 import AstroRepository from '../repositories/AstroRepository';
 import { ITokensRequestParams } from '../schemas/ChainSchemas';
+import WebsocketHeader from '../modules/WebsocketHeader';
 
 // Get smart contract
 export const getSmartContractController = async (
@@ -9,6 +10,7 @@ export const getSmartContractController = async (
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const result = await ChainRepository.getSmartContractRepo();
         return await reply.send(result);
     } catch (error) {
@@ -33,6 +35,7 @@ export const getTokensController = async (
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const requestParams = request.params as ITokensRequestParams;
         if (!requestParams || !requestParams.wallet_address) {
             return reply.badRequest("Invalid request parameter. Required fields: 'wallet_address'");

@@ -5,12 +5,14 @@ import {
     ITransferNFTFromWOARequestBody,
 } from '../schemas/NFTSchemas';
 import TransactionRepository from '../repositories/TransactionRepository';
+import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const updateNFTHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const requestParams = request.params as IUpdateOneNFTRequestParams;
         if (!requestParams || !requestParams.id) {
             return reply.badRequest("Missing 'id' parameter in URI 'nfts/:id'");
@@ -51,6 +53,7 @@ export const transferFromWOANFTHandler = async (
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const requestBody = request.body as ITransferNFTFromWOARequestBody;
         if (
             !requestBody || 

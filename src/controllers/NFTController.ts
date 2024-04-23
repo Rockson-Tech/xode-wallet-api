@@ -4,12 +4,14 @@ import {
   IBalanceTransferRequestBody,
 } from '../schemas/NFTSchemas';
 import NFTRepository from '../repositories/NFTRepository';
+import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const balanceTransferHandler = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as IBalanceTransferRequestBody;
     if (!requestBody || 
       !requestBody.from ||
@@ -29,6 +31,7 @@ export const signedTransactionController = async (
   reply: FastifyReply
 ) => {
   try {
+    WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as ISignedTransactionRequestBody;
     await NFTRepository.signedTransactionRepo(requestBody);
   } catch (error) {

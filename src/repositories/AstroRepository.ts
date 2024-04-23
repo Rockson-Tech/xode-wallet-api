@@ -1,6 +1,6 @@
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
@@ -21,28 +21,13 @@ export default class AstroRepository {
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
 
-  static async apiInitialization() {
-    try {
-      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-      const api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: wsProvider 
-      });
-      return await api;
-    } catch (error) {
-      throw String(error || 'apiInitialization error occurred.');
-    }
-  }
-
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
     const instance = new AstroRepository();
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -80,7 +65,7 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -117,7 +102,7 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -154,7 +139,7 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const price = instance.astroPrice;
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
@@ -191,7 +176,7 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       if (!contract) {

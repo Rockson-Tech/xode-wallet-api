@@ -3,19 +3,12 @@ import {
     IUpdateNFTRequestBody,
 } from '../schemas/NFTSchemas';
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import abi from '../smartcontracts/astrochibbismartcontract.json';
 
 export default class TransactionRepository {
-    wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-    api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: this.wsProvider 
-    });
     keypair = process.env.KEYPAIR;
     contractAddress = process.env.CONTRACT_ADDRESS as string;
     contractOwner = process.env.CONTRACT_OWNER as string;
@@ -84,21 +77,6 @@ export default class TransactionRepository {
       };
       return this.getRandomRange(ranges, rarity);
     }
-    
-    static async apiInitialization() {
-      try {
-        const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-        const api = ApiPromise.create({ 
-          types: { 
-          AccountInfo: 'AccountInfoWithDualRefCount'
-          }, 
-          provider: wsProvider 
-        });
-        return await api;
-      } catch (error) {
-        throw String(error || 'apiInitialization error occurred.');
-      }
-    }
 
     static async updateNFTRepo(nftData: IUpdateNFTRequestBody, id: number) {
         console.log('updateNFTRepo function was called');
@@ -106,7 +84,7 @@ export default class TransactionRepository {
         var api: any;
         try {
           await cryptoWaitReady();
-          api = await this.apiInitialization();
+          api = await InitializeAPI.apiInitialization();
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -154,7 +132,7 @@ export default class TransactionRepository {
         var api: any;
         try {
           await cryptoWaitReady();
-          api = await this.apiInitialization();
+          api = await InitializeAPI.apiInitialization();
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
