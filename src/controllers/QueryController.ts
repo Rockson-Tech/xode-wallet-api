@@ -78,42 +78,99 @@ export const dashboardNftHandler = async (
             EnergyRepository.getEnergyRepo(requestParams.wallet_address),
         ]);
         let result: any;
-        if (energy == null) {
-            const data = {
-                owner: requestParams.wallet_address,
-                energy: 20,
-            };
-            await EnergyRepository.setEnergyRepo(data);
-            result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
-        } else {
-            result = energy;
-            if (result.resetable) {
-                await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+        if (nfts.length > 0 && nfts.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
+            if (energy == null) {
+                const data = {
+                    owner: requestParams.wallet_address,
+                    energy: 20,
+                };
+                await EnergyRepository.setEnergyRepo(data);
                 result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+            } else {
+                result = energy;
+                if (result.resetable) {
+                    await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+                    result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+                }
             }
-        }
-        if (result != null) {
-            const nftEntry: any = {
-                nftTokenId: 0,
-                imagePath: result.imagePath || '',
-                name: 'Energy Capsule',
-                description: 'An energy capsule that can be used to use characters.',
-                price: result.currentEnergy,
-                isForSale: false,
-                isEquipped: true,
-                category: 'Capsule',
-                collection: 'AstroChibbi Conquest: Galactic Delight',
-                astroType: 'None',
-                rarity: 'None',
-                network: 'None',
-                blockchainId: 'None',
-                collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
-                tokenOwner: requestParams.wallet_address,
-            };
-            nfts.push(nftEntry);
+            if (result != null) {
+                const nftEntry: any = {
+                    nftTokenId: 0,
+                    imagePath: result.imagePath || '',
+                    name: 'Energy Capsule',
+                    description: 'An energy capsule that can be used to use characters.',
+                    price: result.currentEnergy,
+                    isForSale: false,
+                    isEquipped: true,
+                    category: 'Capsule',
+                    collection: 'AstroChibbi Conquest: Galactic Delight',
+                    astroType: 'None',
+                    rarity: 'None',
+                    network: 'None',
+                    blockchainId: 'None',
+                    collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
+                    tokenOwner: requestParams.wallet_address,
+                };
+                nfts.push(nftEntry);
+            }
         }
         return reply.send(nfts);
     } catch (error) {
         reply.status(500).send('Internal Server Error: ' + error);
     } 
 };
+
+// export const dashboardNftHandler = async (
+//     request: FastifyRequest,
+//     reply: FastifyReply
+// ) => {
+//     try {
+//         WebsocketHeader.handleWebsocket(request);
+//         const requestParams = request.params as IGetUserNFTRequestParams;
+//         if (!requestParams || !requestParams.wallet_address) {
+//             return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
+//         }
+//         const [nfts, energy] = await Promise.all([
+//             QueryRepository.getUserNFTRepo(requestParams.wallet_address),
+//             EnergyRepository.getEnergyRepo(requestParams.wallet_address),
+//         ]);
+//         let result: any;
+//         if (energy == null) {
+//             const data = {
+//                 owner: requestParams.wallet_address,
+//                 energy: 20,
+//             };
+//             await EnergyRepository.setEnergyRepo(data);
+//             result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+//         } else {
+//             result = energy;
+//             if (result.resetable) {
+//                 await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+//                 result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+//             }
+//         }
+//         if (result != null) {
+//             const nftEntry: any = {
+//                 nftTokenId: 0,
+//                 imagePath: result.imagePath || '',
+//                 name: 'Energy Capsule',
+//                 description: 'An energy capsule that can be used to use characters.',
+//                 price: result.currentEnergy,
+//                 isForSale: false,
+//                 isEquipped: true,
+//                 category: 'Capsule',
+//                 collection: 'AstroChibbi Conquest: Galactic Delight',
+//                 astroType: 'None',
+//                 rarity: 'None',
+//                 network: 'None',
+//                 blockchainId: 'None',
+//                 collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
+//                 tokenOwner: requestParams.wallet_address,
+//             };
+//             nfts.push(nftEntry);
+//         }
+//         return reply.send(nfts);
+//     } catch (error) {
+//         reply.status(500).send('Internal Server Error: ' + error);
+//     } 
+// };
