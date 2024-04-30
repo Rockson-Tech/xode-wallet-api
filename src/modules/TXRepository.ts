@@ -67,19 +67,21 @@ export default class TXRepository {
         return new Promise(async (resolve, reject) => {
             try {
                 const dryRunResult = await this.dryRunContract(api, contract, method, owner, params, instance, storageDepositLimit);
-                if (!dryRunResult) {
+                let tx: any;
+                if (dryRunResult instanceof Error) {
                     reject(dryRunResult);
+                } else {
+                    tx =  contract.tx[method](
+                    {
+                        storageDepositLimit,
+                        gasLimit: api?.registry.createType('WeightV2', {
+                            refTime: parseInt(dryRunResult.gasRequired.refTime.replace(/,/g, ''), 10),
+                            proofSize: parseInt(dryRunResult.gasRequired.proofSize.replace(/,/g, ''), 10),
+                        }),
+                    },
+                    ...params
+                    );
                 }
-                const tx =  contract.tx[method](
-                {
-                    storageDepositLimit,
-                    gasLimit: api?.registry.createType('WeightV2', {
-                        refTime: parseInt(dryRunResult.gasRequired.refTime.replace(/,/g, ''), 10),
-                        proofSize: parseInt(dryRunResult.gasRequired.proofSize.replace(/,/g, ''), 10),
-                    }),
-                },
-                ...params
-                );
                 await await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
                     if (result.dispatchError) {
                         if (result.dispatchError.isModule) {
