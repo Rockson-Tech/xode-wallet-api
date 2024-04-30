@@ -7,7 +7,7 @@ export default class WebsocketHeader {
             let websocket: string | undefined = request.headers.websocket;
             if (!websocket) {
                 this.defaultWebsocket();
-                return;
+                return websocket;
             }
 
             if (Array.isArray(websocket)) {
@@ -42,7 +42,7 @@ export default class WebsocketHeader {
                 this.defaultWebsocket();
             }
         } catch (error: any) {
-            throw new Error(error);
+            return Error(error);
         }
     }
 
@@ -55,7 +55,7 @@ export default class WebsocketHeader {
                 process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string
             );
         } catch (error: any) {
-            throw new Error(error);
+            return Error(error);
         }
     }
 

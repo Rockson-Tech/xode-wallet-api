@@ -8,7 +8,7 @@ export default class InitializeAPI {
             wsProvider.connect();
             const timeoutPromise = new Promise((_, reject) => {
               setTimeout(() => {
-                reject(String('Websocket connection error'));
+                reject(Error('Websocket connection error'));
               }, 30 * 1000);
             });
             await Promise.race([
@@ -17,7 +17,7 @@ export default class InitializeAPI {
             ]);
             if (!wsProvider.isConnected) {
               await wsProvider.disconnect();
-              throw String('apiInitialization error occurred: ');
+              return Error('apiInitialization error occurred: ');
             }
             const api = await ApiPromise.create({
               types: {
@@ -27,7 +27,7 @@ export default class InitializeAPI {
             });
             return api;
         } catch (error) {
-            throw String('apiInitialization error occurred: ' + error);
+            return Error('apiInitialization error occurred: ' + error);
         }
     }
 }
