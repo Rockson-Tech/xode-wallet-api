@@ -19,6 +19,9 @@ export const getMarketplaceNftsHandler = async (
             return reply.badRequest("Invalid request body. Required fields: 'collection_id'.");
         }
         const nfts = await QueryRepository.getMarketplaceNftsByCollectionIdRepo(requestBody);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
         return reply.send(nfts);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -36,6 +39,9 @@ export const getUserNftsHandler = async (
             return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
         }
         const nfts: any = await QueryRepository.getUserNFTRepo(requestParams.wallet_address);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
         return reply.send(nfts);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -53,6 +59,9 @@ export const getNftByIdHandler = async (
             return reply.badRequest("Invalid request parameters. Required parameter: token ID");
         }
         const nfts = await QueryRepository.getNFTByIdRepo(requestParams.token_id);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
         if (nfts == null) {
             return reply.send([]);
         } else {
@@ -77,6 +86,9 @@ export const dashboardNftHandler = async (
             QueryRepository.getUserNFTRepo(requestParams.wallet_address),
             EnergyRepository.getEnergyRepo(requestParams.wallet_address),
         ]);
+        if (nfts instanceof Error || energy instanceof Error) {
+            throw nfts || energy;
+        }
         let result: any;
         if (nfts.length > 0 && nfts.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
             if (energy == null) {
@@ -84,13 +96,25 @@ export const dashboardNftHandler = async (
                     owner: requestParams.wallet_address,
                     energy: 20,
                 };
-                await EnergyRepository.setEnergyRepo(data);
+                const setEnergyResult = await EnergyRepository.setEnergyRepo(data);
+                if (setEnergyResult instanceof Error) {
+                    throw setEnergyResult;
+                }
                 result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+                if (result instanceof Error) {
+                    throw result;
+                }
             } else {
                 result = energy;
                 if (result.resetable) {
-                    await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+                    const resetEnergyResult = await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+                    if (resetEnergyResult instanceof Error) {
+                        throw resetEnergyResult;
+                    }
                     result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+                    if (result instanceof Error) {
+                        throw result;
+                    }
                 }
             }
             if (result != null) {
