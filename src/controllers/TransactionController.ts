@@ -41,7 +41,9 @@ export const updateNFTHandler = async (
         requestBody,
         requestParams.id,
         );
-
+        if (targetNFT instanceof Error) {
+            throw targetNFT;
+        }
         return reply.send(targetNFT);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -64,6 +66,9 @@ export const transferFromWOANFTHandler = async (
             return reply.badRequest("Missing or invalid request body.");
         }
         const result = await TransactionRepository.transferFromWithoutApprovalRepo(requestBody);
+        if (result instanceof Error) {
+            throw result;
+        }
         return reply.send(result);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
