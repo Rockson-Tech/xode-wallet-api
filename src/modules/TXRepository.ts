@@ -72,14 +72,14 @@ export default class TXRepository {
                     reject(dryRunResult);
                 } else {
                     tx =  contract.tx[method](
-                    {
-                        storageDepositLimit,
-                        gasLimit: api?.registry.createType('WeightV2', {
-                            refTime: parseInt(dryRunResult.gasRequired.refTime.replace(/,/g, ''), 10),
-                            proofSize: parseInt(dryRunResult.gasRequired.proofSize.replace(/,/g, ''), 10),
-                        }),
-                    },
-                    ...params
+                        {
+                            storageDepositLimit,
+                            gasLimit: api?.registry.createType('WeightV2', {
+                                refTime: parseInt(dryRunResult.gasRequired.refTime.replace(/,/g, ''), 10),
+                                proofSize: parseInt(dryRunResult.gasRequired.proofSize.replace(/,/g, ''), 10),
+                            }),
+                        },
+                        ...params
                     );
                 }
                 await await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
