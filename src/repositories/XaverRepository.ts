@@ -23,13 +23,16 @@ export default class XaverRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -45,10 +48,10 @@ export default class XaverRepository {
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'mintRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'mintRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -61,13 +64,16 @@ export default class XaverRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -83,10 +89,10 @@ export default class XaverRepository {
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'transferRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'transferRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -99,13 +105,16 @@ export default class XaverRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -121,10 +130,10 @@ export default class XaverRepository {
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'burnRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'burnRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -137,6 +146,9 @@ export default class XaverRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const [accountInfo, metadata] = await Promise.all([
         api.query.assets.account(instance.assetId, account),
         api.query.assets.metadata(instance.assetId)
@@ -165,10 +177,10 @@ export default class XaverRepository {
           symbol: 'XAV'
         };
       };
-    } catch (error) {
-      throw String(error || 'balanceOfRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'balanceOfRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -181,20 +193,23 @@ export default class XaverRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const assetInfo: any = await api.query.assets.asset(
         instance.assetId
       );
       if (assetInfo.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { supply } = assetInfo.toJSON();
       return {
         total_supply: supply
       };
-    } catch (error) {
-      throw String(error || 'totalSupplyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'totalSupplyRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }

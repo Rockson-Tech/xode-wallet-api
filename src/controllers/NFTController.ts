@@ -21,7 +21,7 @@ export const balanceTransferHandler = async (
     }
     const result = await NFTRepository.balanceTransferRepo(requestBody);
     return reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -34,7 +34,7 @@ export const signedTransactionController = async (
     WebsocketHeader.handleWebsocket(request);
     const requestBody = request.body as ISignedTransactionRequestBody;
     await NFTRepository.signedTransactionRepo(requestBody);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };

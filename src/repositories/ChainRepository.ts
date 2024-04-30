@@ -30,6 +30,9 @@ export default class ChainRepository {
     var api: any;
     try {
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const balance = await api.derive.balances.all(wallet_address);
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
@@ -47,7 +50,7 @@ export default class ChainRepository {
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }

@@ -25,7 +25,7 @@ export const mintController = async (
 
     const result = await AstroRepository.mintRepo(requestBody);
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -49,7 +49,7 @@ export const transferController = async (
     
     const result = await AstroRepository.transferRepo(requestBody);
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -71,7 +71,7 @@ export const burnController = async (
     
     const result = await AstroRepository.burnRepo(requestBody);
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -84,7 +84,7 @@ export const totalSupplyController = async (
     WebsocketHeader.handleWebsocket(request);
     const result = await AstroRepository.totalSupplyRepo();
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     console.error(`totalSupplyController: error trying to transfer balance: ${error}`);
     reply.status(500).send('Internal Server Error');
   }
@@ -104,7 +104,7 @@ export const balanceOfController = async (
     
     const result = await AstroRepository.balanceOfRepo(requestParams.account);
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };

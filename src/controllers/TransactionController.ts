@@ -43,7 +43,7 @@ export const updateNFTHandler = async (
         );
 
         return reply.send(targetNFT);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -65,7 +65,7 @@ export const transferFromWOANFTHandler = async (
         }
         const result = await TransactionRepository.transferFromWithoutApprovalRepo(requestBody);
         return reply.send(result);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };

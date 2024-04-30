@@ -20,7 +20,7 @@ export const getMarketplaceNftsHandler = async (
         }
         const nfts = await QueryRepository.getMarketplaceNftsByCollectionIdRepo(requestBody);
         return reply.send(nfts);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -37,7 +37,7 @@ export const getUserNftsHandler = async (
         }
         const nfts: any = await QueryRepository.getUserNFTRepo(requestParams.wallet_address);
         return reply.send(nfts);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -58,7 +58,7 @@ export const getNftByIdHandler = async (
         } else {
             return reply.send(nfts);
         }
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -115,7 +115,7 @@ export const dashboardNftHandler = async (
             }
         }
         return reply.send(nfts);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     } 
 };
@@ -170,7 +170,7 @@ export const dashboardNftHandler = async (
 //             nfts.push(nftEntry);
 //         }
 //         return reply.send(nfts);
-//     } catch (error) {
+//     } catch (error: any) {
 //         reply.status(500).send('Internal Server Error: ' + error);
 //     } 
 // };

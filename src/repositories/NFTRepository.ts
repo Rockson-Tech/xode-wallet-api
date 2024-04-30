@@ -14,29 +14,6 @@ export default class NFTRepository {
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
-  
-  static readContractFee = async (
-    api: any,
-    contract: any,
-    method: any,
-    params: any,
-    instance: any
-  ) => {
-    const gasLimit = api.registry.createType(
-      'WeightV2',
-      api.consts.system.blockWeights['maxBlock']
-    );
-  
-    const { gasRequired } = await contract.query[method](
-      instance.contractAddress,
-      { gasLimit: gasLimit },
-      ...params
-    );
-    if (api) {
-        await api.disconnect();
-      }
-    return gasRequired?.toJSON();
-  }
 
   static async balanceTransferRepo(data: IBalanceTransferRequestBody) {
     console.log('balanceTransferRepo function was called');
@@ -45,6 +22,9 @@ export default class NFTRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const chainDecimals = api.registry.chainDecimals[0];
       const value = data.amount * 10 ** chainDecimals;
@@ -60,7 +40,7 @@ export default class NFTRepository {
     } catch (error: any) {
       return Error(error || 'balanceTransferRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -70,12 +50,15 @@ export default class NFTRepository {
     var api: any;
     try {
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       await api.rpc.author.submitExtrinsic(nftData.sign);
       return;
     } catch (error: any) {
       return Error(error || 'signedTransactionRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }

@@ -6,7 +6,7 @@ export default class TXRepository {
         try {
             const contract = new ContractPromise(api, abi, contractAddress);
             return contract;
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             return undefined;
         }
@@ -49,7 +49,7 @@ export default class TXRepository {
                         });
                     }
                 });
-            } catch (error) {
+            } catch (error: any) {
                 reject(error);
             }
         });
@@ -102,7 +102,7 @@ export default class TXRepository {
                         });
                     } 
                 });
-            } catch (error) {
+            } catch (error: any) {
                 reject(error);
             }
         });
@@ -140,7 +140,7 @@ export default class TXRepository {
                         });
                     }
                 });
-            } catch (error) {
+            } catch (error: any) {
                 reject(error);
             }
         });
@@ -164,7 +164,7 @@ export default class TXRepository {
                 ...params
             );
             return output?.toJSON();
-        } catch (error) {
+        } catch (error: any) {
             return error;
         }
     }
@@ -198,7 +198,7 @@ export default class TXRepository {
                 } else {
                     error = result.asErr.toString()
                 }
-                throw String(error);
+                return Error(error);
             }
             if (result.isOk) {
                 const flags = result.asOk.flags.toHuman()
@@ -206,7 +206,7 @@ export default class TXRepository {
                     const type = contract.abi.messages[5].returnType
                     const typeName = type?.lookupName || type?.type || ''
                     const error = contract.abi.registry.createTypeUnsafe(typeName, [result.asOk.data]).toHuman()
-                    throw String(error ? (error as any).Err : 'Revert')
+                    return Error(error ? (error as any).Err : 'Revert')
                 }
             }
             return { 
@@ -215,8 +215,8 @@ export default class TXRepository {
                 result: result.toHuman(),
                 output: output.toHuman(),
             };
-        } catch (error) {
-            throw String(error);
+        } catch (error: any) {
+            return Error(error);
         }
     }
 
@@ -240,8 +240,8 @@ export default class TXRepository {
                 ...params
             )
             return tx;
-        } catch (error) {
-            throw String(error);
+        } catch (error: any) {
+            return Error(error);
         }
     }
 
@@ -258,8 +258,8 @@ export default class TXRepository {
             )
             const result = await api.rpc.system.dryRun(tx);
             return result;
-        } catch (error) {
-            throw String(error);
+        } catch (error: any) {
+            return Error(error);
         }
     }
 
@@ -270,8 +270,8 @@ export default class TXRepository {
         try {
             const result = await api.rpc.system.dryRun(rawExtrinsic);
             return result;
-        } catch (error) {
-            throw String(error);
+        } catch (error: any) {
+            return Error(error);
         }
     }
 }

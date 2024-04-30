@@ -13,7 +13,7 @@ export const getSmartContractController = async (
         WebsocketHeader.handleWebsocket(request);
         const result = await ChainRepository.getSmartContractRepo();
         return await reply.send(result);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -25,7 +25,7 @@ export const getABIController = async (
     try {
         const result = await ChainRepository.getABIRepo();
         return await reply.send(result);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -47,7 +47,7 @@ export const getTokensController = async (
         tokens.push(native);
         tokens.push(astro);
         return await reply.send(tokens);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };

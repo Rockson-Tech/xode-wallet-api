@@ -20,6 +20,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -47,7 +50,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'decreaseEnergyRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -60,6 +63,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -86,7 +92,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'resetEnergyRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -99,6 +105,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -126,7 +135,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'setEnergyRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -139,6 +148,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.energyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -160,7 +172,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'setEnergyImageRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -173,6 +185,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
         return Error('Contract not initialized.');
@@ -206,7 +221,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'getEnergyRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -219,6 +234,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       if (!contract) {
         return Error('Contract not initialized.');
@@ -237,7 +255,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'getEnergyImageRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }
@@ -250,6 +268,9 @@ export default class EnergyRepository {
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contract = await TXRepository.getContract(api, abi, instance.energyAddress);
       const now = new Date();
       const time = date.format(now, 'YYYY/MM/DD');
@@ -273,7 +294,7 @@ export default class EnergyRepository {
     } catch (error: any) {
       return Error(error || 'checkTimeRepo error occurred.');
     } finally {
-      if (api) {
+      if (!(api instanceof Error)) {
         await api.disconnect();
       }
     }

@@ -26,7 +26,7 @@ export default class InitializeAPI {
               provider: wsProvider
             });
             return api;
-        } catch (error) {
+        } catch (error: any) {
             return Error('apiInitialization error occurred: ' + error);
         }
     }

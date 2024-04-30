@@ -18,6 +18,9 @@ export default class QueryRepository {
         try {
           await cryptoWaitReady();
           api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           if (contract !== undefined) {
             const nft = await TXRepository.sendContractQuery(
@@ -32,9 +35,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
         } finally {
-          if (api) {
-        await api.disconnect();
-      }
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
     
@@ -45,6 +48,9 @@ export default class QueryRepository {
         try {
           await cryptoWaitReady();
           api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const player_wallet_address = wallet_address;
       
@@ -100,9 +106,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getUserNFTRepo error occurred.');
         } finally {
-          if (api) {
-        await api.disconnect();
-      }
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
     
@@ -113,6 +119,9 @@ export default class QueryRepository {
         try {
           await cryptoWaitReady();
           api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const tokenId = token_id;
       
@@ -151,9 +160,9 @@ export default class QueryRepository {
         } catch (error: any) {
           return Error(error || 'getNFTByIdRepo error occurred.');
         } finally {
-          if (api) {
-        await api.disconnect();
-      }
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
 }

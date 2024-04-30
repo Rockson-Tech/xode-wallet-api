@@ -82,6 +82,9 @@ export default class TransactionRepository {
         try {
           await cryptoWaitReady();
           api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -116,8 +119,8 @@ export default class TransactionRepository {
           return Error(error || 'updateNFTRepo error occurred.');
         } finally {
           if (api) {
-        await api.disconnect();
-      }
+            await api.disconnect();
+          }
         }
     }
 
@@ -130,6 +133,9 @@ export default class TransactionRepository {
         try {
           await cryptoWaitReady();
           api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contractAddress = instance.contractAddress;
           const contract = await TXRepository.getContract(api, abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -152,8 +158,8 @@ export default class TransactionRepository {
           return Error(error || 'transferNFTFromWithoutApprovalRepo error occurred.');
         } finally {
           if (api) {
-        await api.disconnect();
-      }
+            await api.disconnect();
+          }
         }
     }
 }

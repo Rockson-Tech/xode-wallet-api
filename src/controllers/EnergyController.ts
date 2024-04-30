@@ -32,12 +32,12 @@ export const decreaseEnergyController = async (
         } else {
           reject(new Error("Failed to decrease energy."));
         }
-      } catch (error) {
+      } catch (error: any) {
         reject(error);
       }
     });
     return reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -75,7 +75,7 @@ export const getEnergyController = async (
       });
       return await reply.send(result);
     }
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -93,7 +93,7 @@ export const setEnergyImageController = async (
     
     const result = await EnergyRepository.setEnergyImageRepo(requestBody.image_url);
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
@@ -106,7 +106,7 @@ export const getEnergyImageController = async (
     WebsocketHeader.handleWebsocket(request);
     const result = await EnergyRepository.getEnergyImageRepo();
     return await reply.send(result);
-  } catch (error) {
+  } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
   }
 };
