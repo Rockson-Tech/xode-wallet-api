@@ -63,6 +63,9 @@ export const getTokensController = async (
             XGameRepository.balanceOfRepo(requestParams.wallet_address),
             XaverRepository.balanceOfRepo(requestParams.wallet_address)
         ])
+        if (native instanceof Error) {
+            throw native;
+        }
         // return await reply.send(tokens);
         return await reply.send(native);
     } catch (error: any) {
