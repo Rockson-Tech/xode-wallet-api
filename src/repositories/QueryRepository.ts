@@ -1,43 +1,15 @@
 import TXRepository from '../modules/TXRepository';
-import abi from '../smartcontracts/astrochibbismartcontract.json';
-import { ApiPromise } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import abi from '../smartcontracts/astro_nft.json';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import NFT from '../models/nft';
 
 export default class QueryRepository {
-    wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-    api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: this.wsProvider 
-    });
-    keypair = process.env.KEYPAIR;
-    contractAddress = process.env.CONTRACT_ADDRESS as string;
-    contractOwner = process.env.CONTRACT_OWNER as string;
+    contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
     ownerSeed = process.env.OWNER_SEED as string;
-    walletAddress: any;
-    injector: any;
-    filePath = '../';
     // These are required and changeable
     REFTIME: number = 300000000000;
     PROOFSIZE: number = 500000;
-    
-    static async apiInitialization() {
-      try {
-        const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-        const api = ApiPromise.create({ 
-          types: { 
-          AccountInfo: 'AccountInfoWithDualRefCount'
-          }, 
-          provider: wsProvider 
-        });
-        return await api;
-      } catch (error) {
-        throw String(error || 'apiInitialization error occurred.');
-      }
-    }
 
     static async getMarketplaceNftsByCollectionIdRepo(data: any) {
         console.log('getMarketplaceNftsByCollectionIdRepo function was called');
@@ -45,7 +17,10 @@ export default class QueryRepository {
         var api: any;
         try {
           await cryptoWaitReady();
-          api = await this.apiInitialization();
+          api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           if (contract !== undefined) {
             const nft = await TXRepository.sendContractQuery(
@@ -60,7 +35,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
     
@@ -70,7 +47,10 @@ export default class QueryRepository {
         var api: any;
         try {
           await cryptoWaitReady();
-          api = await this.apiInitialization();
+          api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const player_wallet_address = wallet_address;
       
@@ -126,7 +106,9 @@ export default class QueryRepository {
         } catch (error: any) {
           throw Error(error || 'getUserNFTRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
     
@@ -136,7 +118,10 @@ export default class QueryRepository {
         var api: any;
         try {
           await cryptoWaitReady();
-          api = await this.apiInitialization();
+          api = await InitializeAPI.apiInitialization();
+          if (api instanceof Error) {
+            return api;
+          }
           const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
           const tokenId = token_id;
       
@@ -175,7 +160,9 @@ export default class QueryRepository {
         } catch (error: any) {
           return Error(error || 'getNFTByIdRepo error occurred.');
         } finally {
-          await api.disconnect();
+          if (!(api instanceof Error)) {
+            await api.disconnect();
+          }
         }
     }
 }

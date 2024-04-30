@@ -1,28 +1,13 @@
-import { ApiPromise } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
 import { formatBalance } from '@polkadot/util';
+import InitializeAPI from '../modules/InitializeAPI';
 
 export default class ChainRepository {
-  wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-  api = ApiPromise.create({ 
-      types: { 
-      AccountInfo: 'AccountInfoWithDualRefCount'
-      }, 
-      provider: this.wsProvider 
-  });
-  keypair = process.env.KEYPAIR;
-  economyAddress = process.env.ECONOMY_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
-  ownerSeed = process.env.OWNER_SEED as string;
-  assetId = process.env.ASSET_ID as string;
-  astroPrice = '1';
-  contractAddress = process.env.CONTRACT_ADDRESS as string;
-  abi = require("./../astrochibbismartcontract.json");
+  abi = require("./../smartcontracts/astro_nft.json");
 
   static async getSmartContractRepo() {
     console.log('getSmartContractRepo function was called');
     try {
-      const smartcontract: string = process.env.CONTRACT_ADDRESS as string;
+      const smartcontract: string = process.env.ASTROCHIBBI_ADDRESS as string;
       return { smartcontract };
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
@@ -42,9 +27,12 @@ export default class ChainRepository {
 
   static async getTokensRepo(wallet_address: string) {
     console.log('getSmartContractRepo function was called');
+    var api: any;
     try {
-      const instance = new ChainRepository();
-      const api = await instance.api;
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const balance = await api.derive.balances.all(wallet_address);
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
@@ -54,7 +42,6 @@ export default class ChainRepository {
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
       const balances = free.split(',').join('');
       const parsedBalance = parseFloat(balances);
-      await api.disconnect();
       return {
         balance: parsedBalance,
         price: '0',
@@ -62,6 +49,10 @@ export default class ChainRepository {
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 }

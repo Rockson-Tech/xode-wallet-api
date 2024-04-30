@@ -5,12 +5,14 @@ import {
     ITransferNFTFromWOARequestBody,
 } from '../schemas/NFTSchemas';
 import TransactionRepository from '../repositories/TransactionRepository';
+import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const updateNFTHandler = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const requestParams = request.params as IUpdateOneNFTRequestParams;
         if (!requestParams || !requestParams.id) {
             return reply.badRequest("Missing 'id' parameter in URI 'nfts/:id'");
@@ -39,9 +41,11 @@ export const updateNFTHandler = async (
         requestBody,
         requestParams.id,
         );
-
+        if (targetNFT instanceof Error) {
+            throw targetNFT;
+        }
         return reply.send(targetNFT);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
@@ -51,6 +55,7 @@ export const transferFromWOANFTHandler = async (
     reply: FastifyReply
 ) => {
     try {
+        WebsocketHeader.handleWebsocket(request);
         const requestBody = request.body as ITransferNFTFromWOARequestBody;
         if (
             !requestBody || 
@@ -61,8 +66,11 @@ export const transferFromWOANFTHandler = async (
             return reply.badRequest("Missing or invalid request body.");
         }
         const result = await TransactionRepository.transferFromWithoutApprovalRepo(requestBody);
+        if (result instanceof Error) {
+            throw result;
+        }
         return reply.send(result);
-    } catch (error) {
+    } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };

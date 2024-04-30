@@ -1,6 +1,6 @@
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
@@ -11,30 +11,12 @@ import {
 import abi from '../smartcontracts/astroeconomy.json';
 
 export default class AstroRepository {
-  keypair = process.env.KEYPAIR;
-  economyAddress = process.env.ECONOMY_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
+  economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
   ownerSeed = process.env.OWNER_SEED as string;
-  assetId = process.env.ASSET_ID as string;
   astroPrice = '0';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
-
-  static async apiInitialization() {
-    try {
-      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-      const api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: wsProvider 
-      });
-      return await api;
-    } catch (error) {
-      throw String(error || 'apiInitialization error occurred.');
-    }
-  }
 
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
@@ -42,7 +24,10 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -68,7 +53,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'mintRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -78,7 +65,10 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -103,7 +93,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -113,7 +105,10 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -138,7 +133,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'burnRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -148,7 +145,10 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const price = instance.astroPrice;
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
@@ -173,7 +173,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
   
@@ -183,7 +185,10 @@ export default class AstroRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       if (!contract) {
@@ -205,7 +210,9 @@ export default class AstroRepository {
     } catch (error: any) {
       return Error(error || 'totalSupplyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 }

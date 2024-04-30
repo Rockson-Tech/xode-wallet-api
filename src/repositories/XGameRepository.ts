@@ -1,6 +1,6 @@
 import TXRepository from '../modules/TXRepository';
-import { ApiPromise, Keyring } from '@polkadot/api';
-import { WsProvider } from '@polkadot/rpc-provider';
+import InitializeAPI from '../modules/InitializeAPI';
+import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
@@ -10,29 +10,11 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class XGameRepository {
-  keypair = process.env.KEYPAIR;
-  economyAddress = process.env.ECONOMY_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.XGM_ASSET_ID as string ?? '1';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
-
-  static async apiInitialization() {
-    try {
-      const wsProvider = new WsProvider(process.env.WS_PROVIDER_ENDPOINT as string);
-      const api = ApiPromise.create({ 
-        types: { 
-        AccountInfo: 'AccountInfoWithDualRefCount'
-        }, 
-        provider: wsProvider 
-      });
-      return await api;
-    } catch (error) {
-      throw String(error || 'apiInitialization error occurred.');
-    }
-  }
 
   static async mintRepo(data: IMintRequestBody) {
     console.log('mintRepo function was called');
@@ -40,14 +22,17 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -63,10 +48,12 @@ export default class XGameRepository {
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'mintRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'mintRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -76,14 +63,17 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -94,15 +84,17 @@ export default class XGameRepository {
         owner,
         [
           instance.assetId,
-          data.to, 
+          data.target, 
           value
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'transferRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'transferRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -112,14 +104,17 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
       if (metadata.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
@@ -135,10 +130,12 @@ export default class XGameRepository {
         ]
       );
       return result;
-    } catch (error) {
-      throw String(error || 'burnRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'burnRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 
@@ -148,7 +145,10 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const [accountInfo, metadata] = await Promise.all([
         api.query.assets.account(instance.assetId, account),
         api.query.assets.metadata(instance.assetId)
@@ -177,10 +177,12 @@ export default class XGameRepository {
           symbol: 'XGM'
         };
       };
-    } catch (error) {
-      throw String(error || 'balanceOfRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'balanceOfRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
   
@@ -190,21 +192,26 @@ export default class XGameRepository {
     var api: any;
     try {
       await cryptoWaitReady();
-      api = await this.apiInitialization();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
       const assetInfo: any = await api.query.assets.asset(
         instance.assetId
       );
       if (assetInfo.toHuman() == null) {
-        throw String('No corresponding asset found.');
+        return Error('No corresponding asset found.');
       }
       const { supply } = assetInfo.toJSON();
       return {
         total_supply: supply
       };
-    } catch (error) {
-      throw String(error || 'totalSupplyRepo error occurred.');
+    } catch (error: any) {
+      return Error(error || 'totalSupplyRepo error occurred.');
     } finally {
-      await api.disconnect();
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
     }
   }
 }
