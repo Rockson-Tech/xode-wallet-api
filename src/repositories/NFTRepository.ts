@@ -1,6 +1,6 @@
 import {
   IBalanceTransferRequestBody,
-  ISignedTransactionRequestBody,
+  ISubmitExtrinsicRequestBody,
 } from '../schemas/NFTSchemas';
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
@@ -46,17 +46,20 @@ export default class NFTRepository {
     }
   }
 
-  static signedTransactionRepo = async (nftData: ISignedTransactionRequestBody) => {
+  static submitExtrinsicRepo = async (data: ISubmitExtrinsicRequestBody) => {
     var api: any;
     try {
       api = await InitializeAPI.apiInitialization();
-      if (api instanceof Error) {
-        return api;
-      }
-      await api.rpc.author.submitExtrinsic(nftData.sign);
-      return;
+      const executeExtrinsic = api.tx(data.extrinsic);
+      const result = await TXRepository.executeExtrinsic(
+        api,
+        executeExtrinsic,
+        data.extrinsic
+      );
+      return result;
     } catch (error: any) {
-      return Error(error || 'signedTransactionRepo error occurred.');
+      console.log('submitExtrinsicRepo: ', error);
+      return Error(error);
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

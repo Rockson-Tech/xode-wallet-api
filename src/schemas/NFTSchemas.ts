@@ -1,7 +1,8 @@
 // Create
 // ----- SIGNED MINT -----
-export interface ISignedTransactionRequestBody {
-  sign: string;
+
+export interface ISubmitExtrinsicRequestBody {
+  extrinsic: string;
 }
 
 export interface ISignedTransactionResponseSuccessful {
