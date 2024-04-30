@@ -55,11 +55,11 @@ export default class QueryRepository {
           const player_wallet_address = wallet_address;
       
           if (!contract) {
-            throw new Error('Contract not initialized.');
+            return Error('Contract not initialized.');
           }
       
           if (!contract.query || !contract.query.getUserNft) {
-            throw new Error('getUserNft function not found in the contract ABI.');
+            return Error('getUserNft function not found in the contract ABI.');
           }
       
           const result = await TXRepository.sendContractQuery(
@@ -75,14 +75,14 @@ export default class QueryRepository {
             "2": "Epic",
             "3": "Legend"
           };
+          const response: NFT[] = result.ok;
+          const data = response.map((item) => {
+            return {
+              ...item,
+              rarity: rarityMapping[item.stats.rarity]
+            };
+          });
           if (result !== undefined) {
-            const response: NFT[] = result.ok;
-            const data = response.map(async (item) => {
-              return {
-                ...item,
-                rarity: rarityMapping[item.stats.rarity]
-              };
-            });
             return data;
           } else {
             return [{
@@ -104,7 +104,8 @@ export default class QueryRepository {
             }]
           }
         } catch (error: any) {
-          throw Error(error || 'getUserNFTRepo error occurred.');
+          console.log('getUserNFTRepo: ', error);
+          return Error(error);
         } finally {
           if (!(api instanceof Error)) {
             await api.disconnect();

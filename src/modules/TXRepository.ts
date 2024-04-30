@@ -166,7 +166,7 @@ export default class TXRepository {
                 ...params
             );
             return output?.toJSON();
-        } catch (error: any) {
+        } catch (error) {
             return error;
         }
     }
