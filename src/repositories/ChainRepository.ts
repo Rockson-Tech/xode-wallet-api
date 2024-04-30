@@ -2,7 +2,7 @@ import { formatBalance } from '@polkadot/util';
 import InitializeAPI from '../modules/InitializeAPI';
 
 export default class ChainRepository {
-  abi = require("./../smartcontracts/astrochibbismartcontract.json");
+  abi = require("./../smartcontracts/astro_nft.json");
 
   static async getSmartContractRepo() {
     console.log('getSmartContractRepo function was called');
