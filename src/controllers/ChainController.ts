@@ -14,7 +14,7 @@ export const getSmartContractController = async (
         const result = await ChainRepository.getSmartContractRepo();
         if (result instanceof Error) {
             throw result;
-          }
+        }
         return await reply.send(result);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -29,7 +29,7 @@ export const getABIController = async (
         const result = await ChainRepository.getABIRepo();
         if (result instanceof Error) {
             throw result;
-          }
+        }
         return await reply.send(result);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -52,7 +52,7 @@ export const getTokensController = async (
         const astro = await AstroRepository.balanceOfRepo(requestParams.wallet_address);
         if (native instanceof Error || astro instanceof Error) {
             throw native || astro;
-          }
+        }
         tokens.push(native);
         tokens.push(astro);
         return await reply.send(tokens);
