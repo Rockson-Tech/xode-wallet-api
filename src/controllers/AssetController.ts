@@ -6,6 +6,8 @@ import {
   IBalanceOfRequestParams
 } from '../schemas/AssetSchemas';
 import AzkalRepository from '../repositories/AzkalRepository';
+import XaverRepository from '../repositories/XaverRepository';
+import XGameRepository from '../repositories/XGameRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const mintController = async (
@@ -22,8 +24,14 @@ export const mintController = async (
     ) {
       return reply.badRequest("Invalid request body. Required fields: 'to', 'value'");
     }
-
-    const result = await AzkalRepository.mintRepo(requestBody);
+    let result;
+    if (request.url.includes("azk")) {
+      result = await AzkalRepository.mintRepo(requestBody);
+    } else if (request.url.includes("xav")) {
+      result = await XaverRepository.mintRepo(requestBody);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.mintRepo(requestBody);
+    }
     if (result instanceof Error) {
       throw result;
     }
@@ -47,8 +55,14 @@ export const transferController = async (
     ) {
       return reply.badRequest("Invalid request body.");
     }
-    
-    const result = await AzkalRepository.transferRepo(requestBody);
+    let result;
+    if (request.url.includes("azk")) {
+      result = await AzkalRepository.transferRepo(requestBody);
+    } else if (request.url.includes("xav")) {
+      result = await XaverRepository.transferRepo(requestBody);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.transferRepo(requestBody);
+    }
     if (result instanceof Error) {
       throw result;
     }
@@ -72,8 +86,14 @@ export const burnController = async (
     ) {
       return reply.badRequest("Invalid request body. Required fields: 'to', 'value'");
     }
-    
-    const result = await AzkalRepository.burnRepo(requestBody);
+    let result;
+    if (request.url.includes("azk")) {
+      result = await AzkalRepository.burnRepo(requestBody);
+    } else if (request.url.includes("xav")) {
+      result = await XaverRepository.burnRepo(requestBody);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.burnRepo(requestBody);
+    }
     if (result instanceof Error) {
       throw result;
     }
