@@ -17,30 +17,30 @@ export const burn = {
     },
     // Response schema for success
     response: {
-        200: {
-            description: 'Success response after burning token.',
-            type: 'object',
-            properties: {
-                status: { type: 'number' },
-                message: { type: 'string' },
-                data: {
-                    type: 'object',
-                    properties: {
-                        isFinalized: { type: 'boolean' },
-                        blockHash: { type: 'string' },
-                    },
-                },
-            },
-        },
-        // Response schema for unspecified code
-        default: {
-            description: 'Default response',
-            type: 'object',
-            properties: {
-                status: { type: 'number' },
-                message: { type: 'string' },
-            },
-        }
+        // 200: {
+        //     description: 'Success response after burning token.',
+        //     type: 'object',
+        //     properties: {
+        //         status: { type: 'number' },
+        //         message: { type: 'string' },
+        //         data: {
+        //             type: 'object',
+        //             properties: {
+        //                 isFinalized: { type: 'boolean' },
+        //                 blockHash: { type: 'string' },
+        //             },
+        //         },
+        //     },
+        // },
+        // // Response schema for unspecified code
+        // default: {
+        //     description: 'Default response',
+        //     type: 'object',
+        //     properties: {
+        //         status: { type: 'number' },
+        //         message: { type: 'string' },
+        //     },
+        // }
     },
     security: [
         {
