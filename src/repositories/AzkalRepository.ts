@@ -1,6 +1,5 @@
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
-import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
@@ -13,7 +12,8 @@ export default class AzkalRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
-  assetId = process.env.AZK_ASSET_ID as string ?? '3';
+  // assetId = process.env.AZK_ASSET_ID as string ?? '3';
+  assetId = '1'
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -28,8 +28,6 @@ export default class AzkalRepository {
       if (api instanceof Error) {
         return api;
       }
-      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-      const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
@@ -38,11 +36,10 @@ export default class AzkalRepository {
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
-      const result = await TXRepository.sendApiTransaction(
+      const result = TXRepository.constructChainExtrinsicTransaction(
         api,
         'assets',
         'mint',
-        owner,
         [
           instance.assetId,
           data.to, 
@@ -69,8 +66,6 @@ export default class AzkalRepository {
       if (api instanceof Error) {
         return api;
       }
-      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-      const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
@@ -79,11 +74,10 @@ export default class AzkalRepository {
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
-      const result = await TXRepository.sendApiTransaction(
+      const result = await TXRepository.constructChainExtrinsicTransaction(
         api,
         'assets',
         'transfer',
-        owner,
         [
           instance.assetId,
           data.target, 
@@ -110,8 +104,6 @@ export default class AzkalRepository {
       if (api instanceof Error) {
         return api;
       }
-      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-      const owner = keyring.addFromUri(instance.ownerSeed);
       const metadata: any = await api.query.assets.metadata(
         instance.assetId,
       );
@@ -120,11 +112,10 @@ export default class AzkalRepository {
       }
       const { decimals } = metadata.toJSON();
       const value = data.value * 10 ** decimals;
-      const result = await TXRepository.sendApiTransaction(
+      const result = await TXRepository.constructChainExtrinsicTransaction(
         api,
         'assets',
         'burn',
-        owner,
         [
           instance.assetId,
           data.from, 
