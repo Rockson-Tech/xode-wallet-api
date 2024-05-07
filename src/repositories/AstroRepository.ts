@@ -76,7 +76,7 @@ export default class AstroRepository {
       if (contract === undefined) {
         throw Error('transferRepo contract undefined.');
       }
-      const result = await TXRepository.sendContractTransaction(
+      const dryrunResult = await TXRepository.dryRunContract(
         api,
         contract,
         'transfer',
@@ -88,6 +88,19 @@ export default class AstroRepository {
         instance,
         storageDepositLimit
       );
+      if (dryrunResult instanceof Error) {
+        return dryrunResult;
+      }
+      const result = TXRepository.constructContractExtrinsicTransaction(
+        api,
+        contract,
+        'transfer',
+        [ 
+          data.to,
+          data.value
+        ],
+        dryrunResult,
+      )
       return result;
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');

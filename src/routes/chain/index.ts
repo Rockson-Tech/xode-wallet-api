@@ -3,16 +3,22 @@ import {
   getSmartContractController,
   getTokensController,
   tokenListController,
+  submitExtrinsicController,
+  tokenTransferController,
 } from '../../controllers/ChainController';
 import {
   IGetSmartContractRequestBody,
   ITokensRequestParams,
   ITokenListRequestParams,
+  ITransferTokenRequestBody,
+  ISubmitExtrinsicRequestBody,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
 import { token_list } from '../../swaggerschema/chain/token_list';
 import { user_token_balance } from '../../swaggerschema/chain/user_token_balance';
+import { token_transfer } from '../../swaggerschema/chain/token_transfer';
+import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
@@ -39,6 +45,24 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     '/tokenlist',
     { schema: token_list },
     tokenListController
+  );
+
+  fastify.post<{
+    Querystring: ITransferTokenRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/transfer',
+    { schema: token_transfer },
+    tokenTransferController
+  );
+
+  fastify.post<{
+    Querystring: ISubmitExtrinsicRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/extrinsic/submit',
+    { schema: submit_extrinsic },
+    submitExtrinsicController
   );
 };
 

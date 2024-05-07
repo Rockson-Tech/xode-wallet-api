@@ -1,19 +1,3 @@
-// Create
-// ----- SIGNED MINT -----
-
-export interface ISubmitExtrinsicRequestBody {
-  extrinsic: string;
-}
-
-export interface ISignedTransactionResponseSuccessful {
-  status: number;
-  message: string;
-}
-export interface ISignedTransactionResponseError {
-  status: number;
-  message: string;
-}
-
 // ----- GET USER NFT -----
 export interface IGetUserNFTRequestParams {
   wallet_address: string;

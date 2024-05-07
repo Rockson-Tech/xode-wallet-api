@@ -9,7 +9,6 @@ import {
   updateNFTHandler,
 } from '../../controllers/TransactionController';
 import {
-  submitExtrinsicController,
   balanceTransferHandler,
 } from '../../controllers/NFTController';
 import {
@@ -31,9 +30,6 @@ import {
   IGetNFTDashboardRequestParams,
   IGetNFTDashboardResponseError,
   IGetNFTDashboardResponseSuccessful,
-  ISubmitExtrinsicRequestBody,
-  ISignedTransactionResponseError,
-  ISignedTransactionResponseSuccessful,
 } from '../../schemas/NFTSchemas';
 import { 
   schemaBalanceTransfer,
@@ -98,11 +94,6 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
     { schema: dashboardNft },
     dashboardNftHandler
   );
-
-  fastify.post<{
-    Querystring: ISubmitExtrinsicRequestBody;
-    Reply: ISignedTransactionResponseSuccessful | ISignedTransactionResponseError;
-  }>('/submit/extrinsic', submitExtrinsicController);
 };
 
 export default nfts;

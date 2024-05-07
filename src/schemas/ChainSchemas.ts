@@ -14,6 +14,17 @@ export interface ITokenListRequestParams {
   // 
 }
 
+// ----- TRANSFER TOKEN -----
+export interface ITransferTokenRequestBody {
+  to: string,
+  value: string
+}
+
+// ----- SUBMIT EXTRINSIC -----
+export interface ISubmitExtrinsicRequestBody {
+  extrinsic: string;
+}
+
 // ----- SUCCESS & ERROR RESPONSE -----
 export interface IResponseSuccessful {
   status: number;
