@@ -78,7 +78,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
         '\n' + 'AstroChibbi: ' + process.env.TESTNET_ASTROCHIBBI_ADDRESS as string +
         '\n' + 'Energy Capsule: ' + process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string +
         '\n' + 'Astro Economy: ' + process.env.TESTNET_ASTRO_ECONOMY_ADDRESS as string,
-        version: '0.0.5'
+        version: '0.0.6'
       },
       externalDocs: {
         url: 'https://docs.google.com/document/d/1n-jd_0BXUCzcrUL9df1_uUgGUpkkDADLMRw_fgx41ko',
@@ -94,6 +94,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
         { name: 'Azkal Meme Token', description: 'AZK related end-points to transact and query on chain' },
         { name: 'Xaver Utility Token', description: 'XAV related end-points to transact and query on chain' },
         { name: 'XGame Utility Token', description: 'XGM related end-points to transact and query on chain' },
+        { name: 'Chain', description: 'Blockchain related end-points to query on functions' },
       ],
       definitions: {},
       securityDefinitions: {
