@@ -1,8 +1,8 @@
 // Schema for getting user NFTs
 export const token_transfer = {
-    summary: 'Get list of tokens integrated to XODE',
+    summary: 'Transfer an XON token that returns TX',
     tags: ['Chain'],
-    description: 'Schema for getting list of tokens. ',
+    description: 'Schema for transferring token and return tx to be signed. ',
     // Request body schema
     body: {
         type: 'object',

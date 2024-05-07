@@ -1,8 +1,8 @@
 // Schema for updating NFT
 export const submit_extrinsic = {
-    summary: 'Update an NFT',
-    tags: ['AstroChibbi NFT'],
-    description: 'Schema for updating NFT.',
+    summary: 'Submit any signed TX hash to chain',
+    tags: ['Chain'],
+    description: 'Schema for submitting TX to chain.',
     // Request body schema
     body: {
         type: 'object',
@@ -16,7 +16,7 @@ export const submit_extrinsic = {
     // Response schema for success
     response: {
         200: {
-            description: 'Successful response after updating NFT',
+            description: 'Successful response after submitting TX',
             type: 'object',
             properties: {
                 status: { type: 'number' },
