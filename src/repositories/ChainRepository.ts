@@ -41,7 +41,7 @@ export default class ChainRepository {
       formatBalance.getDefaults();
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
       const balances = free.split(',').join('');
-      const parsedBalance = parseFloat(balances);
+      const parsedBalance = parseFloat(balances).toFixed(4);
       return {
         balance: parsedBalance,
         // price: '0',

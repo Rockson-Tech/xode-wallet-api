@@ -165,7 +165,7 @@ export default class AstroRepository {
         instance
       );
       return { 
-        balance: energy.ok,
+        balance: parseFloat(energy.ok).toFixed(4),
         // price: price,
         symbol: 'ASTRO'
       };

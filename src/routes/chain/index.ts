@@ -12,6 +12,7 @@ import {
   IResponseError,
 } from '../../schemas/ChainSchemas';
 import { token_list } from '../../swaggerschema/chain/token_list';
+import { user_token_balance } from '../../swaggerschema/chain/user_token_balance';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
@@ -27,6 +28,7 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/gettokens/:wallet_address',
+    { schema: user_token_balance },
     getTokensController
   );
 
