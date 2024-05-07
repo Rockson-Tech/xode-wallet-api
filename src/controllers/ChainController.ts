@@ -1,8 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { 
+    ITokensRequestParams,
+    ITransferTokenRequestBody,
+    ISubmitExtrinsicRequestBody,
+} from '../schemas/ChainSchemas';
+import WebsocketHeader from '../modules/WebsocketHeader';
 import ChainRepository from '../repositories/ChainRepository';
 import AstroRepository from '../repositories/AstroRepository';
-import { ITokensRequestParams } from '../schemas/ChainSchemas';
-import WebsocketHeader from '../modules/WebsocketHeader';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XGameRepository from '../repositories/XGameRepository';
 import XaverRepository from '../repositories/XaverRepository';
@@ -49,13 +53,6 @@ export const getTokensController = async (
         if (!requestParams || !requestParams.wallet_address) {
             return reply.badRequest("Invalid request parameter. Required fields: 'wallet_address'");
         }
-        
-        // let tokens = [];
-        // const native = await ChainRepository.getTokensRepo(requestParams.wallet_address);
-        // const astro = await AstroRepository.balanceOfRepo(requestParams.wallet_address);
-        // if (native instanceof Error || astro instanceof Error) {
-        //     throw native || astro;
-        // }
         const native = await Promise.all([
             ChainRepository.getTokensRepo(requestParams.wallet_address),
             AstroRepository.balanceOfRepo(requestParams.wallet_address),
@@ -63,9 +60,74 @@ export const getTokensController = async (
             XGameRepository.balanceOfRepo(requestParams.wallet_address),
             XaverRepository.balanceOfRepo(requestParams.wallet_address)
         ])
-        // return await reply.send(tokens);
+        if (native instanceof Error) {
+            throw native;
+        }
         return await reply.send(native);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
+
+export const tokenListController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const tokens = await Promise.all([
+            ChainRepository.getTokenMetadataRepo(),
+            AstroRepository.getContractMetadataRepo(),
+            AzkalRepository.getAssetMetadataRepo(),
+            XGameRepository.getAssetMetadataRepo(),
+            XaverRepository.getAssetMetadataRepo(),
+        ])
+        if (tokens instanceof Error) {
+            throw tokens;
+        }
+        return reply.send(tokens);
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const tokenTransferController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const requestBody = request.body as ITransferTokenRequestBody;
+        console.log(requestBody);
+        if (!requestBody || 
+            !requestBody.to ||
+            requestBody.value == null
+        ) {
+            return reply.badRequest("Invalid request body. Required fields: 'to', 'value");
+        }
+        const result = await ChainRepository.tokenTransferRepo(requestBody);
+        if (result instanceof Error) {
+            throw result;
+        }
+        return reply.send(result);
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const submitExtrinsicController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    const requestBody = request.body as ISubmitExtrinsicRequestBody;
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const result = await ChainRepository.submitExtrinsicRepo(requestBody);
+      if (result instanceof Error) {
+        throw result;
+      }
+      return reply.send(result);
+    } catch (error) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+  };

@@ -1,6 +1,5 @@
 import {
   IBalanceTransferRequestBody,
-  ISubmitExtrinsicRequestBody,
 } from '../schemas/NFTSchemas';
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
@@ -45,25 +44,4 @@ export default class NFTRepository {
       }
     }
   }
-
-  static submitExtrinsicRepo = async (data: ISubmitExtrinsicRequestBody) => {
-    var api: any;
-    try {
-      api = await InitializeAPI.apiInitialization();
-      const executeExtrinsic = api.tx(data.extrinsic);
-      const result = await TXRepository.executeExtrinsic(
-        api,
-        executeExtrinsic,
-        data.extrinsic
-      );
-      return result;
-    } catch (error: any) {
-      console.log('submitExtrinsicRepo: ', error);
-      return Error(error);
-    } finally {
-      if (!(api instanceof Error)) {
-        await api.disconnect();
-      }
-    }
-  };
 }

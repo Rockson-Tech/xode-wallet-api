@@ -21,7 +21,11 @@ export default class TXRepository {
     ) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const dryRunResult = await this.dryRunTransaction(api, pallet, method, owner, params);
+                const txResult = this.constructChainExtrinsicTransaction(api, pallet, method, params);
+                if (txResult instanceof Error) {
+                    reject(txResult);
+                }
+                const dryRunResult = await this.dryRunTransaction(api, txResult);
                 if (!dryRunResult) {
                     reject(dryRunResult);
                 }
@@ -247,17 +251,27 @@ export default class TXRepository {
         }
     }
 
-    static dryRunTransaction = async (
+    static constructChainExtrinsicTransaction = (
         api: any,
         pallet: any,
         method: any,
-        owner: any,
         params: any,
     ) => {
         try {
-            const tx =  api.tx[pallet][method](
-            ...params
+            const tx = api.tx[pallet][method](
+                ...params
             )
+            return tx;
+        } catch (error: any) {
+            return Error(error);
+        }
+    }
+
+    static dryRunTransaction = async (
+        api: any,
+        tx: any,
+    ) => {
+        try {
             const result = await api.rpc.system.dryRun(tx);
             return result;
         } catch (error: any) {

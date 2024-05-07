@@ -2,20 +2,28 @@ import { FastifyPluginAsync } from 'fastify';
 import {
   getSmartContractController,
   getTokensController,
+  tokenListController,
+  submitExtrinsicController,
+  tokenTransferController,
 } from '../../controllers/ChainController';
 import {
   IGetSmartContractRequestBody,
-  IGetSmartContractResponseSuccessful,
-  IGetSmartContractResponseError,
   ITokensRequestParams,
-  ITokensResponseError,
-  ITokensResponseSuccessful,
+  ITokenListRequestParams,
+  ITransferTokenRequestBody,
+  ISubmitExtrinsicRequestBody,
+  IResponseSuccessful,
+  IResponseError,
 } from '../../schemas/ChainSchemas';
+import { token_list } from '../../swaggerschema/chain/token_list';
+import { user_token_balance } from '../../swaggerschema/chain/user_token_balance';
+import { token_transfer } from '../../swaggerschema/chain/token_transfer';
+import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
     Querystring: IGetSmartContractRequestBody;
-    Reply: IGetSmartContractResponseSuccessful | IGetSmartContractResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/smartcontract',
     getSmartContractController
@@ -23,10 +31,38 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: ITokensRequestParams;
-    Reply: ITokensResponseSuccessful | ITokensResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/gettokens/:wallet_address',
+    { schema: user_token_balance },
     getTokensController
+  );
+
+  fastify.get<{
+    Querystring: ITokenListRequestParams;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/tokenlist',
+    { schema: token_list },
+    tokenListController
+  );
+
+  fastify.post<{
+    Querystring: ITransferTokenRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/transfer',
+    { schema: token_transfer },
+    tokenTransferController
+  );
+
+  fastify.post<{
+    Querystring: ISubmitExtrinsicRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/extrinsic/submit',
+    { schema: submit_extrinsic },
+    submitExtrinsicController
   );
 };
 
