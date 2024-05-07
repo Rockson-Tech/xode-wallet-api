@@ -44,11 +44,37 @@ export default class ChainRepository {
       const parsedBalance = parseFloat(balances);
       return {
         balance: parsedBalance,
-        price: '0',
+        // price: '0',
         symbol: tokens[0]
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async getTokenMetadataRepo() {
+    console.log('getTokenMetadataRepo function was called');
+    var api: any;
+    try {
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const [ chain, properties ] = await Promise.all([
+        api.rpc.system.chain(),
+        api.rpc.system.properties(),
+      ]);
+      return {
+        name: chain.toHuman(),
+        symbol: properties.toHuman().tokenSymbol[0],
+        decimals: properties.toHuman().tokenDecimals[0]
+      }
+    } catch (error: any) {
+      return Error(error || 'getTokenMetadataRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

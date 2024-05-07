@@ -8,7 +8,7 @@ import {
   IBurnRequestBody,
 } from '../schemas/AstroSchemas';
 // import { formatBalance } from '@polkadot/util';
-import abi from '../smartcontracts/astroeconomy.json';
+import abi from '../smartcontracts/astro_economy.json';
 
 export default class AstroRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
@@ -42,7 +42,6 @@ export default class AstroRepository {
         'mint',
         owner,
         [
-          owner.address,
           data.to,
           data.value
         ],
@@ -149,7 +148,7 @@ export default class AstroRepository {
       if (api instanceof Error) {
         return api;
       }
-      const price = instance.astroPrice;
+      // const price = instance.astroPrice;
       const contractAddress = instance.economyAddress;
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       if (!contract) {
@@ -167,7 +166,7 @@ export default class AstroRepository {
       );
       return { 
         balance: energy.ok,
-        price: price,
+        // price: price,
         symbol: 'ASTRO'
       };
     } catch (error: any) {
@@ -209,6 +208,44 @@ export default class AstroRepository {
       };
     } catch (error: any) {
       return Error(error || 'totalSupplyRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async getContractMetadataRepo() {
+    console.log('getTokenMetadataRepo function was called');
+    const instance = new AstroRepository();
+    var api: any;
+    try {
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const contractAddress = instance.economyAddress;
+      const contract = await TXRepository.getContract(api, abi, contractAddress);
+      if (!contract) {
+        return Error('Contract not initialized.');
+      }
+      if (!contract.query || !contract.query.metadata) {
+        return Error('`metadata` function not found in the contract ABI.');
+      }
+      const metadata = await TXRepository.sendContractQuery(
+        api,
+        contract,
+        'metadata',
+        [],
+        instance
+      );
+      return {
+        name: metadata.ok.tokenName,
+        symbol: metadata.ok.tokenSymbol,
+        decimals: metadata.ok.decimals.toString(),
+      }
+    } catch (error: any) {
+      return Error(error || 'getTokenMetadataRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

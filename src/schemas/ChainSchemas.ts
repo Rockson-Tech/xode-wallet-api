@@ -3,23 +3,23 @@
 export interface IGetSmartContractRequestBody {
   // wallet_address: string;
 }
-export interface IGetSmartContractResponseSuccessful {
-  status: number;
-  message: string;
-}
-export interface IGetSmartContractResponseError {
-  status: number;
-  message: string;
-}
 
+// ----- GET USER TOKENS -----
 export interface ITokensRequestParams {
   wallet_address: string;
 }
-export interface ITokensResponseSuccessful {
+
+// ----- GET TOKENS LIST -----
+export interface ITokenListRequestParams {
+  // 
+}
+
+// ----- SUCCESS & ERROR RESPONSE -----
+export interface IResponseSuccessful {
   status: number;
   message: string;
 }
-export interface ITokensResponseError {
+export interface IResponseError {
   status: number;
   message: string;
 }

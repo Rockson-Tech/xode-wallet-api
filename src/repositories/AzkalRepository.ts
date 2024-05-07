@@ -12,8 +12,7 @@ export default class AzkalRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
   contractOwner = process.env.CONTRACT_OWNER as string;
   ownerSeed = process.env.OWNER_SEED as string;
-  // assetId = process.env.AZK_ASSET_ID as string ?? '3';
-  assetId = '1'
+  assetId = process.env.AZK_ASSET_ID as string ?? '3';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -201,6 +200,30 @@ export default class AzkalRepository {
       };
     } catch (error: any) {
       return Error(error || 'totalSupplyRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async getAssetMetadataRepo() {
+    console.log('getAssetMetadataRepo function was called');
+    const instance = new AzkalRepository();
+    var api: any;
+    try {
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const metadata = await api.query.assets.metadata(instance.assetId);
+      return {
+        name: metadata.toHuman().name,
+        symbol: metadata.toHuman().symbol,
+        decimals: metadata.toHuman().decimals
+      }
+    } catch (error: any) {
+      return Error(error || 'getAssetMetadataRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

@@ -204,4 +204,28 @@ export default class XaverRepository {
       }
     }
   }
+
+  static async getAssetMetadataRepo() {
+    console.log('getAssetMetadataRepo function was called');
+    const instance = new XaverRepository();
+    var api: any;
+    try {
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const metadata = await api.query.assets.metadata(instance.assetId);
+      return {
+        name: metadata.toHuman().name,
+        symbol: metadata.toHuman().symbol,
+        decimals: metadata.toHuman().decimals
+      }
+    } catch (error: any) {
+      return Error(error || 'getAssetMetadataRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
 }
