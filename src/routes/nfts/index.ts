@@ -7,7 +7,7 @@ import {
 } from '../../controllers/QueryController';
 import {
   updateNFTHandler,
-} from '../../controllers/TransactionController';
+} from '../../controllers/AstroChibbiController';
 import {
   balanceTransferHandler,
 } from '../../controllers/NFTController';

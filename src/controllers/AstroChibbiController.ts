@@ -4,7 +4,7 @@ import {
     IUpdateNFTRequestBody,
     ITransferNFTFromWOARequestBody,
 } from '../schemas/NFTSchemas';
-import TransactionRepository from '../repositories/TransactionRepository';
+import AstroChibbiRepository from '../repositories/AstroChibbiRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const updateNFTHandler = async (
@@ -37,7 +37,7 @@ export const updateNFTHandler = async (
             return reply.badRequest("Invalid request body.");
         }
         
-        const targetNFT = await TransactionRepository.updateNFTRepo(
+        const targetNFT = await AstroChibbiRepository.updateNFTRepo(
         requestBody,
         requestParams.id,
         );
@@ -65,7 +65,7 @@ export const transferFromWOANFTHandler = async (
             ) {
             return reply.badRequest("Missing or invalid request body.");
         }
-        const result = await TransactionRepository.transferFromWithoutApprovalRepo(requestBody);
+        const result = await AstroChibbiRepository.transferFromWithoutApprovalRepo(requestBody);
         if (result instanceof Error) {
             throw result;
         }

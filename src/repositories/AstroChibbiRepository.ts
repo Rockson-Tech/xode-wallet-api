@@ -8,7 +8,7 @@ import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import abi from '../smartcontracts/astrochibbi/astro_nft.json';
 
-export default class TransactionRepository {
+export default class AstroChibbiRepository {
     contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
     ownerSeed = process.env.OWNER_SEED as string;
     // These are required and changeable
@@ -77,7 +77,7 @@ export default class TransactionRepository {
 
     static async updateNFTRepo(nftData: IUpdateNFTRequestBody, id: number) {
         console.log('updateNFTRepo function was called');
-        const instance = new TransactionRepository();
+        const instance = new AstroChibbiRepository();
         var api: any;
         try {
           await cryptoWaitReady();
@@ -128,7 +128,7 @@ export default class TransactionRepository {
         data: ITransferNFTFromWOARequestBody
       ) => {
         console.log('transferNFTFromWithoutApprovalRepo function was called');
-        const instance = new TransactionRepository();
+        const instance = new AstroChibbiRepository();
         var api: any;
         try {
           await cryptoWaitReady();
