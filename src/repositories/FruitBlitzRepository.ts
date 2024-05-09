@@ -6,7 +6,7 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../smartcontracts/astrochibbi/astro_nft.json';
+import abi from '../smartcontracts/fruitblitz/fruitblitz_nft.json';
 
 export default class FruitBlitzRepository {
     contractAddress = process.env.FRUITBLITZ_ADDRESS as string;

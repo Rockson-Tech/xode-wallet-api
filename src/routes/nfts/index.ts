@@ -17,9 +17,7 @@ import {
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/NFTSchemas';
-import { 
-  schemaBalanceTransfer,
-} from '../../swaggerschema/astro_nft/balance_transfer';
+import { schemaBalanceTransfer } from '../../swaggerschema/astro_nft/balance_transfer';
 import { schemaGetNftById } from '../../swaggerschema/astro_nft/byIdNft';
 import { schemaPutUpdate } from '../../swaggerschema/astro_nft/update';
 import { schemaGetUserNft } from '../../swaggerschema/astro_nft/userNft';
