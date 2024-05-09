@@ -21,6 +21,7 @@ export const user_token_balance = {
                 properties: {
                     balance: { type: 'number' },
                     symbol: { type: 'string' },
+                    name: {type: 'string' },
                 },
             },
         },

@@ -180,7 +180,8 @@ export default class AstroRepository {
       return { 
         balance: parseFloat(energy.ok).toFixed(4),
         // price: price,
-        symbol: 'ASTRO'
+        symbol: 'ASTRO',
+        name: 'Astrochibbi'
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');

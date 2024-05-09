@@ -144,7 +144,7 @@ export default class XGameRepository {
       ]);
       if (accountInfo.toHuman() != null) {
         const { balance } = accountInfo.toHuman();
-        const { decimals, symbol } = metadata.toHuman();
+        const { decimals, symbol, name } = metadata.toHuman();
         const bigintbalance = BigInt(balance.replace(/,/g, ''));
         formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
         formatBalance.getDefaults();
@@ -158,12 +158,14 @@ export default class XGameRepository {
         const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
         return {
           balance: balances,
-          symbol: symbol
+          symbol: symbol,
+          name: name
         };
       } else {
         return {
           balance: '0.0000',
-          symbol: 'XGM'
+          symbol: 'XGM',
+          name: 'XGame'
         };
       };
     } catch (error: any) {

@@ -144,7 +144,7 @@ export default class XaverRepository {
       ]);
       if (accountInfo.toHuman() != null) {
         const { balance } = accountInfo.toHuman();
-        const { decimals, symbol } = metadata.toHuman();
+        const { decimals, symbol, name } = metadata.toHuman();
         const bigintbalance = BigInt(balance.replace(/,/g, ''));
         formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
         formatBalance.getDefaults();
@@ -158,12 +158,14 @@ export default class XaverRepository {
         const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
         return {
           balance: balances,
-          symbol: symbol
+          symbol: symbol,
+          name: name
         };
       } else {
         return {
           balance: '0.0000',
-          symbol: 'XAV'
+          symbol: 'XAV',
+          name: 'Xaver'
         };
       };
     } catch (error: any) {

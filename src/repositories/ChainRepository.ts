@@ -44,6 +44,7 @@ export default class ChainRepository {
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
       const tokens = api.registry.chainTokens;
+      const token_name = 'Xode';
       formatBalance.setDefaults({ decimals: chainDecimals, unit: tokens[0] });
       formatBalance.getDefaults();
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
@@ -52,7 +53,8 @@ export default class ChainRepository {
       return {
         balance: parsedBalance,
         // price: '0',
-        symbol: tokens[0]
+        symbol: tokens[0],
+        name: token_name
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
