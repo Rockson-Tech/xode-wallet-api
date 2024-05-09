@@ -1,12 +1,14 @@
 import {
     ITransferNFTFromWOARequestBody,
     IUpdateNFTRequestBody,
+    IBalanceTransferRequestBody
 } from '../schemas/NFTSchemas';
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import abi from '../smartcontracts/astrochibbi/astro_nft.json';
+import NFT from '../models/nft';
 
 export default class AstroChibbiRepository {
     contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
@@ -161,5 +163,192 @@ export default class AstroChibbiRepository {
             await api.disconnect();
           }
         }
+    }
+
+    static async getMarketplaceNftsByCollectionIdRepo(data: any) {
+      console.log('getMarketplaceNftsByCollectionIdRepo function was called');
+      const instance = new AstroChibbiRepository();
+      var api: any;
+      try {
+        await cryptoWaitReady();
+        api = await InitializeAPI.apiInitialization();
+    if (api instanceof Error) {
+      return api;
+    }
+        const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
+        if (contract !== undefined) {
+          const nft = await TXRepository.sendContractQuery(
+            api,
+            contract,
+            'getMarketplaceNftsByCollection',
+            [data.collection_id],
+            instance
+          );
+          return nft.ok;
+        }
+      } catch (error: any) {
+        throw Error(error || 'getMarketplaceNftsByCollectionIdRepo error occurred.');
+      } finally {
+        if (!(api instanceof Error)) {
+          await api.disconnect();
+        }
+      }
+  }
+  
+  static async getUserNFTRepo(wallet_address: string) {
+      console.log('getUserNFTRepo function was called');
+      const instance = new AstroChibbiRepository();
+      var api: any;
+      try {
+        await cryptoWaitReady();
+        api = await InitializeAPI.apiInitialization();
+        if (api instanceof Error) {
+          return api;
+        }
+        const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
+        const player_wallet_address = wallet_address;
+    
+        if (!contract) {
+          return Error('Contract not initialized.');
+        }
+    
+        if (!contract.query || !contract.query.getUserNft) {
+          return Error('getUserNft function not found in the contract ABI.');
+        }
+    
+        const result = await TXRepository.sendContractQuery(
+          api,
+          contract,
+          'getUserNft',
+          [player_wallet_address],
+          instance
+        );
+        const rarityMapping: Record<string, string> = {
+          "0": "Normal",
+          "1": "Rare",
+          "2": "Epic",
+          "3": "Legend"
+        };
+        const response: NFT[] = result.ok;
+        const data = response.map((item) => {
+          return {
+            ...item,
+            rarity: rarityMapping[item.stats.rarity]
+          };
+        });
+        if (result !== undefined) {
+          return data;
+        } else {
+          return [{
+            nftTokenId: undefined,
+            imagePath: "",
+            name: "",
+            description: "",
+            price: undefined,
+            isForSale: undefined,
+            isEquipped: undefined,
+            category: "",
+            collection: "",
+            astroType: "",
+            rarity: "",
+            network: "",
+            blockchainId: "",
+            collectionId: "",
+            tokenOwner: ""
+          }]
+        }
+      } catch (error: any) {
+        console.log('getUserNFTRepo: ', error);
+        return Error(error);
+      } finally {
+        if (!(api instanceof Error)) {
+          await api.disconnect();
+        }
+      }
+  }
+  
+  static async getNFTByIdRepo(token_id: string) {
+      console.log('getNFTByIdRepo function was called');
+      const instance = new AstroChibbiRepository();
+      var api: any;
+      try {
+        await cryptoWaitReady();
+        api = await InitializeAPI.apiInitialization();
+        if (api instanceof Error) {
+          return api;
+        }
+        const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
+        const tokenId = token_id;
+    
+        if (!contract) {
+          return Error('Contract not initialized.');
+        }
+    
+        if (!contract.query || !contract.query.getNftById) {
+          return Error('getNFTById function not found in the contract ABI.');
+        }
+    
+        const result = await TXRepository.sendContractQuery(
+          api,
+          contract,
+          'getNftById',
+          [tokenId],
+          instance
+        );
+        const response = result.ok;
+        const rarityMapping: Record<string, string> = {
+          "0": "Normal",
+          "1": "Rare",
+          "2": "Epic",
+          "3": "Legend"
+        };
+        const data = {
+          ...response,
+          rarity: rarityMapping[response.stats.rarity],
+          stats: undefined
+        }
+        if (result.ok != null) {
+          return data;
+        } else {
+          return Error('Token Not Found');
+        }
+      } catch (error: any) {
+        return Error(error || 'getNFTByIdRepo error occurred.');
+      } finally {
+        if (!(api instanceof Error)) {
+          await api.disconnect();
+        }
+      }
+    }
+
+    static async balanceTransferRepo(data: IBalanceTransferRequestBody) {
+      console.log('balanceTransferRepo function was called');
+      const instance = new AstroChibbiRepository();
+      var api: any;
+      try {
+        await cryptoWaitReady();
+        api = await InitializeAPI.apiInitialization();
+        if (api instanceof Error) {
+          return api;
+        }
+        const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+        const chainDecimals = api.registry.chainDecimals[0];
+        const value = data.amount * 10 ** chainDecimals;
+        const owner = keyring.addFromUri(instance.ownerSeed);
+        const result = await TXRepository.sendApiTransaction(
+          api,
+          'balances',
+          'forceTransfer',
+          owner,
+          [data.from, value]
+        );
+        return result;
+      } catch (error: any) {
+        return Error(error || 'balanceTransferRepo error occurred.');
+      } finally {
+        if (!(api instanceof Error)) {
+          await api.disconnect();
+        }
+      }
     }
 }

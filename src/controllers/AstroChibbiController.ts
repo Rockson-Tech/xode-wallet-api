@@ -3,9 +3,14 @@ import {
     IUpdateOneNFTRequestParams,
     IUpdateNFTRequestBody,
     ITransferNFTFromWOARequestBody,
+    IBalanceTransferRequestBody,
+    IGetMarketplaceNFTRequestBody,
+    IGetNFTByIdRequestParams,
+    IGetUserNFTRequestParams
 } from '../schemas/NFTSchemas';
 import AstroChibbiRepository from '../repositories/AstroChibbiRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
+import EnergyRepository from '../repositories/EnergyRepository';
 
 export const updateNFTHandler = async (
     request: FastifyRequest,
@@ -74,3 +79,163 @@ export const transferFromWOANFTHandler = async (
         reply.status(500).send('Internal Server Error: ' + error);
     }
 };
+
+export const getMarketplaceNftsHandler = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const requestBody = request.body as IGetMarketplaceNFTRequestBody;
+        if (!requestBody || !requestBody.collection_id) {
+            return reply.badRequest("Invalid request body. Required fields: 'collection_id'.");
+        }
+        const nfts = await AstroChibbiRepository.getMarketplaceNftsByCollectionIdRepo(requestBody);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
+        return reply.send(nfts);
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const getUserNftsHandler = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const requestParams = request.params as IGetUserNFTRequestParams;
+        if (!requestParams || !requestParams.wallet_address) {
+            return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
+        }
+        const nfts: any = await AstroChibbiRepository.getUserNFTRepo(requestParams.wallet_address);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
+        return reply.send(nfts);
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const getNftByIdHandler = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const requestParams = request.params as IGetNFTByIdRequestParams;
+        if (!requestParams || !requestParams.token_id) {
+            return reply.badRequest("Invalid request parameters. Required parameter: token ID");
+        }
+        const nfts = await AstroChibbiRepository.getNFTByIdRepo(requestParams.token_id);
+        if (nfts instanceof Error) {
+            throw nfts;
+        }
+        if (nfts == null) {
+            return reply.send([]);
+        } else {
+            return reply.send(nfts);
+        }
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const dashboardNftHandler = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+) => {
+    try {
+        WebsocketHeader.handleWebsocket(request);
+        const requestParams = request.params as IGetUserNFTRequestParams;
+        if (!requestParams || !requestParams.wallet_address) {
+            return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
+        }
+        const [nfts, energy] = await Promise.all([
+            AstroChibbiRepository.getUserNFTRepo(requestParams.wallet_address),
+            EnergyRepository.getEnergyRepo(requestParams.wallet_address),
+        ]);
+        if (nfts instanceof Error || energy instanceof Error) {
+            throw nfts || energy;
+        }
+        let result: any;
+        if (nfts.length > 0 && nfts.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
+            if (energy == null) {
+                const data = {
+                    owner: requestParams.wallet_address,
+                    energy: 20,
+                };
+                const setEnergyResult = await EnergyRepository.setEnergyRepo(data);
+                if (setEnergyResult instanceof Error) {
+                    throw setEnergyResult;
+                }
+                result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+                if (result instanceof Error) {
+                    throw result;
+                }
+            } else {
+                result = energy;
+                if (result.resetable) {
+                    const resetEnergyResult = await EnergyRepository.resetEnergyRepo(requestParams.wallet_address);
+                    if (resetEnergyResult instanceof Error) {
+                        throw resetEnergyResult;
+                    }
+                    result = await EnergyRepository.getEnergyRepo(requestParams.wallet_address);
+                    if (result instanceof Error) {
+                        throw result;
+                    }
+                }
+            }
+            if (result != null) {
+                const nftEntry: any = {
+                    nftTokenId: 0,
+                    imagePath: result.imagePath || '',
+                    name: 'Energy Capsule',
+                    description: 'An energy capsule that can be used to use characters.',
+                    price: result.currentEnergy,
+                    isForSale: false,
+                    isEquipped: true,
+                    category: 'Capsule',
+                    collection: 'AstroChibbi Conquest: Galactic Delight',
+                    astroType: 'None',
+                    rarity: 'None',
+                    network: 'None',
+                    blockchainId: 'None',
+                    collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
+                    tokenOwner: requestParams.wallet_address,
+                };
+                nfts.push(nftEntry);
+            }
+        }
+        return reply.send(nfts);
+    } catch (error: any) {
+        reply.status(500).send('Internal Server Error: ' + error);
+    } 
+};
+
+export const balanceTransferHandler = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const requestBody = request.body as IBalanceTransferRequestBody;
+      if (!requestBody || 
+        !requestBody.from ||
+        !requestBody.amount
+      ) {
+        return reply.badRequest("Missing or invalid request body.");
+      }
+      const result = await AstroChibbiRepository.balanceTransferRepo(requestBody);
+      if (result instanceof Error) {
+        throw result;
+      }
+      return reply.send(result);
+    } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+  };
+  

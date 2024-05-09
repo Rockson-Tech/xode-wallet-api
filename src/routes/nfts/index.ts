@@ -1,35 +1,21 @@
 import { FastifyPluginAsync } from 'fastify';
 import {
+  updateNFTHandler,
   getMarketplaceNftsHandler,
   getUserNftsHandler,
   getNftByIdHandler,
   dashboardNftHandler,
-} from '../../controllers/QueryController';
-import {
-  updateNFTHandler,
+  balanceTransferHandler
 } from '../../controllers/AstroChibbiController';
 import {
-  balanceTransferHandler,
-} from '../../controllers/NFTController';
-import {
   IUpdateNFTRequestBody,
-  IUpdateNFTResponseSuccessful,
-  IUpdateNFTResponseError,
   IGetMarketplaceNFTRequestBody,
-  IGetMarketplaceNFTResponseSuccessful,
-  IGetMarketplaceNFTResponseError,
   IGetUserNFTRequestParams,
-  IGetUserNFTResponseSuccessful,
-  IGetUserNFTResponseError,
   IGetNFTByIdRequestParams,
-  IGetNFTByIdResponseSuccessful,
-  IGetNFTByIdResponseError,
   IBalanceTransferRequestBody,
-  IBalanceTransferResponseError,
-  IBalanceTransferResponseSuccessful,
   IGetNFTDashboardRequestParams,
-  IGetNFTDashboardResponseError,
-  IGetNFTDashboardResponseSuccessful,
+  IResponseSuccessful,
+  IResponseError,
 } from '../../schemas/NFTSchemas';
 import { 
   schemaBalanceTransfer,
@@ -43,7 +29,7 @@ import { schemaPostMarketplace } from '../../swaggerschema/astro_nft/marketplace
 const nfts: FastifyPluginAsync = async (fastify, opts) => {
   fastify.put<{
     Querystring: IUpdateNFTRequestBody;
-    Reply: IUpdateNFTResponseSuccessful | IUpdateNFTResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/:id',
     { schema: schemaPutUpdate },
@@ -52,7 +38,7 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: IGetMarketplaceNFTRequestBody;
-    Reply: IGetMarketplaceNFTResponseSuccessful | IGetMarketplaceNFTResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/marketplace',
     { schema: schemaPostMarketplace },
@@ -61,7 +47,7 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: IGetUserNFTRequestParams;
-    Reply: IGetUserNFTResponseSuccessful | IGetUserNFTResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/:wallet_address',
     { schema: schemaGetUserNft },
@@ -70,7 +56,7 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: IGetNFTByIdRequestParams;
-    Reply: IGetNFTByIdResponseSuccessful | IGetNFTByIdResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/id/:token_id',
     { schema: schemaGetNftById },
@@ -79,7 +65,7 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: IBalanceTransferRequestBody;
-    Reply: IBalanceTransferResponseSuccessful | IBalanceTransferResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/balancetransfer',
     { schema: schemaBalanceTransfer },
@@ -88,7 +74,7 @@ const nfts: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: IGetNFTDashboardRequestParams;
-    Reply: IGetNFTDashboardResponseSuccessful | IGetNFTDashboardResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/nftdashboard/:wallet_address',
     { schema: dashboardNft },
