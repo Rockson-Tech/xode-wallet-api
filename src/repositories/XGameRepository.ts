@@ -9,7 +9,6 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class XGameRepository {
-  ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.XGM_ASSET_ID as string ?? '1';
   // These are required and changeable
   REFTIME: number = 300000000000;

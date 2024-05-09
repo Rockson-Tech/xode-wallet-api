@@ -8,8 +8,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import '@polkadot/api-augment';
 
 export default class NFTRepository {
-  contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
-  ownerSeed = process.env.OWNER_SEED as string;
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;

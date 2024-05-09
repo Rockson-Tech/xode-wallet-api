@@ -12,7 +12,7 @@ import abi from '../smartcontracts/astrochibbi/astro_economy.json';
 
 export default class AstroRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
-  ownerSeed = process.env.OWNER_SEED as string;
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   astroPrice = '0';
   // These are required and changeable
   REFTIME: number = 300000000000;

@@ -10,7 +10,7 @@ import abi from '../smartcontracts/astrochibbi/astro_nft.json';
 
 export default class AstroChibbiRepository {
     contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;
-    ownerSeed = process.env.OWNER_SEED as string;
+    ownerSeed = process.env.FRUITBLITZ_SEED as string;
     // These are required and changeable
     REFTIME: number = 300000000000;
     PROOFSIZE: number = 500000;

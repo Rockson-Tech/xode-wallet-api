@@ -9,7 +9,6 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class XaverRepository {
-  ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.XAV_ASSET_ID as string ?? '2';
   // These are required and changeable
   REFTIME: number = 300000000000;

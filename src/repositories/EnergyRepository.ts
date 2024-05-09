@@ -7,7 +7,7 @@ import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
 export default class EnergyRepository {
   energyAddress = process.env.ASTRO_ENERGY_ADDRESS as string;
-  ownerSeed = process.env.OWNER_SEED as string;
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;

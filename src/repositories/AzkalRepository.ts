@@ -9,9 +9,6 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class AzkalRepository {
-  economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
-  contractOwner = process.env.CONTRACT_OWNER as string;
-  ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.AZK_ASSET_ID as string ?? '3';
   // These are required and changeable
   REFTIME: number = 300000000000;
