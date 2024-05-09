@@ -6,7 +6,7 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../smartcontracts/astro_nft.json';
+import abi from '../smartcontracts/astrochibbi/astro_nft.json';
 
 export default class TransactionRepository {
     contractAddress = process.env.ASTROCHIBBI_ADDRESS as string;

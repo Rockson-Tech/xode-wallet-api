@@ -2,7 +2,7 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../smartcontracts/astro_energy.json';
+import abi from '../smartcontracts/astrochibbi/astro_energy.json';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
 export default class EnergyRepository {

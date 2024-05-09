@@ -1,6 +1,6 @@
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
-import abi from '../smartcontracts/astro_nft.json';
+import abi from '../smartcontracts/astrochibbi/astro_nft.json';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import NFT from '../models/nft';
 

@@ -8,7 +8,7 @@ import {
   IBurnRequestBody,
 } from '../schemas/AstroSchemas';
 // import { formatBalance } from '@polkadot/util';
-import abi from '../smartcontracts/astro_economy.json';
+import abi from '../smartcontracts/astrochibbi/astro_economy.json';
 
 export default class AstroRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
