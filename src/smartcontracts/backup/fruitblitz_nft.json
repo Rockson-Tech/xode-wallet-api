@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x2b3e5e96c85ef15d74cdaf88911281dbee6ee2fc501157c422866fe2a126a5cf",
+    "hash": "0xdd719c10d8a73530eafca89441cff9fafaefebd3ad65c6a28193bfd462e1d700",
     "language": "ink! 4.3.0",
     "compiler": "rustc 1.69.0",
     "build_info": {
@@ -30,7 +30,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           }
         ],
@@ -56,7 +56,7 @@
         "displayName": [
           "AccountId"
         ],
-        "type": 5
+        "type": 1
       },
       "balance": {
         "displayName": [
@@ -68,7 +68,7 @@
         "displayName": [
           "BlockNumber"
         ],
-        "type": 1
+        "type": 0
       },
       "chainExtension": {
         "displayName": [
@@ -101,7 +101,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 16
+              "type": 8
             }
           },
           {
@@ -112,7 +112,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 16
+              "type": 8
             }
           },
           {
@@ -123,7 +123,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -142,7 +142,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -153,7 +153,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -164,7 +164,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -183,7 +183,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -194,7 +194,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -205,7 +205,7 @@
               "displayName": [
                 "bool"
               ],
-              "type": 4
+              "type": 7
             }
           }
         ],
@@ -214,6 +214,75 @@
           "The operator can manage all NFTs of the owner."
         ],
         "label": "ApprovalForAll"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "id",
+            "type": {
+              "displayName": [
+                "TokenId"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "operator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "docs": [],
+        "label": "TokenUpdated"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "from",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "to",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 8
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "label": "id",
+            "type": {
+              "displayName": [
+                "TokenId"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [
+          "Event emitted when a token transfer occurs."
+        ],
+        "label": "BuyNFT"
       }
     ],
     "lang_error": {
@@ -232,7 +301,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           }
         ],
@@ -262,7 +331,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -290,7 +359,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -318,7 +387,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -327,7 +396,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           }
         ],
@@ -355,7 +424,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -364,7 +433,7 @@
               "displayName": [
                 "bool"
               ],
-              "type": 4
+              "type": 7
             }
           }
         ],
@@ -392,7 +461,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -401,7 +470,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -429,7 +498,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -438,7 +507,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -466,7 +535,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -475,7 +544,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -484,7 +553,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -507,12 +576,58 @@
       {
         "args": [
           {
+            "label": "from",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "label": "to",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "label": "id",
+            "type": {
+              "displayName": [
+                "TokenId"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Transfer approved or owned token without approval."
+        ],
+        "label": "transfer_from_without_approval",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 25
+        },
+        "selector": "0x151184b7"
+      },
+      {
+        "args": [
+          {
             "label": "player",
             "type": {
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -521,7 +636,7 @@
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -565,7 +680,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -574,7 +689,7 @@
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -618,7 +733,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -627,7 +742,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -636,7 +751,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -645,7 +760,7 @@
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           },
           {
@@ -654,7 +769,7 @@
               "displayName": [
                 "bool"
               ],
-              "type": 4
+              "type": 7
             }
           },
           {
@@ -663,16 +778,7 @@
               "displayName": [
                 "bool"
               ],
-              "type": 4
-            }
-          },
-          {
-            "label": "is_drop",
-            "type": {
-              "displayName": [
-                "bool"
-              ],
-              "type": 4
+              "type": 7
             }
           },
           {
@@ -681,7 +787,43 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
+            }
+          },
+          {
+            "label": "collection",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "astro_type",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "stats",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "network",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
             }
           },
           {
@@ -690,16 +832,16 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
-            "label": "token_owner",
+            "label": "collection_id",
             "type": {
               "displayName": [
-                "Option"
+                "AccountId"
               ],
-              "type": 16
+              "type": 1
             }
           }
         ],
@@ -727,7 +869,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -755,7 +897,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -794,12 +936,31 @@
         "selector": "0x36562924"
       },
       {
-        "args": [],
+        "args": [
+          {
+            "label": "wallet_address",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "label": "category",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          }
+        ],
         "default": false,
         "docs": [
-          " Retieve Marketplace NFTs by collection"
+          " Retieve NFTs by wallet address, collection id, and category"
         ],
-        "label": "get_marketplace_nfts",
+        "label": "get_user_nft_by_category",
         "mutates": false,
         "payable": false,
         "returnType": {
@@ -809,7 +970,35 @@
           ],
           "type": 34
         },
-        "selector": "0x3f616bda"
+        "selector": "0xc71d66c1"
+      },
+      {
+        "args": [
+          {
+            "label": "collection_id",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retieve Marketplace NFTs by collection"
+        ],
+        "label": "get_marketplace_nfts_by_collection",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 34
+        },
+        "selector": "0x4532e963"
       },
       {
         "args": [
@@ -819,16 +1008,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
-            }
-          },
-          {
-            "label": "category",
-            "type": {
-              "displayName": [
-                "String"
-              ],
-              "type": 3
+              "type": 1
             }
           }
         ],
@@ -851,12 +1031,157 @@
       {
         "args": [
           {
+            "label": "player",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "label": "image_path",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "name",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "description",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "price",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "label": "is_for_sale",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 7
+            }
+          },
+          {
+            "label": "is_equipped",
+            "type": {
+              "displayName": [
+                "bool"
+              ],
+              "type": 7
+            }
+          },
+          {
+            "label": "category",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "collection",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "astro_type",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "stats",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "network",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "blockchain_id",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "collection_id",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          " Retieve NFTs by price"
+        ],
+        "label": "get_creator_nft_first_login",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 25
+        },
+        "selector": "0x7a11fe48"
+      },
+      {
+        "args": [
+          {
             "label": "token_id",
             "type": {
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           }
         ],
@@ -884,7 +1209,7 @@
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           },
           {
@@ -893,7 +1218,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -902,7 +1227,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -911,7 +1236,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           },
           {
@@ -920,7 +1245,7 @@
               "displayName": [
                 "u32"
               ],
-              "type": 1
+              "type": 0
             }
           },
           {
@@ -929,7 +1254,7 @@
               "displayName": [
                 "bool"
               ],
-              "type": 4
+              "type": 7
             }
           },
           {
@@ -938,7 +1263,34 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
+            }
+          },
+          {
+            "label": "new_collection",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "new_astro_type",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
+            }
+          },
+          {
+            "label": "new_specs",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 6
             }
           },
           {
@@ -947,7 +1299,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 3
+              "type": 6
             }
           }
         ],
@@ -975,7 +1327,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -984,7 +1336,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -993,7 +1345,7 @@
               "displayName": [
                 "TokenId"
               ],
-              "type": 1
+              "type": 0
             }
           },
           {
@@ -1030,7 +1382,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 5
+              "type": 1
             }
           },
           {
@@ -1099,6 +1451,43 @@
                   "ty": 0
                 }
               },
+              "name": "last_token_id"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x2a7bbb98",
+                      "ty": 1
+                    }
+                  },
+                  "root_key": "0x2a7bbb98"
+                }
+              },
+              "name": "token_owner"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x85a7e26c",
+                      "ty": 1
+                    }
+                  },
+                  "root_key": "0x85a7e26c"
+                }
+              },
+              "name": "collection_owner"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
               "name": "nfttoken_owner"
             },
             {
@@ -1107,7 +1496,7 @@
                   "layout": {
                     "leaf": {
                       "key": "0x6b762e35",
-                      "ty": 5
+                      "ty": 1
                     }
                   },
                   "root_key": "0x6b762e35"
@@ -1117,9 +1506,23 @@
             },
             {
               "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x9cd70e6a",
+                      "ty": 0
+                    }
+                  },
+                  "root_key": "0x9cd70e6a"
+                }
+              },
+              "name": "owned_tokens_count"
+            },
+            {
+              "layout": {
                 "leaf": {
                   "key": "0x00000000",
-                  "ty": 10
+                  "ty": 11
                 }
               },
               "name": "leaderboard"
@@ -1128,7 +1531,7 @@
               "layout": {
                 "leaf": {
                   "key": "0x00000000",
-                  "ty": 14
+                  "ty": 15
                 }
               },
               "name": "season_rewards"
@@ -1151,7 +1554,7 @@
               "layout": {
                 "leaf": {
                   "key": "0x00000000",
-                  "ty": 5
+                  "ty": 1
                 }
               },
               "name": "contract_owner"
@@ -1168,132 +1571,18 @@
       "id": 0,
       "type": {
         "def": {
-          "composite": {
-            "fields": [
-              {
-                "type": 8
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "K",
-            "type": 1
-          },
-          {
-            "name": "V",
-            "type": 2
-          }
-        ],
-        "path": [
-          "BTreeMap"
-        ]
+          "primitive": "u32"
+        }
       }
     },
     {
       "id": 1,
       "type": {
         "def": {
-          "primitive": "u32"
-        }
-      }
-    },
-    {
-      "id": 2,
-      "type": {
-        "def": {
           "composite": {
             "fields": [
               {
-                "name": "nft_token_id",
-                "type": 1,
-                "typeName": "TokenId"
-              },
-              {
-                "name": "image_path",
-                "type": 3,
-                "typeName": "String"
-              },
-              {
-                "name": "name",
-                "type": 3,
-                "typeName": "String"
-              },
-              {
-                "name": "description",
-                "type": 3,
-                "typeName": "String"
-              },
-              {
-                "name": "price",
-                "type": 1,
-                "typeName": "u32"
-              },
-              {
-                "name": "is_for_sale",
-                "type": 4,
-                "typeName": "bool"
-              },
-              {
-                "name": "is_equipped",
-                "type": 4,
-                "typeName": "bool"
-              },
-              {
-                "name": "is_drop",
-                "type": 4,
-                "typeName": "bool"
-              },
-              {
-                "name": "category",
-                "type": 3,
-                "typeName": "String"
-              },
-              {
-                "name": "blockchain_id",
-                "type": 3,
-                "typeName": "String"
-              },
-              {
-                "name": "token_owner",
-                "type": 5,
-                "typeName": "AccountId"
-              }
-            ]
-          }
-        },
-        "path": [
-          "fruitblitz_nft",
-          "fruitblitz_nft",
-          "Token"
-        ]
-      }
-    },
-    {
-      "id": 3,
-      "type": {
-        "def": {
-          "primitive": "str"
-        }
-      }
-    },
-    {
-      "id": 4,
-      "type": {
-        "def": {
-          "primitive": "bool"
-        }
-      }
-    },
-    {
-      "id": 5,
-      "type": {
-        "def": {
-          "composite": {
-            "fields": [
-              {
-                "type": 6,
+                "type": 2,
                 "typeName": "[u8; 32]"
               }
             ]
@@ -1307,18 +1596,18 @@
       }
     },
     {
-      "id": 6,
+      "id": 2,
       "type": {
         "def": {
           "array": {
             "len": 32,
-            "type": 7
+            "type": 3
           }
         }
       }
     },
     {
-      "id": 7,
+      "id": 3,
       "type": {
         "def": {
           "primitive": "u8"
@@ -1326,34 +1615,13 @@
       }
     },
     {
-      "id": 8,
-      "type": {
-        "def": {
-          "sequence": {
-            "type": 9
-          }
-        }
-      }
-    },
-    {
-      "id": 9,
-      "type": {
-        "def": {
-          "tuple": [
-            1,
-            2
-          ]
-        }
-      }
-    },
-    {
-      "id": 10,
+      "id": 4,
       "type": {
         "def": {
           "composite": {
             "fields": [
               {
-                "type": 12
+                "type": 9
               }
             ]
           }
@@ -1361,16 +1629,177 @@
         "params": [
           {
             "name": "K",
-            "type": 5
+            "type": 0
           },
           {
             "name": "V",
-            "type": 11
+            "type": 5
           }
         ],
         "path": [
           "BTreeMap"
         ]
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "nft_token_id",
+                "type": 0,
+                "typeName": "TokenId"
+              },
+              {
+                "name": "image_path",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "name",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "description",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "price",
+                "type": 0,
+                "typeName": "u32"
+              },
+              {
+                "name": "is_for_sale",
+                "type": 7,
+                "typeName": "bool"
+              },
+              {
+                "name": "is_equipped",
+                "type": 7,
+                "typeName": "bool"
+              },
+              {
+                "name": "category",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "collection",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "astro_type",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "stats",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "network",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "blockchain_id",
+                "type": 6,
+                "typeName": "String"
+              },
+              {
+                "name": "collection_id",
+                "type": 1,
+                "typeName": "AccountId"
+              },
+              {
+                "name": "token_owner",
+                "type": 8,
+                "typeName": "Option<AccountId>"
+              }
+            ]
+          }
+        },
+        "path": [
+          "fruitblitz_nft",
+          "fruitblitz_nft",
+          "Token"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "None"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 1
+                  }
+                ],
+                "index": 1,
+                "name": "Some"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 1
+          }
+        ],
+        "path": [
+          "Option"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 10
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "tuple": [
+            0,
+            5
+          ]
+        }
       }
     },
     {
@@ -1380,13 +1809,40 @@
           "composite": {
             "fields": [
               {
+                "type": 13
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "K",
+            "type": 1
+          },
+          {
+            "name": "V",
+            "type": 12
+          }
+        ],
+        "path": [
+          "BTreeMap"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
                 "name": "player",
-                "type": 5,
+                "type": 1,
                 "typeName": "AccountId"
               },
               {
                 "name": "score",
-                "type": 1,
+                "type": 0,
                 "typeName": "u32"
               }
             ]
@@ -1400,28 +1856,28 @@
       }
     },
     {
-      "id": 12,
+      "id": 13,
       "type": {
         "def": {
           "sequence": {
-            "type": 13
+            "type": 14
           }
         }
       }
     },
     {
-      "id": 13,
+      "id": 14,
       "type": {
         "def": {
           "tuple": [
-            5,
-            11
+            1,
+            12
           ]
         }
       }
     },
     {
-      "id": 14,
+      "id": 15,
       "type": {
         "def": {
           "composite": {
@@ -1435,11 +1891,11 @@
         "params": [
           {
             "name": "K",
-            "type": 1
+            "type": 0
           },
           {
             "name": "V",
-            "type": 15
+            "type": 16
           }
         ],
         "path": [
@@ -1448,29 +1904,29 @@
       }
     },
     {
-      "id": 15,
+      "id": 16,
       "type": {
         "def": {
           "composite": {
             "fields": [
               {
                 "name": "reward_id",
-                "type": 1,
+                "type": 0,
                 "typeName": "u32"
               },
               {
                 "name": "reward_amount",
-                "type": 1,
+                "type": 0,
                 "typeName": "u32"
               },
               {
                 "name": "claimed",
-                "type": 4,
+                "type": 7,
                 "typeName": "bool"
               },
               {
                 "name": "owner",
-                "type": 16,
+                "type": 8,
                 "typeName": "Option<AccountId>"
               }
             ]
@@ -1480,39 +1936,6 @@
           "fruitblitz_nft",
           "fruitblitz_nft",
           "SeasonRewards"
-        ]
-      }
-    },
-    {
-      "id": 16,
-      "type": {
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "index": 0,
-                "name": "None"
-              },
-              {
-                "fields": [
-                  {
-                    "type": 5
-                  }
-                ],
-                "index": 1,
-                "name": "Some"
-              }
-            ]
-          }
-        },
-        "params": [
-          {
-            "name": "T",
-            "type": 5
-          }
-        ],
-        "path": [
-          "Option"
         ]
       }
     },
@@ -1531,8 +1954,8 @@
       "type": {
         "def": {
           "tuple": [
-            1,
-            15
+            0,
+            16
           ]
         }
       }
@@ -1615,7 +2038,7 @@
               {
                 "fields": [
                   {
-                    "type": 1
+                    "type": 0
                   }
                 ],
                 "index": 0,
@@ -1636,7 +2059,7 @@
         "params": [
           {
             "name": "T",
-            "type": 1
+            "type": 0
           },
           {
             "name": "E",
@@ -1657,7 +2080,7 @@
               {
                 "fields": [
                   {
-                    "type": 16
+                    "type": 8
                   }
                 ],
                 "index": 0,
@@ -1678,7 +2101,7 @@
         "params": [
           {
             "name": "T",
-            "type": 16
+            "type": 8
           },
           {
             "name": "E",
@@ -1699,7 +2122,7 @@
               {
                 "fields": [
                   {
-                    "type": 4
+                    "type": 7
                   }
                 ],
                 "index": 0,
@@ -1720,7 +2143,7 @@
         "params": [
           {
             "name": "T",
-            "type": 4
+            "type": 7
           },
           {
             "name": "E",
@@ -1923,7 +2346,7 @@
       "type": {
         "def": {
           "sequence": {
-            "type": 11
+            "type": 12
           }
         }
       }
@@ -1975,7 +2398,7 @@
       "type": {
         "def": {
           "sequence": {
-            "type": 15
+            "type": 16
           }
         }
       }
@@ -2035,7 +2458,7 @@
               {
                 "fields": [
                   {
-                    "type": 2
+                    "type": 5
                   }
                 ],
                 "index": 1,
@@ -2047,7 +2470,7 @@
         "params": [
           {
             "name": "T",
-            "type": 2
+            "type": 5
           }
         ],
         "path": [
@@ -2102,7 +2525,7 @@
       "type": {
         "def": {
           "sequence": {
-            "type": 2
+            "type": 5
           }
         }
       }
@@ -2122,7 +2545,7 @@
           "composite": {
             "fields": [
               {
-                "type": 6,
+                "type": 2,
                 "typeName": "[u8; 32]"
               }
             ]
