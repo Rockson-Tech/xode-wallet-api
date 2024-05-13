@@ -74,12 +74,9 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
-      const [ chain, properties ] = await Promise.all([
-        api.rpc.system.chain(),
-        api.rpc.system.properties(),
-      ]);
+      const properties = await api.rpc.system.properties();
       return {
-        name: chain.toHuman(),
+        name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
         decimals: properties.toHuman().tokenDecimals[0]
       }
