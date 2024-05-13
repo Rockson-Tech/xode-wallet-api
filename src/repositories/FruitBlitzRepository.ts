@@ -162,7 +162,7 @@ export default class FruitBlitzRepository {
           [ wallet_address, '' ],
           instance
         );
-        return result;
+        return result.ok;
       } catch (error: any) {
         console.log('getUserNFTRepo: ', error);
         return Error(error);

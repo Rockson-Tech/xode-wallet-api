@@ -9,6 +9,7 @@ import {
     IGetUserNFTRequestParams
 } from '../schemas/NFTSchemas';
 import AstroChibbiRepository from '../repositories/AstroChibbiRepository';
+import FruitBlitzRepository from '../repositories/FruitBlitzRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 import EnergyRepository from '../repositories/EnergyRepository';
 
@@ -154,15 +155,19 @@ export const dashboardNftHandler = async (
         if (!requestParams || !requestParams.wallet_address) {
             return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
         }
-        const [nfts, energy] = await Promise.all([
+        const [astro, blitz, energy] = await Promise.all([
             AstroChibbiRepository.getUserNFTRepo(requestParams.wallet_address),
+            FruitBlitzRepository.getUserNFTRepo(requestParams.wallet_address),
             EnergyRepository.getEnergyRepo(requestParams.wallet_address),
         ]);
-        if (nfts instanceof Error || energy instanceof Error) {
-            throw nfts || energy;
+        if (astro instanceof Error || energy instanceof Error) {
+            throw astro || energy;
         }
+        blitz.forEach((data: any) => {
+            astro.push(data);
+        });
         let result: any;
-        if (nfts.length > 0 && nfts.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
+        if (astro.length > 0 && astro.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
             if (energy == null) {
                 const data = {
                     owner: requestParams.wallet_address,
@@ -207,10 +212,10 @@ export const dashboardNftHandler = async (
                     collectionId: '5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m',
                     tokenOwner: requestParams.wallet_address,
                 };
-                nfts.push(nftEntry);
+                astro.push(nftEntry);
             }
         }
-        return reply.send(nfts);
+        return reply.send(astro);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     } 
