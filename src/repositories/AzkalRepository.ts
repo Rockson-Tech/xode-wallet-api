@@ -220,7 +220,7 @@ export default class AzkalRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: ''
+        image: 'https://bafkreigvkyppffmoywmyctdhnjqearugk4laorzjtsyfnanljcwdhzywky.ipfs.cf-ipfs.com/'
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');

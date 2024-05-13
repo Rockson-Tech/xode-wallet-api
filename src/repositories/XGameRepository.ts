@@ -220,7 +220,7 @@ export default class XGameRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: ''
+        image: 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/'
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');
