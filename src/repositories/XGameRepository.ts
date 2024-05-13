@@ -219,7 +219,8 @@ export default class XGameRepository {
       return {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
-        decimals: metadata.toHuman().decimals
+        decimals: metadata.toHuman().decimals,
+        image: ''
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');

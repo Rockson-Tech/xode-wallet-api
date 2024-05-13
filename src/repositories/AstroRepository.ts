@@ -257,6 +257,7 @@ export default class AstroRepository {
         name: metadata.ok.tokenName,
         symbol: metadata.ok.tokenSymbol,
         decimals: metadata.ok.decimals.toString(),
+        image: ''
       }
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');

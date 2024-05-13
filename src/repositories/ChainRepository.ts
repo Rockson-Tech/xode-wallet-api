@@ -78,7 +78,8 @@ export default class ChainRepository {
       return {
         name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
-        decimals: properties.toHuman().tokenDecimals[0]
+        decimals: properties.toHuman().tokenDecimals[0],
+        image: ''
       }
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');

@@ -14,6 +14,7 @@ export const token_list = {
                     name: { type: 'string' },
                     symbol: { type: 'string' },
                     decimals: { type: 'string' },
+                    image: { type: 'string' },
                 },
             },
         },
