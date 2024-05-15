@@ -73,7 +73,7 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
     Querystring: IAirdropAssetRequestBody;
     Reply: IResponseSuccessful | IResponseError;
   }>(
-    '/airdrop/xgm',
+    '/airdrop',
     airdropXGMController
   );
 };

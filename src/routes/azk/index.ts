@@ -73,7 +73,7 @@ const azk: FastifyPluginAsync = async (fastify, opts) => {
     Querystring: IAirdropAssetRequestBody;
     Reply: IResponseSuccessful | IResponseError;
   }>(
-    '/airdrop/azk',
+    '/airdrop',
     airdropXGMController
   );
 };
