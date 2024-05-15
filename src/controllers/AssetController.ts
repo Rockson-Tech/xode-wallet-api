@@ -160,7 +160,6 @@ export const airdropXGMController = async (
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.airdropXGMRepo(account);
     }
-    // const result = await AzkalRepository.airdropXGMRepo(account);
     if (result instanceof Error) {
       throw result;
     }
