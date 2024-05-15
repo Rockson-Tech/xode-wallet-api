@@ -7,9 +7,11 @@ import {
   IBurnRequestBody,
 } from '../schemas/AssetSchemas';
 import { formatBalance } from '@polkadot/util';
+import { Keyring } from '@polkadot/api';
 
 export default class AzkalRepository {
   assetId = process.env.AZK_ASSET_ID as string ?? '3';
+  ownerSeed = process.env.AZK_SEED as string;
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -224,6 +226,51 @@ export default class AzkalRepository {
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async airdropXGMRepo(data: any) {
+    console.log('airdropXGMRepo function was called');
+    const instance = new AzkalRepository();
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const metadata: any = await api.query.assets.metadata(
+        instance.assetId,
+      );
+      if (metadata.toHuman() == null) {
+        return Error('No corresponding asset found.');
+      }
+      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+      const owner = keyring.addFromUri(instance.ownerSeed);
+      const { decimals } = metadata.toJSON();
+      const value = 1 * 10 ** decimals;
+      let batch: any = [];
+      data.forEach((address: any) => {
+        batch.push(api.tx.assets.transferKeepAlive(
+          instance.assetId,
+          address,
+          value
+        ))
+      });
+      const result = await TXRepository.sendApiTransaction(
+        api,
+        'utility',
+        'batch',
+        owner,
+        [ batch ]
+      );
+      return result;
+    } catch (error: any) {
+      return Error(error || 'airdropXGMRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

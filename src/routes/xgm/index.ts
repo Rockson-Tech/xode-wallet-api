@@ -4,7 +4,8 @@ import {
   transferController,
   burnController,
   totalSupplyController,
-  balanceOfController
+  balanceOfController,
+  airdropXGMController,
 } from '../../controllers/AssetController';
 import { 
   IBalanceOfRequestParams, 
@@ -12,6 +13,7 @@ import {
   IMintRequestBody, 
   ITotalSupplyRequestParams, 
   ITransferRequestBody,
+  IAirdropXGMRequestBody,
   IResponseSuccessful, 
   IResponseError, 
 } from '../../schemas/AssetSchemas';
@@ -65,6 +67,14 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
     '/balanceof/:account',
     { schema: balanceOf },
     balanceOfController
+  );
+
+  fastify.post<{
+    Querystring: IAirdropXGMRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/airdrop/xgm',
+    airdropXGMController
   );
 };
 

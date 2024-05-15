@@ -3,7 +3,8 @@ import {
   IMintRequestBody,
   ITransferRequestBody,
   IBurnRequestBody,
-  IBalanceOfRequestParams
+  IBalanceOfRequestParams,
+  IAirdropXGMRequestBody,
 } from '../schemas/AssetSchemas';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XaverRepository from '../repositories/XaverRepository';
@@ -133,6 +134,33 @@ export const balanceOfController = async (
     }
     
     const result = await AzkalRepository.balanceOfRepo(requestParams.account);
+    if (result instanceof Error) {
+      throw result;
+    }
+    return await reply.send(result);
+  } catch (error: any) {
+    reply.status(500).send('Internal Server Error: ' + error);
+  }
+};
+
+export const airdropXGMController = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    WebsocketHeader.handleWebsocket(request);
+    let { account } = request.body as IAirdropXGMRequestBody;
+    account = Array.from(new Set(account));
+    if (Array.isArray(account) && account.length <= 0) {
+      return reply.badRequest("Invalid request body. Required field at least one 'account'");
+    }
+    let result;
+    if (request.url.includes("azk")) {
+      result = await AzkalRepository.airdropXGMRepo(account);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.airdropXGMRepo(account);
+    }
+    // const result = await AzkalRepository.airdropXGMRepo(account);
     if (result instanceof Error) {
       throw result;
     }
