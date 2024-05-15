@@ -23,13 +23,13 @@ export default class TXRepository {
             try {
                 const txResult = this.constructChainExtrinsicTransaction(api, pallet, method, params);
                 if (txResult instanceof Error) {
-                    reject(txResult);
+                    return reject(txResult);
                 }
                 const dryRunResult = await this.dryRunTransaction(api, txResult);
-                if (!dryRunResult) {
-                    reject(dryRunResult);
+                if (!dryRunResult || dryRunResult instanceof Error) {
+                    return reject(dryRunResult);
                 }
-                const tx =  api.tx[pallet][method](
+                const tx = api.tx[pallet][method](
                 ...params
                 )
                 await await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
@@ -73,7 +73,7 @@ export default class TXRepository {
                 const dryRunResult = await this.dryRunContract(api, contract, method, owner, params, instance, storageDepositLimit);
                 let tx: any;
                 if (dryRunResult instanceof Error) {
-                    reject(dryRunResult);
+                    return reject(dryRunResult);
                 } else {
                     tx =  contract.tx[method](
                         {
@@ -123,7 +123,7 @@ export default class TXRepository {
             try {
                 const dryRunResult = await this.dryRunExtrinsic(api, rawExtrinsic);
                 if (!dryRunResult) {
-                    reject(dryRunResult);
+                    return reject(dryRunResult);
                 }
                 await await executeExtrinsic.send(async (result: any) => {
                     if (result.dispatchError) {
