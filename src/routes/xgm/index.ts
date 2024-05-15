@@ -13,7 +13,7 @@ import {
   IMintRequestBody, 
   ITotalSupplyRequestParams, 
   ITransferRequestBody,
-  IAirdropXGMRequestBody,
+  IAirdropAssetRequestBody,
   IResponseSuccessful, 
   IResponseError, 
 } from '../../schemas/AssetSchemas';
@@ -70,7 +70,7 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   fastify.post<{
-    Querystring: IAirdropXGMRequestBody;
+    Querystring: IAirdropAssetRequestBody;
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/airdrop/xgm',

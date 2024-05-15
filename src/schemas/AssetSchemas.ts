@@ -30,7 +30,7 @@ export interface IBurnRequestBody {
 }
 
 // ----- AIRDROP XGM -----
-export interface IAirdropXGMRequestBody {
+export interface IAirdropAssetRequestBody {
   account: string[];
 }
 

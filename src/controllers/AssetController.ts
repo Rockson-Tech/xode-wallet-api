@@ -4,7 +4,7 @@ import {
   ITransferRequestBody,
   IBurnRequestBody,
   IBalanceOfRequestParams,
-  IAirdropXGMRequestBody,
+  IAirdropAssetRequestBody,
 } from '../schemas/AssetSchemas';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XaverRepository from '../repositories/XaverRepository';
@@ -149,7 +149,7 @@ export const airdropXGMController = async (
 ) => {
   try {
     WebsocketHeader.handleWebsocket(request);
-    let { account } = request.body as IAirdropXGMRequestBody;
+    let { account } = request.body as IAirdropAssetRequestBody;
     account = Array.from(new Set(account));
     if (Array.isArray(account) && account.length <= 0) {
       return reply.badRequest("Invalid request body. Required field at least one 'account'");
