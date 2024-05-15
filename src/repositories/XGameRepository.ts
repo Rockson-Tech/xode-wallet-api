@@ -264,7 +264,7 @@ export default class XGameRepository {
       const result = await TXRepository.sendApiTransaction(
         api,
         'utility',
-        'batch',
+        'batchAll',
         owner,
         [ batch ]
       );

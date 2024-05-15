@@ -264,7 +264,7 @@ export default class AzkalRepository {
       const result = await TXRepository.sendApiTransaction(
         api,
         'utility',
-        'batch',
+        'batchAll',
         owner,
         [ batch ]
       );
