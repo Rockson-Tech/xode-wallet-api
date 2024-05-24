@@ -45,6 +45,7 @@ const wallet: FastifyPluginAsync = async (fastify, opts) => {
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/:id',
+    { onRequest: [fastify.authenticate] },
     updateWalletController
   );
 
@@ -53,6 +54,7 @@ const wallet: FastifyPluginAsync = async (fastify, opts) => {
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/:id',
+    { onRequest: [fastify.authenticate] },
     deleteWalletController
   );
 };
