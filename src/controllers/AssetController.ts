@@ -156,7 +156,7 @@ export const airdropXGMController = async (
     }
     let result;
     if (request.url.includes("azk")) {
-      result = await AzkalRepository.airdropXGMRepo(account);
+      result = await AzkalRepository.airdropAZKRepo(account);
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.airdropXGMRepo(account);
     }

@@ -233,8 +233,8 @@ export default class AzkalRepository {
     }
   }
 
-  static async airdropXGMRepo(data: any) {
-    console.log('airdropXGMRepo function was called');
+  static async airdropAZKRepo(data: any) {
+    console.log('airdropAZKRepo function was called');
     const instance = new AzkalRepository();
     var api: any;
     try {
@@ -253,24 +253,24 @@ export default class AzkalRepository {
       const owner = keyring.addFromUri(instance.ownerSeed);
       const { decimals } = metadata.toJSON();
       const value = 1 * 10 ** decimals;
-      let batch: any = [];
-      data.forEach((address: any) => {
-        batch.push(api.tx.assets.transferKeepAlive(
-          instance.assetId,
-          address,
-          value
-        ))
-      });
-      const result = await TXRepository.sendApiTransaction(
-        api,
-        'utility',
-        'batchAll',
-        owner,
-        [ batch ]
-      );
-      return result;
+      let nonce = await api.rpc.system.accountNextIndex(owner.address);
+      let index = 0;
+      while (index < data.length) {
+        const batch = data.slice(index, index + 1);
+        for (const address of batch) {
+          console.log(`Index: ${index} - `, address);
+          const tx = api.tx.assets.transfer(instance.assetId, address, value); 
+          await tx.signAndSend(owner, { nonce });
+        }
+        index += 1;
+        const newNonce = await api.rpc.system.accountNextIndex(owner.address);
+        if (newNonce.gt(nonce)) {
+          nonce = newNonce;
+        }
+      }
+      return;
     } catch (error: any) {
-      return Error(error || 'airdropXGMRepo error occurred.');
+      return Error(error || 'airdropAZKRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

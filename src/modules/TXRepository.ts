@@ -25,7 +25,7 @@ export default class TXRepository {
                 if (txResult instanceof Error) {
                     return reject(txResult);
                 }
-                const dryRunResult = await this.dryRunTransaction(api, txResult);
+                const dryRunResult = await this.dryRunTransaction(txResult, owner);
                 if (!dryRunResult || dryRunResult instanceof Error) {
                     return reject(dryRunResult);
                 }
@@ -268,11 +268,11 @@ export default class TXRepository {
     }
 
     static dryRunTransaction = async (
-        api: any,
         tx: any,
+        owner: any
     ) => {
         try {
-            const result = await api.rpc.system.dryRun(tx);
+            const result = await tx.dryRun(owner);
             return result;
         } catch (error: any) {
             return Error(error);
