@@ -2,12 +2,14 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { formatBalance } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
+import { Keyring } from '@polkadot/api';
 import { 
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody 
 } from '../schemas/ChainSchemas';
 
 export default class ChainRepository {
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   abi = require("./../smartcontracts/astro_nft.json");
 
   static async getSmartContractRepo() {
@@ -139,4 +141,43 @@ export default class ChainRepository {
       }
     }
   };
+
+  static async airdropXONRepo(data: any) {
+    console.log('airdropXONRepo function was called');
+    const instance = new ChainRepository();
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const chainDecimals = api.registry.chainDecimals[0];
+      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+      const owner = keyring.addFromUri(instance.ownerSeed);
+      const value = 1 * 10 ** chainDecimals;
+      let nonce = await api.rpc.system.accountNextIndex(owner.address);
+      let index = 0;
+      while (index < data.length) {
+        const batch = data.slice(index, index + 1);
+        for (const address of batch) {
+          console.log(`Index: ${index} - `, address);
+          const tx = api.tx.balances.transferKeepAlive(address, value); 
+          await tx.signAndSend(owner, { nonce });
+        }
+        index += 1;
+        const newNonce = await api.rpc.system.accountNextIndex(owner.address);
+        if (newNonce.gt(nonce)) {
+          nonce = newNonce;
+        }
+      }
+      return;
+    } catch (error: any) {
+      return Error(error || 'airdropXONRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
 }

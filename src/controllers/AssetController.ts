@@ -9,6 +9,7 @@ import {
 import AzkalRepository from '../repositories/AzkalRepository';
 import XaverRepository from '../repositories/XaverRepository';
 import XGameRepository from '../repositories/XGameRepository';
+import ChainRepository from '../repositories/ChainRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const mintController = async (
@@ -143,7 +144,7 @@ export const balanceOfController = async (
   }
 };
 
-export const airdropXGMController = async (
+export const airdropController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
@@ -159,6 +160,8 @@ export const airdropXGMController = async (
       result = await AzkalRepository.airdropAZKRepo(account);
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.airdropXGMRepo(account);
+    } else if (request.url.includes("chain")) {
+      result = await ChainRepository.airdropXONRepo(account);
     }
     if (result instanceof Error) {
       throw result;

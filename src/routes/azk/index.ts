@@ -5,7 +5,7 @@ import {
   burnController,
   totalSupplyController,
   balanceOfController,
-  airdropXGMController
+  airdropController
 } from '../../controllers/AssetController';
 import { 
   IBalanceOfRequestParams, 
@@ -74,7 +74,7 @@ const azk: FastifyPluginAsync = async (fastify, opts) => {
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/airdrop',
-    airdropXGMController
+    airdropController
   );
 };
 

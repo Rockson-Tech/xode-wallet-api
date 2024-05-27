@@ -25,6 +25,11 @@ export interface ISubmitExtrinsicRequestBody {
   extrinsic: string;
 }
 
+// ----- AIRDROP XON -----
+export interface IAirdropNativeRequestBody {
+  account: string[];
+}
+
 // ----- SUCCESS & ERROR RESPONSE -----
 export interface IResponseSuccessful {
   status: number;
