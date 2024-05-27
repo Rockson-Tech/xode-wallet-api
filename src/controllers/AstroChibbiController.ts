@@ -163,7 +163,7 @@ export const dashboardNftHandler = async (
         if (astro instanceof Error || energy instanceof Error) {
             throw astro || energy;
         }
-        if (blitz.length > 0) {
+        if (blitz.length > 0 || blitz != undefined) {
             blitz.forEach((data: any) => {
                 astro.push(data);
             });
