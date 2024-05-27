@@ -20,7 +20,7 @@ export default class WebsocketHeader {
             const localEnv = process.env.LOCAL_WS_PROVIDER_ENDPOINT as string;
 
             process.env.WS_PROVIDER_ENDPOINT = websocket;
-            if (websocket === mainnetEnv) {
+            if (websocket === mainnetEnv || websocket.includes('n7yoxCmcIrCF6VziCcDmYTwL8R03a')) {
                 this.setEnvAddresses(
                     process.env.MAINNET_ASTROCHIBBI_ADDRESS as string,
                     process.env.MAINNET_ASTRO_ECONOMY_ADDRESS as string,
@@ -47,7 +47,7 @@ export default class WebsocketHeader {
                     process.env.LOCAL_BLITZ_ECONOMY_ADDRESS as string,
                     process.env.LOCAL_BLITZ_ENERGY_ADDRESS as string,
                 );
-            } else if (websocket === testnetEnv) {
+            } else if (websocket === testnetEnv || websocket.includes('aRoyklGrhl9m2LlhX8NP')) {
                 this.defaultWebsocket();
             }
         } catch (error: any) {
