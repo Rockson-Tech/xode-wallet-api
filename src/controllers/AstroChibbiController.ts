@@ -163,9 +163,11 @@ export const dashboardNftHandler = async (
         if (astro instanceof Error || energy instanceof Error) {
             throw astro || energy;
         }
-        blitz.forEach((data: any) => {
-            astro.push(data);
-        });
+        if (blitz.length > 0) {
+            blitz.forEach((data: any) => {
+                astro.push(data);
+            });
+        }
         let result: any;
         if (astro.length > 0 && astro.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
             if (energy == null) {
