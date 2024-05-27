@@ -130,4 +130,4 @@ export const submitExtrinsicController = async (
     } catch (error) {
       reply.status(500).send('Internal Server Error: ' + error);
     }
-  };
+};

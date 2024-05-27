@@ -24,19 +24,28 @@ export default class WebsocketHeader {
                 this.setEnvAddresses(
                     process.env.MAINNET_ASTROCHIBBI_ADDRESS as string,
                     process.env.MAINNET_ASTRO_ECONOMY_ADDRESS as string,
-                    process.env.MAINNET_ASTRO_ENERGY_ADDRESS as string
+                    process.env.MAINNET_ASTRO_ENERGY_ADDRESS as string,
+                    process.env.MAINNET_FRUITBLITZ_ADDRESS as string,
+                    process.env.MAINNET_BLITZ_ECONOMY_ADDRESS as string,
+                    process.env.MAINNET_BLITZ_ENERGY_ADDRESS as string,
                 );
             } else if (websocket === devnetEnv) {
                 this.setEnvAddresses(
                     process.env.DEVNET_ASTROCHIBBI_ADDRESS as string,
                     process.env.DEVNET_ASTRO_ECONOMY_ADDRESS as string,
-                    process.env.DEVNET_ASTRO_ENERGY_ADDRESS as string
+                    process.env.DEVNET_ASTRO_ENERGY_ADDRESS as string,
+                    process.env.DEVNET_FRUITBLITZ_ADDRESS as string,
+                    process.env.DEVNET_BLITZ_ECONOMY_ADDRESS as string,
+                    process.env.DEVNET_BLITZ_ENERGY_ADDRESS as string,
                 );
             } else if (websocket === localEnv) {
                 this.setEnvAddresses(
                     process.env.LOCAL_ASTROCHIBBI_ADDRESS as string,
                     process.env.LOCAL_ASTRO_ECONOMY_ADDRESS as string,
-                    process.env.LOCAL_ASTRO_ENERGY_ADDRESS as string
+                    process.env.LOCAL_ASTRO_ENERGY_ADDRESS as string,
+                    process.env.LOCAL_FRUITBLITZ_ADDRESS as string,
+                    process.env.LOCAL_BLITZ_ECONOMY_ADDRESS as string,
+                    process.env.LOCAL_BLITZ_ENERGY_ADDRESS as string,
                 );
             } else if (websocket === testnetEnv) {
                 this.defaultWebsocket();
@@ -52,7 +61,10 @@ export default class WebsocketHeader {
             this.setEnvAddresses(
                 process.env.TESTNET_ASTROCHIBBI_ADDRESS as string,
                 process.env.TESTNET_ASTRO_ECONOMY_ADDRESS as string,
-                process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string
+                process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string,
+                process.env.TESTNET_FRUITBLITZ_ADDRESS as string,
+                process.env.TESTNET_BLITZ_ECONOMY_ADDRESS as string,
+                process.env.TESTNET_BLITZ_ENERGY_ADDRESS as string,
             );
         } catch (error: any) {
             return Error(error);
@@ -62,10 +74,16 @@ export default class WebsocketHeader {
     static setEnvAddresses = (
         astrochibbiAddress: string,
         astroEconomyAddress: string,
-        astroEnergyAddress: string
+        astroEnergyAddress: string,
+        fruitblitzAddress: string,
+        fruitblitzEconomyAddress: string,
+        fruitblitzEnergyAddress: string,
     ) => {
         process.env.ASTROCHIBBI_ADDRESS = astrochibbiAddress;
         process.env.ASTRO_ECONOMY_ADDRESS = astroEconomyAddress;
         process.env.ASTRO_ENERGY_ADDRESS = astroEnergyAddress;
+        process.env.FRUITBLITZ_ADDRESS = fruitblitzAddress;
+        process.env.BLITZ_ECONOMY_ADDRESS = fruitblitzEconomyAddress;
+        process.env.BLITZ_ENERGY_ADDRESS = fruitblitzEnergyAddress;
     }
 }

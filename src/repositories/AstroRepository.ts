@@ -8,11 +8,11 @@ import {
   IBurnRequestBody,
 } from '../schemas/AstroSchemas';
 // import { formatBalance } from '@polkadot/util';
-import abi from '../smartcontracts/astro_economy.json';
+import abi from '../smartcontracts/astrochibbi/astro_economy.json';
 
 export default class AstroRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
-  ownerSeed = process.env.OWNER_SEED as string;
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   astroPrice = '0';
   // These are required and changeable
   REFTIME: number = 300000000000;
@@ -180,7 +180,8 @@ export default class AstroRepository {
       return { 
         balance: parseFloat(energy.ok).toFixed(4),
         // price: price,
-        symbol: 'ASTRO'
+        symbol: 'ASTRO',
+        name: 'Astrochibbi'
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
@@ -256,6 +257,7 @@ export default class AstroRepository {
         name: metadata.ok.tokenName,
         symbol: metadata.ok.tokenSymbol,
         decimals: metadata.ok.decimals.toString(),
+        image: ''
       }
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');

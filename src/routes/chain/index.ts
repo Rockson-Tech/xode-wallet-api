@@ -6,12 +6,14 @@ import {
   submitExtrinsicController,
   tokenTransferController,
 } from '../../controllers/ChainController';
+import { airdropController } from '../../controllers/AssetController';
 import {
   IGetSmartContractRequestBody,
   ITokensRequestParams,
   ITokenListRequestParams,
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody,
+  IAirdropNativeRequestBody,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -63,6 +65,14 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     '/extrinsic/submit',
     { schema: submit_extrinsic },
     submitExtrinsicController
+  );
+
+  fastify.post<{
+    Querystring: IAirdropNativeRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/airdrop',
+    airdropController
   );
 };
 

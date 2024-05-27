@@ -4,24 +4,18 @@ import {
   transferController,
   burnController,
   totalSupplyController,
-  balanceOfController
+  balanceOfController,
+  airdropController,
 } from '../../controllers/AssetController';
 import { 
   IBalanceOfRequestParams, 
-  IBalanceOfResponseError, 
-  IBalanceOfResponseSuccessful, 
   IBurnRequestBody, 
-  IBurnResponseError, 
-  IBurnResponseSuccessful, 
   IMintRequestBody, 
-  IMintResponseError, 
-  IMintResponseSuccessful, 
   ITotalSupplyRequestParams, 
-  ITotalSupplyResponseError, 
-  ITotalSupplyResponseSuccessful, 
-  ITransferResponseError, 
-  ITransferResponseSuccessful, 
-  ITransferRequestBody 
+  ITransferRequestBody,
+  IAirdropAssetRequestBody,
+  IResponseSuccessful, 
+  IResponseError, 
 } from '../../schemas/AssetSchemas';
 import { mint } from '../../swaggerschema/xgm/mint';
 import { transfer } from '../../swaggerschema/xgm/transfer';
@@ -32,7 +26,7 @@ import { balanceOf } from '../../swaggerschema/xgm/balanceOf';
 const xgm: FastifyPluginAsync = async (fastify, opts) => {
   fastify.post<{
     Querystring: IMintRequestBody;
-    Reply: IMintResponseSuccessful | IMintResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/mint',
     { schema: mint },
@@ -41,7 +35,7 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: ITransferRequestBody;
-    Reply: ITransferResponseSuccessful | ITransferResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/transfer',
     { schema: transfer },
@@ -50,7 +44,7 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.delete<{
     Querystring: IBurnRequestBody;
-    Reply: IBurnResponseSuccessful | IBurnResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/burn',
     { schema: burn },
@@ -59,7 +53,7 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: ITotalSupplyRequestParams;
-    Reply: ITotalSupplyResponseSuccessful | ITotalSupplyResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/totalsupply',
     { schema: totalSupply },
@@ -68,11 +62,19 @@ const xgm: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: IBalanceOfRequestParams;
-    Reply: IBalanceOfResponseSuccessful | IBalanceOfResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/balanceof/:account',
     { schema: balanceOf },
     balanceOfController
+  );
+
+  fastify.post<{
+    Querystring: IAirdropAssetRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/airdrop',
+    airdropController
   );
 };
 

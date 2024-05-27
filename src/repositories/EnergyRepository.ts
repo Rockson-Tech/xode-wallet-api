@@ -2,12 +2,12 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import abi from '../smartcontracts/astro_energy.json';
+import abi from '../smartcontracts/astrochibbi/astro_energy.json';
 import { IDecreaseEnergyRequestBody } from '../schemas/EnergySchemas';
 
 export default class EnergyRepository {
   energyAddress = process.env.ASTRO_ENERGY_ADDRESS as string;
-  ownerSeed = process.env.OWNER_SEED as string;
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;

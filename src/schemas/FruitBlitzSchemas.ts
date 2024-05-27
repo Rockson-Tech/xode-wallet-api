@@ -18,7 +18,6 @@ export interface IReadOneNFTRequestParams {
   id: number;
 }
 
-// Update
 // ----- UPDATE ONE NFT -----
 export interface IUpdateOneNFTRequestParams {
   id: number;
@@ -37,11 +36,17 @@ export interface IUpdateNFTRequestBody {
   blockchain_id: string;
 }
 
-// ----- TRANSFER FROM WITHOUT APPROVAL -----
-export interface ITransferNFTFromWOARequestBody {
-  from: string;
-  to: string;
-  id: number;
+// ----- MINT -----
+export interface IMintRequestBody {
+  image_path: string;
+  name: string;
+  description: string;
+  price: number;
+  is_for_sale: boolean;
+  is_equipped: boolean;
+  is_drop: boolean;
+  category: string;
+  blockchain_id: string;
 }
 
 // ----- BALANCE TRANFER -----
@@ -49,7 +54,6 @@ export interface IBalanceTransferRequestBody {
   from: string;
   amount: number;
 }
-
 // ----- GET USER NFT DASHBOARD-----
 export interface IGetNFTDashboardRequestParams {
   wallet_address: string;

@@ -14,7 +14,8 @@
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
     "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
     "info": "fastify print-routes ./routes/root.js",
-    "serve": "fastify start -w -l info -P dist/app.js"
+    "serve": "fastify start -w -l info -P dist/app.js",
+    "prisma: generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +29,7 @@
     "@fastify/swagger-ui": "^1.9.3",
     "@polkadot/api": "^10.9.1",
     "@polkadot/api-contract": "^10.9.1",
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "^4.16.2",
     "@types/superagent": "^4.1.18",
     "bcrypt": "^5.1.0",
     "date-and-time": "^3.0.3",
@@ -47,7 +48,7 @@
     "concurrently": "^7.0.0",
     "fastify-tsconfig": "^1.0.1",
     "json-loader": "^0.5.7",
-    "prisma": "^4.15.0",
+    "prisma": "^4.16.2",
     "tap": "^16.1.0",
     "ts-node": "^10.4.0",
     "typescript": "5.2.2"

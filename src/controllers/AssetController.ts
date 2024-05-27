@@ -3,11 +3,13 @@ import {
   IMintRequestBody,
   ITransferRequestBody,
   IBurnRequestBody,
-  IBalanceOfRequestParams
+  IBalanceOfRequestParams,
+  IAirdropAssetRequestBody,
 } from '../schemas/AssetSchemas';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XaverRepository from '../repositories/XaverRepository';
 import XGameRepository from '../repositories/XGameRepository';
+import ChainRepository from '../repositories/ChainRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 
 export const mintController = async (
@@ -133,6 +135,34 @@ export const balanceOfController = async (
     }
     
     const result = await AzkalRepository.balanceOfRepo(requestParams.account);
+    if (result instanceof Error) {
+      throw result;
+    }
+    return await reply.send(result);
+  } catch (error: any) {
+    reply.status(500).send('Internal Server Error: ' + error);
+  }
+};
+
+export const airdropController = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    WebsocketHeader.handleWebsocket(request);
+    let { account } = request.body as IAirdropAssetRequestBody;
+    account = Array.from(new Set(account));
+    if (Array.isArray(account) && account.length <= 0) {
+      return reply.badRequest("Invalid request body. Required field at least one 'account'");
+    }
+    let result;
+    if (request.url.includes("azk")) {
+      result = await AzkalRepository.airdropAZKRepo(account);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.airdropXGMRepo(account);
+    } else if (request.url.includes("chain")) {
+      result = await ChainRepository.airdropXONRepo(account);
+    }
     if (result instanceof Error) {
       throw result;
     }

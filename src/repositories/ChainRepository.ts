@@ -2,12 +2,14 @@ import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { formatBalance } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
+import { Keyring } from '@polkadot/api';
 import { 
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody 
 } from '../schemas/ChainSchemas';
 
 export default class ChainRepository {
+  ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   abi = require("./../smartcontracts/astro_nft.json");
 
   static async getSmartContractRepo() {
@@ -44,6 +46,7 @@ export default class ChainRepository {
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
       const tokens = api.registry.chainTokens;
+      const token_name = 'Xode';
       formatBalance.setDefaults({ decimals: chainDecimals, unit: tokens[0] });
       formatBalance.getDefaults();
       const free = formatBalance(available, { forceUnit: tokens[0], withUnit: false });
@@ -52,7 +55,8 @@ export default class ChainRepository {
       return {
         balance: parsedBalance,
         // price: '0',
-        symbol: tokens[0]
+        symbol: tokens[0],
+        name: token_name
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
@@ -72,14 +76,12 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
-      const [ chain, properties ] = await Promise.all([
-        api.rpc.system.chain(),
-        api.rpc.system.properties(),
-      ]);
+      const properties = await api.rpc.system.properties();
       return {
-        name: chain.toHuman(),
+        name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
-        decimals: properties.toHuman().tokenDecimals[0]
+        decimals: properties.toHuman().tokenDecimals[0],
+        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/'
       }
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');
@@ -139,4 +141,43 @@ export default class ChainRepository {
       }
     }
   };
+
+  static async airdropXONRepo(data: any) {
+    console.log('airdropXONRepo function was called');
+    const instance = new ChainRepository();
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const chainDecimals = api.registry.chainDecimals[0];
+      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+      const owner = keyring.addFromUri(instance.ownerSeed);
+      const value = 1 * 10 ** chainDecimals;
+      let nonce = await api.rpc.system.accountNextIndex(owner.address);
+      let index = 0;
+      while (index < data.length) {
+        const batch = data.slice(index, index + 1);
+        for (const address of batch) {
+          console.log(`Index: ${index} - `, address);
+          const tx = api.tx.balances.transferKeepAlive(address, value); 
+          await tx.signAndSend(owner, { nonce });
+        }
+        index += 1;
+        const newNonce = await api.rpc.system.accountNextIndex(owner.address);
+        if (newNonce.gt(nonce)) {
+          nonce = newNonce;
+        }
+      }
+      return;
+    } catch (error: any) {
+      return Error(error || 'airdropXONRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
 }

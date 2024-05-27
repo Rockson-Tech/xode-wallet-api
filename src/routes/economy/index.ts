@@ -8,20 +8,12 @@ import {
 } from '../../controllers/AstroController';
 import { 
   IBalanceOfRequestParams, 
-  IBalanceOfResponseError, 
-  IBalanceOfResponseSuccessful, 
   IBurnRequestBody, 
-  IBurnResponseError, 
-  IBurnResponseSuccessful, 
   IMintRequestBody, 
-  IMintResponseError, 
-  IMintResponseSuccessful, 
   ITotalSupplyRequestParams, 
-  ITotalSupplyResponseError, 
-  ITotalSupplyResponseSuccessful, 
-  ITransferResponseError, 
-  ITransferResponseSuccessful, 
-  ITransferRequestBody 
+  ITransferRequestBody,
+  IResponseSuccessful, 
+  IResponseError, 
 } from '../../schemas/AstroSchemas';
 import { mint } from '../../swaggerschema/astro/mint';
 import { transfer } from '../../swaggerschema/astro/transfer';
@@ -32,7 +24,7 @@ import { balanceOf } from '../../swaggerschema/astro/balanceOf';
 const economy: FastifyPluginAsync = async (fastify, opts) => {
   fastify.post<{
     Querystring: IMintRequestBody;
-    Reply: IMintResponseSuccessful | IMintResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/mint',
     { schema: mint },
@@ -41,7 +33,7 @@ const economy: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: ITransferRequestBody;
-    Reply: ITransferResponseSuccessful | ITransferResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/transfer',
     { schema: transfer },
@@ -50,7 +42,7 @@ const economy: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.delete<{
     Querystring: IBurnRequestBody;
-    Reply: IBurnResponseSuccessful | IBurnResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/burn',
     { schema: burn },
@@ -59,7 +51,7 @@ const economy: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.get<{
     Querystring: ITotalSupplyRequestParams;
-    Reply: ITotalSupplyResponseSuccessful | ITotalSupplyResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/totalsupply',
     { schema: totalSupply },
@@ -68,7 +60,7 @@ const economy: FastifyPluginAsync = async (fastify, opts) => {
 
   fastify.post<{
     Querystring: IBalanceOfRequestParams;
-    Reply: IBalanceOfResponseSuccessful | IBalanceOfResponseError;
+    Reply: IResponseSuccessful | IResponseError;
   }>(
     '/balanceof/:account',
     { schema: balanceOf },

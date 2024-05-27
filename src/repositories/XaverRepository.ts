@@ -9,7 +9,6 @@ import {
 import { formatBalance } from '@polkadot/util';
 
 export default class XaverRepository {
-  ownerSeed = process.env.OWNER_SEED as string;
   assetId = process.env.XAV_ASSET_ID as string ?? '2';
   // These are required and changeable
   REFTIME: number = 300000000000;
@@ -145,7 +144,7 @@ export default class XaverRepository {
       ]);
       if (accountInfo.toHuman() != null) {
         const { balance } = accountInfo.toHuman();
-        const { decimals, symbol } = metadata.toHuman();
+        const { decimals, symbol, name } = metadata.toHuman();
         const bigintbalance = BigInt(balance.replace(/,/g, ''));
         formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
         formatBalance.getDefaults();
@@ -159,12 +158,14 @@ export default class XaverRepository {
         const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
         return {
           balance: balances,
-          symbol: symbol
+          symbol: symbol,
+          name: name
         };
       } else {
         return {
           balance: '0.0000',
-          symbol: 'XAV'
+          symbol: 'XAV',
+          name: 'Xaver'
         };
       };
     } catch (error: any) {
@@ -218,7 +219,8 @@ export default class XaverRepository {
       return {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
-        decimals: metadata.toHuman().decimals
+        decimals: metadata.toHuman().decimals,
+        image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/'
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');
