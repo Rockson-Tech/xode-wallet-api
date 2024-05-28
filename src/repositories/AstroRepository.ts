@@ -7,7 +7,7 @@ import {
   ITransferRequestBody,
   IBurnRequestBody,
 } from '../schemas/AstroSchemas';
-// import { formatBalance } from '@polkadot/util';
+import { formatBalance } from '@polkadot/util';
 import abi from '../smartcontracts/astrochibbi/astro_economy.json';
 
 export default class AstroRepository {
@@ -170,18 +170,27 @@ export default class AstroRepository {
       if (!contract.query || !contract.query.balanceOf) {
         return Error('balanceOf function not found in the contract ABI.');
       }
-      const energy = await TXRepository.sendContractQuery(
-        api,
-        contract,
-        'balanceOf',
-        [ account ],
-        instance
+      const [metadata, balanceOf] = await Promise.all([
+        TXRepository.sendContractQuery(api, contract, 'metadata', [], instance),
+        TXRepository.sendContractQuery(api, contract, 'balanceOf', [ account ], instance),
+      ])
+      const mtdt = metadata.ok;
+      const balOf = balanceOf.ok;
+      const bigintbalance = BigInt(balOf);
+      formatBalance.setDefaults({ decimals: parseInt(mtdt.decimals), unit: mtdt.tokenSymbol });
+      formatBalance.getDefaults();
+      const bal = formatBalance(
+        bigintbalance, 
+        { 
+          forceUnit: mtdt.tokenSymbol, 
+          withUnit: false 
+        }
       );
+      const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
       return { 
-        balance: parseFloat(energy.ok).toFixed(4),
-        // price: price,
-        symbol: 'ASTRO',
-        name: 'Astrochibbi'
+        balance: balances,
+        symbol: mtdt.tokenSymbol,
+        name: mtdt.tokenName
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
