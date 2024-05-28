@@ -101,7 +101,7 @@ export default class AstroRepository {
         ],
         dryrunResult,
       )
-      return result.toHex();
+      return { hash: result.toHex() };
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {

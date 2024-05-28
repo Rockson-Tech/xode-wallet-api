@@ -21,15 +21,7 @@ export const transfer = {
             description: 'Success response after minting token.',
             type: 'object',
             properties: {
-                status: { type: 'number' },
-                message: { type: 'string' },
-                data: {
-                    type: 'object',
-                    properties: {
-                        isFinalized: { type: 'boolean' },
-                        blockHash: { type: 'string' },
-                    },
-                },
+                hash: { type: 'string' },
             },
         },
         // Response schema for unspecified code
