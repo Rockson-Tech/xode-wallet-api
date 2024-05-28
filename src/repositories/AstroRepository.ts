@@ -91,7 +91,7 @@ export default class AstroRepository {
       if (dryrunResult instanceof Error) {
         return dryrunResult;
       }
-      const result = TXRepository.constructContractExtrinsicTransaction(
+      const result = await TXRepository.constructContractExtrinsicTransaction(
         api,
         contract,
         'transfer',
@@ -101,7 +101,7 @@ export default class AstroRepository {
         ],
         dryrunResult,
       )
-      return result;
+      return result.toHex();
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {
