@@ -18,10 +18,18 @@ export const mint = {
     // Response schema
     response: {
         200: {
-            description: 'Returns hash to be signed and submitted on /chain/extrinsic/submit.',
+            description: 'Success response after minting token.',
             type: 'object',
             properties: {
-                hash: { type: 'string' },
+                status: { type: 'number' },
+                message: { type: 'string' },
+                data: {
+                    type: 'object',
+                    properties: {
+                        isFinalized: { type: 'boolean' },
+                        blockHash: { type: 'string' },
+                    },
+                },
             },
         },
         // Response schema for unspecified code
