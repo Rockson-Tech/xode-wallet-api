@@ -110,7 +110,7 @@ export default class ChainRepository {
           data.value
         ]
       );
-      return result;
+      return { hash: result.toHex() };
     } catch (error: any) {
       console.log('tokenTransferRepo: ' + error);
       return Error(error);
@@ -122,6 +122,7 @@ export default class ChainRepository {
   }
 
   static submitExtrinsicRepo = async (data: ISubmitExtrinsicRequestBody) => {
+    console.log('submitExtrinsicRepo function was called');
     var api: any;
     try {
       api = await InitializeAPI.apiInitialization();
