@@ -15,10 +15,10 @@ export const transfer = {
             'value',
         ],
     },
-    // Response schema for success
+    // Response schema
     response: {
         200: {
-            description: 'Success response after minting token.',
+            description: 'Returns hash to be signed and submitted on /chain/extrinsic/submit.',
             type: 'object',
             properties: {
                 hash: { type: 'string' },
