@@ -15,32 +15,24 @@ export const burn = {
             'value',
         ],
     },
-    // Response schema for success
+    // Response
     response: {
-        // 200: {
-        //     description: 'Success response after burning token.',
-        //     type: 'object',
-        //     properties: {
-        //         status: { type: 'number' },
-        //         message: { type: 'string' },
-        //         data: {
-        //             type: 'object',
-        //             properties: {
-        //                 isFinalized: { type: 'boolean' },
-        //                 blockHash: { type: 'string' },
-        //             },
-        //         },
-        //     },
-        // },
-        // // Response schema for unspecified code
-        // default: {
-        //     description: 'Default response',
-        //     type: 'object',
-        //     properties: {
-        //         status: { type: 'number' },
-        //         message: { type: 'string' },
-        //     },
-        // }
+        200: {
+            description: 'Returns hash to be signed and submitted on /chain/extrinsic/submit.',
+            type: 'object',
+            properties: {
+                hash: { type: 'string' },
+            },
+        },
+        // Response schema for unspecified code
+        default: {
+            description: 'Default response',
+            type: 'object',
+            properties: {
+                status: { type: 'number' },
+                message: { type: 'string' },
+            },
+        }
     },
     security: [
         {
