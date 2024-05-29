@@ -129,7 +129,7 @@ export default class AstroRepository {
       if (contract === undefined) {
         return Error('burnRepo contract undefined.');
       }
-      const result = await TXRepository.sendContractTransaction(
+      const dryrunResult = await TXRepository.dryRunContract(
         api,
         contract,
         'burn',
@@ -140,6 +140,19 @@ export default class AstroRepository {
         ],
         instance,
         storageDepositLimit
+      );
+      if (dryrunResult instanceof Error) {
+        return dryrunResult;
+      }
+      const result = await TXRepository.constructContractExtrinsicTransaction(
+        api,
+        contract,
+        'burn',
+        [ 
+          data.from,
+          data.value
+        ],
+        dryrunResult,
       );
       return result;
     } catch (error: any) {
