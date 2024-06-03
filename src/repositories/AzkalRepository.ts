@@ -1,12 +1,12 @@
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
+import PolkadotUtility from '../modules/PolkadotUtility';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
   IMintRequestBody,
   ITransferRequestBody,
   IBurnRequestBody,
 } from '../schemas/AssetSchemas';
-import { formatBalance } from '@polkadot/util';
 import { Keyring } from '@polkadot/api';
 
 export default class AzkalRepository {
@@ -146,18 +146,13 @@ export default class AzkalRepository {
       ]);
       if (accountInfo.toHuman() != null) {
         const { balance } = accountInfo.toHuman();
-        const { decimals, symbol,name } = metadata.toHuman();
+        const { decimals, symbol, name } = metadata.toHuman();
         const bigintbalance = BigInt(balance.replace(/,/g, ''));
-        formatBalance.setDefaults({ decimals: parseInt(decimals), unit: symbol });
-        formatBalance.getDefaults();
-        const bal = formatBalance(
-          bigintbalance, 
-          { 
-            forceUnit: symbol, 
-            withUnit: false 
-          }
+        const balances = PolkadotUtility.balanceFormatter(
+          parseInt(decimals),
+          [symbol],
+          bigintbalance
         );
-        const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
         return {
           balance: balances,
           symbol: symbol,

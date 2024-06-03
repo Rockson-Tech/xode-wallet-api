@@ -1,7 +1,6 @@
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import PolkadotUtility from '../modules/PolkadotUtility';
-import { formatBalance } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { Keyring } from '@polkadot/api';
 import { 
@@ -197,11 +196,11 @@ export default class ChainRepository {
         api.registry.chainDecimals[0],
         api.registry.chainTokens,
       ]);
-      formatBalance.setDefaults({ decimals: chainDecimals, unit: token[0] });
-      formatBalance.getDefaults();
-      const free = formatBalance(balance, { forceUnit: token[0], withUnit: false });
-      const balances = free.split(',').join('');
-      const parsedBalance = parseFloat(balances).toFixed(4);
+      const parsedBalance = PolkadotUtility.balanceFormatter(
+        chainDecimals,
+        token,
+        balance
+      );
       return { totalSupply: parsedBalance }
     } catch (error: any) {
       return Error(error || 'getTotalSupplyRepo error occurred.');
