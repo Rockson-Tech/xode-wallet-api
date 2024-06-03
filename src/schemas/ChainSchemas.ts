@@ -41,9 +41,9 @@ export interface IResponseError {
 }
 
 // ----- GET TOTAL SUPPLY -----
-export interface IGetTotalSupplyRequestBody {
+export interface IGetTotalSupplyRequestParams {
 }
 
 // ----- GET CIRCULATING SUPPLY -----
-export interface IGetCirculatingSupplyRequestBody {
+export interface IGetCirculatingSupplyRequestParams {
 }

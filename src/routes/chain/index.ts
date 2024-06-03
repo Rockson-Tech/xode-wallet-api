@@ -16,8 +16,8 @@ import {
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody,
   IAirdropNativeRequestBody,
-  IGetTotalSupplyRequestBody,
-  IGetCirculatingSupplyRequestBody,
+  IGetTotalSupplyRequestParams,
+  IGetCirculatingSupplyRequestParams,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -82,7 +82,7 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   fastify.get<{
-    Querystring: IGetTotalSupplyRequestBody;
+    Querystring: IGetTotalSupplyRequestParams;
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/totalsupply',
@@ -91,7 +91,7 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   fastify.get<{
-    Querystring: IGetCirculatingSupplyRequestBody;
+    Querystring: IGetCirculatingSupplyRequestParams;
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/circulatingsupply',
