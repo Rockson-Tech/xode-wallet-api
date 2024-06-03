@@ -15,7 +15,7 @@ export const mint = {
             'value',
         ],
     },
-    // Response schema for success
+    // Response schema
     response: {
         200: {
             description: 'Success response after minting token.',

@@ -131,3 +131,36 @@ export const submitExtrinsicController = async (
       reply.status(500).send('Internal Server Error: ' + error);
     }
 };
+
+
+export const getTotalSupplyController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const result = await ChainRepository.getTotalSupplyRepo();
+      if (result instanceof Error) {
+        throw result;
+      }
+      return reply.send(result);
+    } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
+
+export const getCirculatingSupplyController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const result = await ChainRepository.getCirculatingSupplyRepo();
+      if (result instanceof Error) {
+        throw result;
+      }
+      return reply.send(result);
+    } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+};
