@@ -38,7 +38,8 @@ export const readAllWalletController = async (
     reply: FastifyReply
 ) => {
     try {
-        const result = await WalletRepository.getWallets();
+        const query: any = request.query;
+        const result = await WalletRepository.getWallets(query);
         if (result instanceof Error) {
             throw result;
         }
