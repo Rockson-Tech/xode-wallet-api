@@ -1,6 +1,6 @@
 // Schema for getting user NFTs
 export const circulating_supply = {
-    summary: 'Get total supply.',
+    summary: 'Get circulating supply.',
     tags: ['Chain'],
     description: 'Schema for getting circulating supply of tokens. ',
     // Response schema for success
