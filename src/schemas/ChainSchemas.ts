@@ -42,5 +42,8 @@ export interface IResponseError {
 
 // ----- GET TOTAL SUPPLY -----
 export interface IGetTotalSupplyRequestBody {
-  // extrinsic: string;
+}
+
+// ----- GET CIRCULATING SUPPLY -----
+export interface IGetCirculatingSupplyRequestBody {
 }

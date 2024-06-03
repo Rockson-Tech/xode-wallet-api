@@ -147,4 +147,20 @@ export const getTotalSupplyController = async (
     } catch (error: any) {
       reply.status(500).send('Internal Server Error: ' + error);
     }
-  };
+};
+
+export const getCirculatingSupplyController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const result = await ChainRepository.getCirculatingSupplyRepo();
+      if (result instanceof Error) {
+        throw result;
+      }
+      return reply.send(result);
+    } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+};

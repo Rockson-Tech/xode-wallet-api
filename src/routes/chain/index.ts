@@ -6,6 +6,7 @@ import {
   submitExtrinsicController,
   tokenTransferController,
   getTotalSupplyController,
+  getCirculatingSupplyController,
 } from '../../controllers/ChainController';
 import { airdropController } from '../../controllers/AssetController';
 import {
@@ -16,6 +17,7 @@ import {
   ISubmitExtrinsicRequestBody,
   IAirdropNativeRequestBody,
   IGetTotalSupplyRequestBody,
+  IGetCirculatingSupplyRequestBody,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -24,6 +26,7 @@ import { user_token_balance } from '../../swaggerschema/chain/user_token_balance
 import { token_transfer } from '../../swaggerschema/chain/token_transfer';
 import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
 import { total_supply } from '../../swaggerschema/chain/total_supply';
+import { circulating_supply } from '../../swaggerschema/chain/circulating_supply';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
@@ -85,6 +88,15 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     '/totalsupply',
     { schema: total_supply },
     getTotalSupplyController
+  );
+
+  fastify.get<{
+    Querystring: IGetCirculatingSupplyRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/circulatingsupply',
+    { schema: circulating_supply },
+    getCirculatingSupplyController
   );
 };
 
