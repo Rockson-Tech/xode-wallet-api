@@ -6,7 +6,7 @@ export const total_supply = {
     // Response schema for success
     response: {
         200: {
-            description: 'Succesful response getting list of tokens',
+            description: 'Succesful response getting supply of tokens',
             type: 'object',
             properties: {
                 totalSupply: { type: 'number' },
