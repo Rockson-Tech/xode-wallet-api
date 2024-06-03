@@ -1,5 +1,6 @@
 import TXRepository from '../modules/TXRepository';
 import InitializeAPI from '../modules/InitializeAPI';
+import PolkadotUtility from '../modules/PolkadotUtility';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { 
@@ -7,7 +8,6 @@ import {
   ITransferRequestBody,
   IBurnRequestBody,
 } from '../schemas/AstroSchemas';
-import { formatBalance } from '@polkadot/util';
 import abi from '../smartcontracts/astrochibbi/astro_economy.json';
 
 export default class AstroRepository {
@@ -190,16 +190,11 @@ export default class AstroRepository {
       const mtdt = metadata.ok;
       const balOf = balanceOf.ok;
       const bigintbalance = BigInt(balOf);
-      formatBalance.setDefaults({ decimals: parseInt(mtdt.decimals), unit: mtdt.tokenSymbol });
-      formatBalance.getDefaults();
-      const bal = formatBalance(
-        bigintbalance, 
-        { 
-          forceUnit: mtdt.tokenSymbol, 
-          withUnit: false 
-        }
+      const balances = PolkadotUtility.balanceFormatter(
+        parseInt(mtdt.decimals),
+        [mtdt.tokenSymbol],
+        bigintbalance
       );
-      const balances = parseFloat(bal.replace(/,/g, '')).toFixed(4);
       return { 
         balance: balances,
         symbol: mtdt.tokenSymbol,

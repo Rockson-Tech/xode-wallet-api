@@ -12,7 +12,7 @@ export default class PolkadotUtility {
             formatBalance.getDefaults();
             const free = formatBalance(balance, { forceUnit: token[0], withUnit: false });
             const balances = free.split(',').join('');
-            const parsedBalance = parseFloat(balances).toFixed(4);
+            const parsedBalance = parseFloat(balances.replace(/,/g, '')).toFixed(4);
             return parsedBalance;
         } catch (error: any) {
             return Error(error);
