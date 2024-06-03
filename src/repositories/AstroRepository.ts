@@ -187,7 +187,8 @@ export default class AstroRepository {
         TXRepository.sendContractQuery(api, contract, 'metadata', [], instance),
         TXRepository.sendContractQuery(api, contract, 'balanceOf', [ account ], instance),
       ])
-      const mtdt = metadata.ok;
+      const tempVal = { decimals: '6', tokenSymbol: 'ASTRO', tokenName: 'AstroChibbi' };
+      const mtdt = metadata.ok != undefined ? metadata.ok : tempVal;
       const balOf = balanceOf.ok;
       const bigintbalance = BigInt(balOf);
       const balances = PolkadotUtility.balanceFormatter(
