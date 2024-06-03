@@ -39,3 +39,8 @@ export interface IResponseError {
   status: number;
   message: string;
 }
+
+// ----- GET TOTAL SUPPLY -----
+export interface IGetTotalSupplyRequestBody {
+  // extrinsic: string;
+}

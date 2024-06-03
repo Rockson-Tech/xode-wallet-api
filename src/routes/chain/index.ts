@@ -5,6 +5,7 @@ import {
   tokenListController,
   submitExtrinsicController,
   tokenTransferController,
+  getTotalSupplyController,
 } from '../../controllers/ChainController';
 import { airdropController } from '../../controllers/AssetController';
 import {
@@ -14,6 +15,7 @@ import {
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody,
   IAirdropNativeRequestBody,
+  IGetTotalSupplyRequestBody,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -21,6 +23,7 @@ import { token_list } from '../../swaggerschema/chain/token_list';
 import { user_token_balance } from '../../swaggerschema/chain/user_token_balance';
 import { token_transfer } from '../../swaggerschema/chain/token_transfer';
 import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
+import { total_supply } from '../../swaggerschema/chain/total_supply';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
@@ -73,6 +76,15 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
   }>(
     '/airdrop',
     airdropController
+  );
+
+  fastify.get<{
+    Querystring: IGetTotalSupplyRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/totalsupply',
+    { schema: total_supply },
+    getTotalSupplyController
   );
 };
 

@@ -181,4 +181,33 @@ export default class ChainRepository {
       }
     }
   }
+
+  static async getTotalSupplyRepo() {
+    console.log('getTotalSupplyRepo function was called');
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const [balance, chainDecimals, token] = await Promise.all([
+        api.query.balances.totalIssuance(),
+        api.registry.chainDecimals[0],
+        api.registry.chainTokens,
+      ]);
+      formatBalance.setDefaults({ decimals: chainDecimals, unit: token[0] });
+      formatBalance.getDefaults();
+      const free = formatBalance(balance, { forceUnit: token[0], withUnit: false });
+      const balances = free.split(',').join('');
+      const parsedBalance = parseFloat(balances).toFixed(4);
+      return { totalSupply: parsedBalance }
+    } catch (error: any) {
+      return Error(error || 'getTotalSupplyRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
 }
