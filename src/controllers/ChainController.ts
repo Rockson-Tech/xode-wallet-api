@@ -164,3 +164,30 @@ export const getCirculatingSupplyController = async (
       reply.status(500).send('Internal Server Error: ' + error);
     }
 };
+
+export const getSupplyController = async (
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) => {
+    try {
+      WebsocketHeader.handleWebsocket(request);
+      const [totalSupplyResult, circulatingSupplyResult] = await Promise.all([
+        ChainRepository.getTotalSupplyRepo(),
+        ChainRepository.getCirculatingSupplyRepo(),
+      ]);
+      if (totalSupplyResult instanceof Error) {
+        throw totalSupplyResult;
+      }
+      if (circulatingSupplyResult instanceof Error) {
+        throw circulatingSupplyResult;
+      }
+      const circulatingSupply = (circulatingSupplyResult as { circulatingSupply: string }).circulatingSupply;
+      const totalSupply = (totalSupplyResult as { totalSupply: string }).totalSupply;
+      return reply.send({
+        circulatingSupply,
+        totalSupply,
+      });
+    } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+    }
+};

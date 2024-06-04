@@ -7,6 +7,7 @@ import {
   tokenTransferController,
   getTotalSupplyController,
   getCirculatingSupplyController,
+  getSupplyController,
 } from '../../controllers/ChainController';
 import { airdropController } from '../../controllers/AssetController';
 import {
@@ -18,6 +19,7 @@ import {
   IAirdropNativeRequestBody,
   IGetTotalSupplyRequestParams,
   IGetCirculatingSupplyRequestParams,
+  IGetSupplyRequestParams,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -97,6 +99,14 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     '/circulatingsupply',
     { schema: circulating_supply },
     getCirculatingSupplyController
+  );
+
+  fastify.get<{
+    Querystring: IGetSupplyRequestParams;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/supply',
+    getSupplyController
   );
 };
 
