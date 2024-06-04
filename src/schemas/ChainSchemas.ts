@@ -47,3 +47,8 @@ export interface IGetTotalSupplyRequestParams {
 // ----- GET CIRCULATING SUPPLY -----
 export interface IGetCirculatingSupplyRequestParams {
 }
+
+// ----- GET CIRCULATING AND TOTAL SUPPLY -----
+export interface IGetSupplyRequestParams {
+}
+
