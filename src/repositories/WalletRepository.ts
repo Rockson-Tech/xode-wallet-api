@@ -20,8 +20,29 @@ export default class WalletRepository {
       }
   };
   
-  static getWallets = async () => {
-    const targetWallets = await prisma.wallets.findMany();
+  static getWallets = async (query: any) => {
+    let where = {};
+    if (query.start && query.end) {
+      where = {
+        created_at: {
+          gte: new Date(query.start),
+          lte: new Date(query.end),
+        },
+      };
+    } else if (query.created_at) {
+      const startDate = new Date(query.created_at);
+      const endDate = new Date(startDate);
+      endDate.setUTCDate(startDate.getUTCDate() + 1);
+      where = {
+        created_at: {
+          gte: startDate,
+          lt: endDate,
+        },
+      };
+    }
+    const targetWallets = await prisma.wallets.findMany({
+      where,
+    });
     return targetWallets;
   };
   

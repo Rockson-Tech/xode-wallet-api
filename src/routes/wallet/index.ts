@@ -25,7 +25,7 @@ const wallet: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   fastify.get<{
-    Querystring: IReadOneWalletRequestParams;
+    Querystring: any;
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/',
