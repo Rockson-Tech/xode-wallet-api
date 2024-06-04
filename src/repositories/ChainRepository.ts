@@ -214,45 +214,46 @@ export default class ChainRepository {
   static async getCirculatingSupplyRepo() {
     console.log('getTotalSupplyRepo function was called');
     var api: any;
+    const mainnet_accounts = [
+      '5HafQavv6qpUABpVR6csSXeywLqdNMqAMUbYZ7jkGVLYpzgW',
+      '5Eppkh8cv4jEMVLK9JX4k6D7m5hFJY2x8xNfuF8bHMJ4CTHp',
+      '5CoUJqrmuWfw5C4kdVff3QZrXQXfFqygdRb24PrQWPW2cP1W',
+      '5HTTw2HsmHRgE2Qbv8X8wPVmCib6SkJ71PNPJtDnvaoVYNhq',
+      '5CnmnG5hzGBRUrrfWPUNki96oVAQJ8LvcUXANm1BEaCTuj95',
+      '5HMmQv1FhRqysgegzRp6ehBNgDbiLTidF8kJnZQyF1jz1ezn'
+    ];
+    const testnet_accounts = [
+      '5HDvEs87C2JNVGkRrW8M68hUmtjZ4kNkWhUjYPxysrnAfcKa', 
+      '5D7Jtfmsx4exkDFVDRpub5iBvbBVyqAAW54E7UybMxH91yBe'
+    ];
     try {
       await cryptoWaitReady();
       api = await InitializeAPI.apiInitialization();
       if (api instanceof Error) {
         return api;
       }
-      const [account1, account2, totalSupply, chainDecimals, token] = await Promise.all([
-        api.query.system.account('5HDvEs87C2JNVGkRrW8M68hUmtjZ4kNkWhUjYPxysrnAfcKa'),
-        api.query.system.account('5D7Jtfmsx4exkDFVDRpub5iBvbBVyqAAW54E7UybMxH91yBe'),
+      const isMainnet = process.env.WS_PROVIDER_ENDPOINT === process.env.MAINNET_WS_PROVIDER_ENDPOINT;
+      const accounts = isMainnet
+        ? mainnet_accounts
+        : testnet_accounts;
+      const [accountBalances, totalSupply, chainDecimals, token] = await Promise.all([
+        Promise.all(accounts.map(account => api.query.system.account(account))),
         api.query.balances.totalIssuance(),
         api.registry.chainDecimals[0],
-        api.registry.chainTokens,
+        api.registry.chainTokens[0],
       ]);
-      const account1Balance = PolkadotUtility.balanceFormatter(
-        chainDecimals,
-        token,
-        account1.data.free
+      const formattedBalances = await Promise.all(
+        accountBalances.map(account => PolkadotUtility.balanceFormatter(chainDecimals, token, account.data.free))
       );
-      const account2Balance = PolkadotUtility.balanceFormatter(
-        chainDecimals,
-        token,
-        account2.data.free
-      );
-      const chainTotalSupply = PolkadotUtility.balanceFormatter(
-        chainDecimals,
-        token,
-        totalSupply
-      );
-      if (
-        account1Balance instanceof Error ||
-        account2Balance instanceof Error ||
-        chainTotalSupply instanceof Error
-      ) {
-        return account1Balance || account2Balance || chainTotalSupply;
+      const formattedTotalSupply = PolkadotUtility.balanceFormatter(chainDecimals, token, totalSupply);
+      const errorBalance = formattedBalances.find(balance => balance instanceof Error);
+      if (errorBalance || formattedTotalSupply instanceof Error) {
+        return errorBalance || formattedTotalSupply;
       }
-      const convertedOne = parseFloat(account1Balance);
-      const convertedTwo = parseFloat(account2Balance);
-      const convertedThree = parseFloat(chainTotalSupply);
-      return { circulatingSupply: (convertedThree - (convertedOne + convertedTwo)).toFixed(4) }
+      const balances = formattedBalances.map(balance => parseFloat(balance as string));
+      const totalSupplyNumber = parseFloat(formattedTotalSupply as string);
+      const circulatingSupply = balances.reduce((acc, balance) => acc - balance, totalSupplyNumber);
+      return { circulatingSupply: circulatingSupply.toFixed(4) };
     } catch (error: any) {
       return Error(error || 'getTotalSupplyRepo error occurred.');
     } finally {
