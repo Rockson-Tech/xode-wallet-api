@@ -220,7 +220,8 @@ export default class ChainRepository {
       '5CoUJqrmuWfw5C4kdVff3QZrXQXfFqygdRb24PrQWPW2cP1W',
       '5HTTw2HsmHRgE2Qbv8X8wPVmCib6SkJ71PNPJtDnvaoVYNhq',
       '5CnmnG5hzGBRUrrfWPUNki96oVAQJ8LvcUXANm1BEaCTuj95',
-      '5HMmQv1FhRqysgegzRp6ehBNgDbiLTidF8kJnZQyF1jz1ezn'
+      '5HMmQv1FhRqysgegzRp6ehBNgDbiLTidF8kJnZQyF1jz1ezn',
+      '5Dqs2Bid5UuWefFQautKxX2jAYfAgrzAPbwTKU6u5z4MeDB2'
     ];
     const testnet_accounts = [
       '5HDvEs87C2JNVGkRrW8M68hUmtjZ4kNkWhUjYPxysrnAfcKa', 
