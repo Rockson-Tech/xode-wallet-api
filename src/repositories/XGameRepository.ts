@@ -266,6 +266,8 @@ export default class XGameRepository {
           nonce = newNonce;
         }
       }
+      const tx = api.tx.assets.freezeAsset(instance.assetId); 
+      await tx.signAndSend(owner, { nonce });
       return;
     } catch (error: any) {
       return Error(error || 'airdropXGMRepo error occurred.');
