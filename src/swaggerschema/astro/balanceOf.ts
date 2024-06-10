@@ -20,8 +20,9 @@ export const balanceOf = {
             type: 'object',
             properties: {
                 balance: { type: 'string' },
-                price: { type: 'string' },
                 symbol: { type: 'string' },
+                name: { type: 'string' },
+                price: { type: 'string' },
             },
         },
         // Response schema for unspecified code
