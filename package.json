@@ -28,7 +28,7 @@
     "@fastify/swagger": "8.10.0",
     "@fastify/swagger-ui": "^1.9.3",
     "@polkadot/api": "^10.9.1",
-    "@polkadot/api-contract": "^10.9.1",
+    "@polkadot/api-contract": "^10.13.1",
     "@prisma/client": "^4.16.2",
     "@types/superagent": "^4.1.18",
     "bcrypt": "^5.1.0",
