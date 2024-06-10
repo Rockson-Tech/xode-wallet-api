@@ -11,7 +11,7 @@ import {
 export default class ChainRepository {
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   xonPrice = '10';
-  abi = require("./../smartcontracts/astro_nft.json");
+  abi = require("./../smartcontracts/astrochibbi/astro_nft.json");
 
   static async getSmartContractRepo() {
     console.log('getSmartContractRepo function was called');
