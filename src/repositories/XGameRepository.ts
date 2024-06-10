@@ -12,6 +12,7 @@ import { Keyring } from '@polkadot/api';
 export default class XGameRepository {
   assetId = process.env.XGM_ASSET_ID as string ?? '1';
   ownerSeed = process.env.XGM_SEED as string;
+  xgmPrice = '0.1';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -156,13 +157,15 @@ export default class XGameRepository {
         return {
           balance: balances,
           symbol: symbol,
-          name: name
+          name: name,
+          price: instance.xgmPrice,
         };
       } else {
         return {
           balance: '0.0000',
           symbol: 'XGM',
-          name: 'XGame'
+          name: 'XGame',
+          price: instance.xgmPrice,
         };
       };
     } catch (error: any) {

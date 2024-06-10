@@ -10,6 +10,7 @@ import {
 
 export default class ChainRepository {
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
+  xonPrice = '10';
   abi = require("./../smartcontracts/astro_nft.json");
 
   static async getSmartContractRepo() {
@@ -35,6 +36,7 @@ export default class ChainRepository {
 
   static async getTokensRepo(wallet_address: string) {
     console.log('getSmartContractRepo function was called');
+    const instance = new ChainRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -56,7 +58,8 @@ export default class ChainRepository {
         balance: free,
         // price: '0',
         symbol: tokens[0],
-        name: token_name
+        name: token_name,
+        price: instance.xonPrice
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
