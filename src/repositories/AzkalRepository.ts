@@ -12,6 +12,7 @@ import { Keyring } from '@polkadot/api';
 export default class AzkalRepository {
   assetId = process.env.AZK_ASSET_ID as string ?? '3';
   ownerSeed = process.env.AZK_SEED as string;
+  azkPrice = '000003';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -156,13 +157,15 @@ export default class AzkalRepository {
         return {
           balance: balances,
           symbol: symbol,
-          name: name
+          name: name,
+          price: instance.azkPrice,
         };
       } else {
         return {
           balance: '0.0000',
           symbol: 'AZK',
-          name: 'Azkal'
+          name: 'Azkal',
+          price: instance.azkPrice,
         };
       };
     } catch (error: any) {
