@@ -21,6 +21,8 @@ export const balanceOf = {
             properties: {
                 balance: { type: 'string' },
                 symbol: { type: 'string' },
+                name: {type: 'string' },
+                price: { type: 'string' },
             },
         },
         // Response schema for unspecified code
