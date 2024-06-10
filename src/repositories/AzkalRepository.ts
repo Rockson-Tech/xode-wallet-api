@@ -12,7 +12,7 @@ import { Keyring } from '@polkadot/api';
 export default class AzkalRepository {
   assetId = process.env.AZK_ASSET_ID as string ?? '3';
   ownerSeed = process.env.AZK_SEED as string;
-  azkPrice = '000003';
+  azkPrice = '0.000003';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -266,6 +266,8 @@ export default class AzkalRepository {
           nonce = newNonce;
         }
       }
+      const tx = api.tx.assets.freezeAsset(instance.assetId); 
+      await tx.signAndSend(owner, { nonce });
       return;
     } catch (error: any) {
       return Error(error || 'airdropAZKRepo error occurred.');
