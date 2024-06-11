@@ -315,6 +315,9 @@ export default class ChainRepository {
     try {
       const response = await axios.get('https://open.er-api.com/v6/latest/USD');
       const uppercaseCurrency = currency.toUpperCase();
+      if (!(uppercaseCurrency in response.data.rates)) {
+        return Error('Currency not found!');
+      }
       const currencyRate = response.data.rates[uppercaseCurrency];
       return { currency: uppercaseCurrency, rate: currencyRate};
     } catch (error: any) {
