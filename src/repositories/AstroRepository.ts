@@ -14,6 +14,7 @@ export default class AstroRepository {
   economyAddress = process.env.ASTRO_ECONOMY_ADDRESS as string;
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   astroPrice = '0.1';
+  astroImage = 'https://bafkreigf3jkz5z3ivtwawtvxwzkb3vigser5gtll7vn3n3gp6mq6at722e.ipfs.cf-ipfs.com/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -201,7 +202,7 @@ export default class AstroRepository {
         symbol: mtdt.tokenSymbol,
         name: mtdt.tokenName,
         price: instance.astroPrice,
-        image: '',
+        image: instance.astroImage,
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
@@ -277,7 +278,7 @@ export default class AstroRepository {
         name: metadata.ok.tokenName,
         symbol: metadata.ok.tokenSymbol,
         decimals: metadata.ok.decimals.toString(),
-        image: '',
+        image: instance.astroImage,
         price: instance.astroPrice,
       }
     } catch (error: any) {
