@@ -1,9 +1,15 @@
 // Schema for getting user NFTs
 export const user_token_balance = {
-    summary: 'Get list of tokens integrated to XODE',
+    summary: 'Get user balance on each token.',
     tags: ['Chain'],
-    description: 'Schema for getting list of tokens. ',
+    description: 'Schema for getting user token balances. ',
     // Request body schema
+    query: {
+        type: 'object',
+        properties: {
+            currency: { type: 'string' },
+        },
+    },
     params: {
         type: 'object',
         properties: {
@@ -14,16 +20,24 @@ export const user_token_balance = {
     // Response schema for success
     response: {
         200: {
-            description: 'Succesful response getting list of tokens',
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    balance: { type: 'number' },
-                    symbol: { type: 'string' },
-                    name: {type: 'string' },
-                    price: { type: 'string' },
+            description: 'Succesful response getting balance of each tokens',
+            type: 'object',
+            properties: {
+                tokens: { 
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            balance: { type: 'number' },
+                            symbol: { type: 'string' },
+                            name: {type: 'string' },
+                            price: { type: 'string' },
+                        }
+                    },
                 },
+                currency: { type: 'string' },
+                rate: { type: 'string' },
+                total: { type: 'string' },
             },
         },
         // Response schema for unspecified code

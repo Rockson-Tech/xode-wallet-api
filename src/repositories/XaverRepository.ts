@@ -218,7 +218,8 @@ export default class XaverRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/'
+        image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/',
+        price: instance.xavPrice,
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');
