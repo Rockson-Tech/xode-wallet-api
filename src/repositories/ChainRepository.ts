@@ -74,6 +74,7 @@ export default class ChainRepository {
 
   static async getTokenMetadataRepo() {
     console.log('getTokenMetadataRepo function was called');
+    const instance = new ChainRepository();
     var api: any;
     try {
       await cryptoWaitReady();
@@ -86,7 +87,8 @@ export default class ChainRepository {
         name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
         decimals: properties.toHuman().tokenDecimals[0],
-        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/'
+        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/',
+        price: instance.xonPrice,
       }
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');
