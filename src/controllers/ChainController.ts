@@ -75,7 +75,7 @@ export const getTokensController = async (
       }
       let total = validTokenResults.reduce((acc, token) => {
           if ('balance' in token && typeof token.balance === 'string') {
-              return acc + (parseFloat(token.balance) * parseFloat(token.price));
+              return acc + ((parseFloat(token.balance) * parseFloat(token.price) * rateResult.rate));
           }
           return acc;
       }, 0);
