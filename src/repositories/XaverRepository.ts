@@ -164,6 +164,7 @@ export default class XaverRepository {
           symbol: 'XAV',
           name: 'Xaver',
           price: instance.xavPrice,
+          image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/',
         };
       };
     } catch (error: any) {

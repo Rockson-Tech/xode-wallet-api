@@ -200,7 +200,8 @@ export default class AstroRepository {
         balance: balances,
         symbol: mtdt.tokenSymbol,
         name: mtdt.tokenName,
-        price: instance.astroPrice
+        price: instance.astroPrice,
+        image: '',
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');

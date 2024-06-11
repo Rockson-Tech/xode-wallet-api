@@ -58,10 +58,10 @@ export default class ChainRepository {
       );
       return {
         balance: free,
-        // price: '0',
         symbol: tokens[0],
         name: token_name,
-        price: instance.xonPrice
+        price: instance.xonPrice,
+        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/',
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');

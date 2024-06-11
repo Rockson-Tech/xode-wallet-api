@@ -166,6 +166,7 @@ export default class XGameRepository {
           symbol: 'XGM',
           name: 'XGame',
           price: instance.xgmPrice,
+          image: 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/',
         };
       };
     } catch (error: any) {
