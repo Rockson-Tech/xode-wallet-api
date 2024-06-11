@@ -8,6 +8,7 @@ import {
   getTotalSupplyController,
   getCirculatingSupplyController,
   getSupplyController,
+  getTokenPricesController,
 } from '../../controllers/ChainController';
 import { airdropController } from '../../controllers/AssetController';
 import {
@@ -20,6 +21,7 @@ import {
   IGetTotalSupplyRequestParams,
   IGetCirculatingSupplyRequestParams,
   IGetSupplyRequestParams,
+  IGetTokenPriceRequestParams,
   IResponseSuccessful,
   IResponseError,
 } from '../../schemas/ChainSchemas';
@@ -29,6 +31,7 @@ import { token_transfer } from '../../swaggerschema/chain/token_transfer';
 import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
 import { total_supply } from '../../swaggerschema/chain/total_supply';
 import { circulating_supply } from '../../swaggerschema/chain/circulating_supply';
+import { token_prices } from '../../swaggerschema/chain/token_prices';
 
 const chain: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get<{
@@ -107,6 +110,15 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
   }>(
     '/supply',
     getSupplyController
+  );
+
+  fastify.get<{
+    Querystring: IGetTokenPriceRequestParams;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/price/:currency',
+    { schema: token_prices },
+    getTokenPricesController
   );
 };
 

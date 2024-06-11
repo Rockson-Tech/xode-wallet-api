@@ -1,0 +1,44 @@
+// Schema for getting user NFTs
+export const token_prices = {
+    summary: 'Get token prices.',
+    tags: ['Chain'],
+    description: 'Schema for token prices using currency. ',
+    // Request params schema
+    params: {
+        type: 'object',
+        properties: {
+            currency: { type: 'string' },
+        },
+        required: [
+            'currency',
+        ],
+    },
+    // Response schema for success
+    response: {
+        200: {
+            description: 'Succesful response token prices',
+            type: 'object',
+            properties: {
+                currency: { type: 'string' },
+                prices: { 
+                    type: 'object',
+                    properties: {
+                        XON: { type: 'number' },
+                        AZK: { type: 'number' },
+                        XAV: { type: 'number' },
+                        XGM: { type: 'number' },
+                    }, 
+                },
+            },
+        },
+        // Response schema for unspecified code
+        default: {
+            description: 'Default response',
+            type: 'object',
+            properties: {
+                status: { type: 'number' },
+                message: { type: 'string' },
+            },
+        }
+    },
+};

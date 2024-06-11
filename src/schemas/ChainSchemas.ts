@@ -52,3 +52,7 @@ export interface IGetCirculatingSupplyRequestParams {
 export interface IGetSupplyRequestParams {
 }
 
+// ----- GET TOKEN PRICES -----
+export interface IGetTokenPriceRequestParams {
+  currency: string;
+}

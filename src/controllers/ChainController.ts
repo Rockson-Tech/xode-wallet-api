@@ -3,6 +3,7 @@ import {
     ITokensRequestParams,
     ITransferTokenRequestBody,
     ISubmitExtrinsicRequestBody,
+    IGetTokenPriceRequestParams,
 } from '../schemas/ChainSchemas';
 import WebsocketHeader from '../modules/WebsocketHeader';
 import ChainRepository from '../repositories/ChainRepository';
@@ -190,4 +191,26 @@ export const getSupplyController = async (
     } catch (error: any) {
       reply.status(500).send('Internal Server Error: ' + error);
     }
+};
+
+export const getTokenPricesController = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    WebsocketHeader.handleWebsocket(request);
+    const requestParams = request.params as IGetTokenPriceRequestParams;
+    if (!requestParams || 
+      !requestParams.currency
+    ) {
+        return reply.badRequest("Invalid request body. Required fields: 'currency'");
+    }
+    const result = await ChainRepository.getTokenPricesRepo(requestParams.currency);
+    if (result instanceof Error) {
+      throw result;
+    }
+    return reply.send(result);
+  } catch (error: any) {
+    reply.status(500).send('Internal Server Error: ' + error);
+  }
 };
