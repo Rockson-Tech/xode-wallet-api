@@ -293,7 +293,10 @@ export default class ChainRepository {
       const azkPrice: number = 0.000003;
       const xavPrice: number = 0.1;
       const xgmPrice: number = 0.1;
-      const result: any = await this.forexRepo(currency)
+      const result: any = await this.forexRepo(currency);
+      if (result instanceof Error) {
+        return result;
+      }
       const prices = {
         XON: xonPrice * result.rate,
         AZK: azkPrice * result.rate,
