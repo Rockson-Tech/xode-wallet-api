@@ -7,6 +7,8 @@ import {
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody 
 } from '../schemas/ChainSchemas';
+import abi from '../smartcontracts/xode/transfer_controller.json';
+import axios from 'axios';
 
 export default class ChainRepository {
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
@@ -156,6 +158,11 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
+      const contractAddress = '5GEWpoRwekYSSohumnMrWnnPf4EFhCFQ4nnk4sJzroJRwbY8';
+      const contract = await TXRepository.getContract(api, abi, contractAddress);
+      if (contract === undefined) { 
+        return Error('Contract undefined');
+      }
       const chainDecimals = api.registry.chainDecimals[0];
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
@@ -166,7 +173,17 @@ export default class ChainRepository {
         const batch = data.slice(index, index + 1);
         for (const address of batch) {
           console.log(`Index: ${index} - `, address);
-          const tx = api.tx.balances.transferKeepAlive(address, value); 
+          const tx =  contract.tx['transferToken'](
+            {
+              storageDepositLimit: null,
+              gasLimit: api?.registry.createType('WeightV2', {
+                refTime: 300000000000,
+                proofSize: 500000,
+              }),
+            },
+            address,
+            value
+          );
           await tx.signAndSend(owner, { nonce });
         }
         index += 1;
@@ -266,4 +283,27 @@ export default class ChainRepository {
       }
     }
   }
+
+  static getTokenPricesRepo = async (currency: string) => {
+    console.log('getTokenPricesRepo function was called');
+    try {
+      const xonPrice: number = 10;
+      const azkPrice: number = 0.000003;
+      const xavPrice: number = 0.1;
+      const xgmPrice: number = 0.1;
+      const response = await axios.get('https://open.er-api.com/v6/latest/USD');
+      const lowercaseCurrency = currency.toUpperCase();
+      const currencyRate = response.data.rates[lowercaseCurrency];
+      const prices = {
+        XON: (xonPrice * currencyRate).toFixed(4),
+        AZK: (azkPrice * currencyRate).toFixed(4),
+        XAV: (xavPrice * currencyRate).toFixed(4),
+        XGM: (xgmPrice * currencyRate).toFixed(4)
+      };
+      return { currency: lowercaseCurrency, prices};
+    } catch (error: any) {
+      console.log('getTokenPricesRepo: ', error);
+      return Error(error);
+    }
+  };
 }
