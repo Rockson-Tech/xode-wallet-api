@@ -13,6 +13,7 @@ export default class XGameRepository {
   assetId = process.env.XGM_ASSET_ID as string ?? '1';
   ownerSeed = process.env.XGM_SEED as string;
   xgmPrice = '0.1';
+  xgmImage = 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -166,7 +167,7 @@ export default class XGameRepository {
           symbol: 'XGM',
           name: 'XGame',
           price: instance.xgmPrice,
-          image: 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/',
+          image: instance.xgmImage,
         };
       };
     } catch (error: any) {
@@ -221,7 +222,7 @@ export default class XGameRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/',
+        image: instance.xgmImage,
         price: instance.xgmPrice,
       }
     } catch (error: any) {

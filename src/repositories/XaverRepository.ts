@@ -11,6 +11,7 @@ import {
 export default class XaverRepository {
   assetId = process.env.XAV_ASSET_ID as string ?? '2';
   xavPrice = '0.1';
+  xavImage = 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -164,7 +165,7 @@ export default class XaverRepository {
           symbol: 'XAV',
           name: 'Xaver',
           price: instance.xavPrice,
-          image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/',
+          image: instance.xavImage,
         };
       };
     } catch (error: any) {
@@ -219,7 +220,7 @@ export default class XaverRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: 'https://bafkreigfcr6acjyeeymootffmipmhbo4mc6pyxbm43m32nzhe3w6abaxqq.ipfs.cf-ipfs.com/',
+        image: instance.xavImage,
         price: instance.xavPrice,
       }
     } catch (error: any) {

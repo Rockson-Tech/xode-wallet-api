@@ -207,6 +207,7 @@ export const getSupplyController = async (
       return reply.send({
         circulatingSupply,
         totalSupply,
+        tokenPrice: 10,
       });
     } catch (error: any) {
       reply.status(500).send('Internal Server Error: ' + error);

@@ -13,6 +13,7 @@ export default class AzkalRepository {
   assetId = process.env.AZK_ASSET_ID as string ?? '3';
   ownerSeed = process.env.AZK_SEED as string;
   azkPrice = '0.000003';
+  azkImage = 'https://bafkreigvkyppffmoywmyctdhnjqearugk4laorzjtsyfnanljcwdhzywky.ipfs.cf-ipfs.com/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -166,7 +167,7 @@ export default class AzkalRepository {
           symbol: 'AZK',
           name: 'Azkal',
           price: instance.azkPrice,
-          image: 'https://bafkreigvkyppffmoywmyctdhnjqearugk4laorzjtsyfnanljcwdhzywky.ipfs.cf-ipfs.com/',
+          image: instance.azkImage,
         };
       };
     } catch (error: any) {
@@ -221,7 +222,7 @@ export default class AzkalRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: 'https://bafkreigvkyppffmoywmyctdhnjqearugk4laorzjtsyfnanljcwdhzywky.ipfs.cf-ipfs.com/',
+        image: instance.azkImage,
         price: instance.azkPrice,
       }
     } catch (error: any) {
