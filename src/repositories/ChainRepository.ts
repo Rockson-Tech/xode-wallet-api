@@ -293,19 +293,30 @@ export default class ChainRepository {
       const azkPrice: number = 0.000003;
       const xavPrice: number = 0.1;
       const xgmPrice: number = 0.1;
-      const response = await axios.get('https://open.er-api.com/v6/latest/USD');
-      const lowercaseCurrency = currency.toUpperCase();
-      const currencyRate = response.data.rates[lowercaseCurrency];
+      const result: any = await this.forexRepo(currency)
       const prices = {
-        XON: xonPrice * currencyRate,
-        AZK: azkPrice * currencyRate,
-        XAV: xavPrice * currencyRate,
-        XGM: xgmPrice * currencyRate
+        XON: xonPrice * result.rate,
+        AZK: azkPrice * result.rate,
+        XAV: xavPrice * result.rate,
+        XGM: xgmPrice * result.rate
       };
-      return { currency: lowercaseCurrency, prices};
+      return { currency: result.currency, prices};
     } catch (error: any) {
       console.log('getTokenPricesRepo: ', error);
       return Error(error);
     }
   };
+
+  static forexRepo = async (currency: string) => {
+    console.log('forexRepo function was called');
+    try {
+      const response = await axios.get('https://open.er-api.com/v6/latest/USD');
+      const lowercaseCurrency = currency.toUpperCase();
+      const currencyRate = response.data.rates[lowercaseCurrency];
+      return { currency: lowercaseCurrency, rate: currencyRate};
+    } catch (error: any) {
+      console.log('forexRepo: ', error);
+      return Error(error);
+    }
+  }
 }

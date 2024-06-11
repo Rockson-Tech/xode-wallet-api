@@ -15,15 +15,23 @@ export const user_token_balance = {
     response: {
         200: {
             description: 'Succesful response getting balance of each tokens',
-            type: 'array',
-            items: {
-                type: 'object',
-                properties: {
-                    balance: { type: 'number' },
-                    symbol: { type: 'string' },
-                    name: {type: 'string' },
-                    price: { type: 'string' },
+            type: 'object',
+            properties: {
+                tokens: { 
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            balance: { type: 'number' },
+                            symbol: { type: 'string' },
+                            name: {type: 'string' },
+                            price: { type: 'string' },
+                        }
+                    },
                 },
+                currency: { type: 'string' },
+                rate: { type: 'string' },
+                total: { type: 'string' },
             },
         },
         // Response schema for unspecified code

@@ -49,22 +49,42 @@ export const getTokensController = async (
     reply: FastifyReply
 ) => {
     try {
-        WebsocketHeader.handleWebsocket(request);
-        const requestParams = request.params as ITokensRequestParams;
-        if (!requestParams || !requestParams.wallet_address) {
-            return reply.badRequest("Invalid request parameter. Required fields: 'wallet_address'");
-        }
-        const native = await Promise.all([
-            ChainRepository.getTokensRepo(requestParams.wallet_address),
-            AstroRepository.balanceOfRepo(requestParams.wallet_address),
-            AzkalRepository.balanceOfRepo(requestParams.wallet_address),
-            XGameRepository.balanceOfRepo(requestParams.wallet_address),
-            XaverRepository.balanceOfRepo(requestParams.wallet_address)
-        ])
-        if (native instanceof Error) {
-            throw native;
-        }
-        return await reply.send(native);
+      WebsocketHeader.handleWebsocket(request);
+      const requestParams = request.params as ITokensRequestParams;
+      let requestQuery: any = request.query;
+      if (!requestParams || !requestParams.wallet_address) {
+          return reply.badRequest("Invalid request parameter. Required fields: 'wallet_address'");
+      }
+      requestQuery.currency = requestQuery.currency === undefined ? 'USD' : requestQuery.currency;
+      const [tokenResults, rateResult] = await Promise.all([
+          Promise.all([
+              ChainRepository.getTokensRepo(requestParams.wallet_address),
+              AstroRepository.balanceOfRepo(requestParams.wallet_address),
+              AzkalRepository.balanceOfRepo(requestParams.wallet_address),
+              XGameRepository.balanceOfRepo(requestParams.wallet_address),
+              XaverRepository.balanceOfRepo(requestParams.wallet_address)
+          ]),
+          ChainRepository.forexRepo(requestQuery.currency)
+      ]);
+      const validTokenResults = tokenResults.filter(result => !(result instanceof Error));
+      if (validTokenResults.length === 0) {
+          return reply.internalServerError("All repositories returned errors.");
+      }
+      if (rateResult instanceof Error) {
+          throw rateResult;
+      }
+      let total = validTokenResults.reduce((acc, token) => {
+          if ('balance' in token && typeof token.balance === 'string') {
+              return acc + (parseFloat(token.balance) * parseFloat(token.price));
+          }
+          return acc;
+      }, 0);
+      return await reply.send({ 
+          tokens: validTokenResults, 
+          currency: rateResult.currency, 
+          rate: (rateResult.rate).toFixed(4), 
+          total: total.toFixed(4) 
+      });
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
