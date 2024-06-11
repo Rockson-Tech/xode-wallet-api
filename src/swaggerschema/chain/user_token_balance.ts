@@ -4,6 +4,12 @@ export const user_token_balance = {
     tags: ['Chain'],
     description: 'Schema for getting user token balances. ',
     // Request body schema
+    query: {
+        type: 'object',
+        properties: {
+            currency: { type: 'string' },
+        },
+    },
     params: {
         type: 'object',
         properties: {
