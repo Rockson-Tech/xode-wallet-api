@@ -314,9 +314,9 @@ export default class ChainRepository {
     console.log('forexRepo function was called');
     try {
       const response = await axios.get('https://open.er-api.com/v6/latest/USD');
-      const lowercaseCurrency = currency.toUpperCase();
-      const currencyRate = response.data.rates[lowercaseCurrency];
-      return { currency: lowercaseCurrency, rate: currencyRate};
+      const uppercaseCurrency = currency.toUpperCase();
+      const currencyRate = response.data.rates[uppercaseCurrency];
+      return { currency: uppercaseCurrency, rate: currencyRate};
     } catch (error: any) {
       console.log('forexRepo: ', error);
       return Error(error);
