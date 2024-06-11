@@ -13,6 +13,7 @@ import axios from 'axios';
 export default class ChainRepository {
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
   xonPrice = '10';
+  xonImage = 'https://bafkreia5hy2nh46tarcpqybz37mey3lkhoyyxw4qecs7bxw22d4nftz4nm.ipfs.cf-ipfs.com/';
   abi = require("./../smartcontracts/astrochibbi/astro_nft.json");
 
   static async getSmartContractRepo() {
@@ -61,7 +62,7 @@ export default class ChainRepository {
         symbol: tokens[0],
         name: token_name,
         price: instance.xonPrice,
-        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/',
+        image: instance.xonImage,
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
@@ -87,7 +88,7 @@ export default class ChainRepository {
         name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
         decimals: properties.toHuman().tokenDecimals[0],
-        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/',
+        image: instance.xonImage,
         price: instance.xonPrice,
       }
     } catch (error: any) {
