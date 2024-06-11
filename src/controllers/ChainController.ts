@@ -75,7 +75,7 @@ export const getTokensController = async (
       }
       let total = validTokenResults.reduce((acc, token) => {
           if ('balance' in token && typeof token.balance === 'string') {
-              return acc + ((parseFloat(token.balance) * parseFloat(token.price) * rateResult.rate));
+              return acc + (parseFloat(token.balance) * parseFloat(token.price));
           }
           return acc;
       }, 0);
@@ -83,7 +83,7 @@ export const getTokensController = async (
           tokens: validTokenResults, 
           currency: rateResult.currency, 
           rate: (rateResult.rate).toFixed(4), 
-          total: total.toFixed(4) 
+          total: (total * rateResult.rate).toFixed(4) 
       });
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
