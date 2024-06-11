@@ -166,6 +166,7 @@ export default class AzkalRepository {
           symbol: 'AZK',
           name: 'Azkal',
           price: instance.azkPrice,
+          image: 'https://bafkreigvkyppffmoywmyctdhnjqearugk4laorzjtsyfnanljcwdhzywky.ipfs.cf-ipfs.com/',
         };
       };
     } catch (error: any) {

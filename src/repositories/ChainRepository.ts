@@ -58,10 +58,10 @@ export default class ChainRepository {
       );
       return {
         balance: free,
-        // price: '0',
         symbol: tokens[0],
         name: token_name,
-        price: instance.xonPrice
+        price: instance.xonPrice,
+        image: 'https://bafkreia4iwmdregtzmk4b2t2cwjudnxbqjd5rixduhcworzmy5qivp7boa.ipfs.cf-ipfs.com/',
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
@@ -293,7 +293,10 @@ export default class ChainRepository {
       const azkPrice: number = 0.000003;
       const xavPrice: number = 0.1;
       const xgmPrice: number = 0.1;
-      const result: any = await this.forexRepo(currency)
+      const result: any = await this.forexRepo(currency);
+      if (result instanceof Error) {
+        return result;
+      }
       const prices = {
         XON: xonPrice * result.rate,
         AZK: azkPrice * result.rate,
@@ -311,9 +314,12 @@ export default class ChainRepository {
     console.log('forexRepo function was called');
     try {
       const response = await axios.get('https://open.er-api.com/v6/latest/USD');
-      const lowercaseCurrency = currency.toUpperCase();
-      const currencyRate = response.data.rates[lowercaseCurrency];
-      return { currency: lowercaseCurrency, rate: currencyRate};
+      const uppercaseCurrency = currency.toUpperCase();
+      if (!(uppercaseCurrency in response.data.rates)) {
+        return Error('Currency not found!');
+      }
+      const currencyRate = response.data.rates[uppercaseCurrency];
+      return { currency: uppercaseCurrency, rate: currencyRate};
     } catch (error: any) {
       console.log('forexRepo: ', error);
       return Error(error);
