@@ -295,10 +295,10 @@ export default class ChainRepository {
       const lowercaseCurrency = currency.toUpperCase();
       const currencyRate = response.data.rates[lowercaseCurrency];
       const prices = {
-        XON: (xonPrice * currencyRate).toFixed(4),
-        AZK: (azkPrice * currencyRate).toFixed(4),
-        XAV: (xavPrice * currencyRate).toFixed(4),
-        XGM: (xgmPrice * currencyRate).toFixed(4)
+        XON: xonPrice * currencyRate,
+        AZK: azkPrice * currencyRate,
+        XAV: xavPrice * currencyRate,
+        XGM: xgmPrice * currencyRate
       };
       return { currency: lowercaseCurrency, prices};
     } catch (error: any) {
