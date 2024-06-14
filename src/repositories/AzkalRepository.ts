@@ -160,6 +160,7 @@ export default class AzkalRepository {
           symbol: symbol,
           name: name,
           price: instance.azkPrice,
+          image: instance.azkImage,
         };
       } else {
         return {

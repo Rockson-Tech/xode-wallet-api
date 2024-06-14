@@ -160,6 +160,7 @@ export default class XGameRepository {
           symbol: symbol,
           name: name,
           price: instance.xgmPrice,
+          image: instance.xgmImage,
         };
       } else {
         return {
