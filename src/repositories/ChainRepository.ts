@@ -287,24 +287,20 @@ export default class ChainRepository {
     }
   }
 
-  static getTokenPricesRepo = async (currency: string) => {
+  static getTokenPricesRepo = async (data: any) => {
     console.log('getTokenPricesRepo function was called');
     try {
       const xonPrice: number = 10;
       const azkPrice: number = 0.000003;
       const xavPrice: number = 0.1;
       const xgmPrice: number = 0.1;
-      const result: any = await this.forexRepo(currency);
-      if (result instanceof Error) {
-        return result;
-      }
       const prices = {
-        XON: xonPrice * result.rate,
-        AZK: azkPrice * result.rate,
-        XAV: xavPrice * result.rate,
-        XGM: xgmPrice * result.rate
+        XON: xonPrice * data.rate,
+        AZK: azkPrice * data.rate,
+        XAV: xavPrice * data.rate,
+        XGM: xgmPrice * data.rate
       };
-      return { currency: result.currency, prices};
+      return { currency: data.currency, prices };
     } catch (error: any) {
       console.log('getTokenPricesRepo: ', error);
       return Error(error);

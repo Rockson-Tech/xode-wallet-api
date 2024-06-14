@@ -158,6 +158,7 @@ export default class XaverRepository {
           symbol: symbol,
           name: name,
           price: instance.xavPrice,
+          image: instance.xavImage,
         };
       } else {
         return {

@@ -119,7 +119,6 @@ export const tokenTransferController = async (
     try {
         WebsocketHeader.handleWebsocket(request);
         const requestBody = request.body as ITransferTokenRequestBody;
-        console.log(requestBody);
         if (!requestBody || 
             !requestBody.to ||
             requestBody.value == null
@@ -226,7 +225,11 @@ export const getTokenPricesController = async (
     ) {
         return reply.badRequest("Invalid request body. Required fields: 'currency'");
     }
-    const result = await ChainRepository.getTokenPricesRepo(requestParams.currency);
+    const data = await ChainRepository.forexRepo(requestParams.currency);
+    if (data instanceof Error) {
+      throw data;
+    }
+    const result = await ChainRepository.getTokenPricesRepo(data);
     if (result instanceof Error) {
       throw result;
     }
