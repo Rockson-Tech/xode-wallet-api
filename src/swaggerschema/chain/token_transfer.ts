@@ -7,10 +7,10 @@ export const token_transfer = {
     body: {
         type: 'object',
         properties: {
-            to: { type: 'string' },
+            target: { type: 'string' },
             value: { type: 'number' },
         },
-        required: ['to', 'value'],
+        required: ['target', 'value'],
     },
     // Response schema
     response: {

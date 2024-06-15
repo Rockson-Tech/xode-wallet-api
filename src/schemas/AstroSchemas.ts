@@ -17,7 +17,7 @@ export interface IMintRequestBody {
 
 // ----- TRANSFER -----
 export interface ITransferRequestBody {
-  to: string;
+  target: string;
   from: string;
   value: number;
   token: string;

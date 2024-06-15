@@ -83,7 +83,7 @@ export default class AstroRepository {
         'transfer',
         owner,
         [ 
-          data.to,
+          data.target,
           data.value
         ],
         instance,
@@ -97,7 +97,7 @@ export default class AstroRepository {
         contract,
         'transfer',
         [ 
-          data.to,
+          data.target,
           data.value
         ],
         dryrunResult,
