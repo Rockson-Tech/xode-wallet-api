@@ -82,7 +82,7 @@ export default class XaverRepository {
           value
         ]
       );
-      return { hash: result.toHex() };
+      return { hash: result };
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {
