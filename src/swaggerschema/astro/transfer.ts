@@ -7,11 +7,11 @@ export const transfer = {
     body: {
         type: 'object',
         properties: {
-            to: { type: 'string' },
+            target: { type: 'string' },
             value: { type: 'number' },
         },
         required: [
-            'to',
+            'target',
             'value',
         ],
     },

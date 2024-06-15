@@ -114,7 +114,7 @@ export default class ChainRepository {
         'balances',
         'transfer',
         [
-          data.to, 
+          data.target, 
           data.value
         ]
       );

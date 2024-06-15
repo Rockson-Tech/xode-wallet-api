@@ -16,7 +16,7 @@ export interface ITokenListRequestParams {
 
 // ----- TRANSFER TOKEN -----
 export interface ITransferTokenRequestBody {
-  to: string,
+  target: string,
   value: string
 }
 
