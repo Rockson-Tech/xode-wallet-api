@@ -118,7 +118,7 @@ export default class ChainRepository {
           data.value
         ]
       );
-      return { hash: result.toHex() };
+      return { hash: result };
     } catch (error: any) {
       console.log('tokenTransferRepo: ' + error);
       return Error(error);
