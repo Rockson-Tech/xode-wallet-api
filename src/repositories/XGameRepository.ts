@@ -84,7 +84,7 @@ export default class XGameRepository {
           value
         ]
       );
-      return { hash: result };
+      return { hash: result.toHex() };
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');
     } finally {
