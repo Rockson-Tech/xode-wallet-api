@@ -13,7 +13,7 @@ export default class XGameRepository {
   assetId = process.env.XGM_ASSET_ID as string ?? '1';
   ownerSeed = process.env.XGM_SEED as string;
   xgmPrice = '0.1';
-  xgmImage = 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.cf-ipfs.com/';
+  xgmImage = 'https://bafkreicmjilgrfhp3ubklbt7pdjzzt3o66ixjuy2r7xv4ghsoyoayxanp4.ipfs.w3s.link/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
