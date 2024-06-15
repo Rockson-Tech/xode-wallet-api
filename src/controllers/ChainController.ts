@@ -120,7 +120,7 @@ export const tokenTransferController = async (
         WebsocketHeader.handleWebsocket(request);
         const requestBody = request.body as ITransferTokenRequestBody;
         if (!requestBody || 
-            !requestBody.to ||
+            !requestBody.target ||
             requestBody.value == null
         ) {
             return reply.badRequest("Invalid request body. Required fields: 'to', 'value");
