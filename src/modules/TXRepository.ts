@@ -122,8 +122,8 @@ export default class TXRepository {
         return new Promise(async (resolve, reject) => {
             try {
                 const dryRunResult = await this.dryRunExtrinsic(api, rawExtrinsic);
-                if (!dryRunResult) {
-                    return reject(dryRunResult);
+                if (!dryRunResult || dryRunResult.isErr) {
+                    return reject(dryRunResult instanceof Object ? dryRunResult.toHuman() : dryRunResult);
                 }
                 await await executeExtrinsic.send(async (result: any) => {
                     if (result.dispatchError) {
