@@ -59,7 +59,7 @@ export default class AstroRepository {
     }
   }
 
-  static async transferRepo(data: ITransferRequestBody) {
+  static async transferRepo(metadata: any, data: ITransferRequestBody) {
     console.log('transferRepo function was called');
     const instance = new AstroRepository();
     var api: any;
@@ -74,6 +74,7 @@ export default class AstroRepository {
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const storageDepositLimit = null;
+      const value = data.value * 10 ** metadata.decimals;
       if (contract === undefined) {
         throw Error('transferRepo contract undefined.');
       }
@@ -84,7 +85,7 @@ export default class AstroRepository {
         owner,
         [ 
           data.target,
-          data.value
+          value
         ],
         instance,
         storageDepositLimit
@@ -98,7 +99,7 @@ export default class AstroRepository {
         'transfer',
         [ 
           data.target,
-          data.value
+          value
         ],
         dryrunResult,
       )

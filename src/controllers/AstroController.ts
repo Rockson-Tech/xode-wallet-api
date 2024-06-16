@@ -47,8 +47,11 @@ export const transferController = async (
     ) {
       return reply.badRequest("Invalid request body.");
     }
-    
-    const result = await AstroRepository.transferRepo(requestBody);
+    const metadata = await AstroRepository.getContractMetadataRepo();
+    if (metadata instanceof Error) {
+      throw metadata;
+    }
+    const result = await AstroRepository.transferRepo(metadata, requestBody);
     if (result instanceof Error) {
       throw result;
     }
