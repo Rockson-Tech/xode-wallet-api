@@ -84,6 +84,9 @@ export default class AzkalRepository {
           value
         ]
       );
+      if (result instanceof Error) {
+        return result;
+      }
       return { hash: result.toHex() };
     } catch (error: any) {
       return Error(error || 'transferRepo error occurred.');

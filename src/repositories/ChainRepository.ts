@@ -109,13 +109,15 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
+      const chainDecimals = api.registry.chainDecimals[0];
+      const value = parseInt(data.value) * 10 ** chainDecimals;
       const result = await TXRepository.constructChainExtrinsicTransaction(
         api,
         'balances',
         'transfer',
         [
           data.target, 
-          data.value
+          value
         ]
       );
       return { hash: result.toHex() };
