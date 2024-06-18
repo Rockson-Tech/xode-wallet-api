@@ -295,8 +295,8 @@ export default class ChainRepository {
     try {
       const xonPrice: number = 10;
       const azkPrice: number = 0.000003;
-      const xavPrice: number = 0.1;
-      const xgmPrice: number = 0.1;
+      const xavPrice: number = 2;
+      const xgmPrice: number = 2;
       const prices = {
         XON: xonPrice * data.rate,
         AZK: azkPrice * data.rate,
