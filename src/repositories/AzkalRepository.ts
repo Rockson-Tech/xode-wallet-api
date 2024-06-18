@@ -257,7 +257,7 @@ export default class AzkalRepository {
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const { decimals } = metadata.toJSON();
-      const value = 1 * 10 ** decimals;
+      const value = 1000 * 10 ** decimals;
       let nonce = await api.rpc.system.accountNextIndex(owner.address);
       let index = 0;
       while (index < data.length) {
