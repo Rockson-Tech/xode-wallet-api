@@ -1,4 +1,7 @@
 import TXRepository from '../modules/TXRepository';
+import AzkalRepository from '../repositories/AzkalRepository';
+import XaverRepository from '../repositories/XaverRepository';
+import XGameRepository from '../repositories/XGameRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import PolkadotUtility from '../modules/PolkadotUtility';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -292,11 +295,15 @@ export default class ChainRepository {
 
   static getTokenPricesRepo = async (data: any) => {
     console.log('getTokenPricesRepo function was called');
+    const xon_instance = new ChainRepository();
+    const azk_instance = new AzkalRepository();
+    const xav_instance = new XaverRepository();
+    const xgm_instance = new XGameRepository();
     try {
-      const xonPrice: number = 10;
-      const azkPrice: number = 0.000003;
-      const xavPrice: number = 2;
-      const xgmPrice: number = 2;
+      const xonPrice: number = parseFloat(xon_instance.xonPrice);
+      const azkPrice: number = parseFloat(azk_instance.azkPrice);
+      const xavPrice: number = parseFloat(xav_instance.xavPrice);
+      const xgmPrice: number = parseFloat(xgm_instance.xgmPrice);
       const prices = {
         XON: xonPrice * data.rate,
         AZK: azkPrice * data.rate,
