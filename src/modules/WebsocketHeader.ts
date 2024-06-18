@@ -21,6 +21,7 @@ export default class WebsocketHeader {
 
             process.env.WS_PROVIDER_ENDPOINT = websocket;
             if (websocket === mainnetEnv || websocket.includes('n7yoxCmcIrCF6VziCcDmYTwL8R03a')) {
+                process.env.TRANSFER_ADDRESS = '5Hk3W88P8nP5tXTGZbvuwWcgj9vLk2kUrroaNfbq6nch7Yju'
                 this.setEnvAddresses(
                     process.env.MAINNET_ASTROCHIBBI_ADDRESS as string,
                     process.env.MAINNET_ASTRO_ECONOMY_ADDRESS as string,
@@ -48,6 +49,7 @@ export default class WebsocketHeader {
                     process.env.LOCAL_BLITZ_ENERGY_ADDRESS as string,
                 );
             } else if (websocket === testnetEnv || websocket.includes('aRoyklGrhl9m2LlhX8NP')) {
+                process.env.TRANSFER_ADDRESS = '5GEWpoRwekYSSohumnMrWnnPf4EFhCFQ4nnk4sJzroJRwbY8'
                 this.defaultWebsocket();
             }
         } catch (error: any) {

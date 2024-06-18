@@ -163,7 +163,8 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
-      const contractAddress = '5GEWpoRwekYSSohumnMrWnnPf4EFhCFQ4nnk4sJzroJRwbY8';
+      const contractAddress = process.env.TRANSFER_ADDRESS as string;
+      console.log(contractAddress);
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       if (contract === undefined) { 
         return Error('Contract undefined');
