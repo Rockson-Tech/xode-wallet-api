@@ -152,11 +152,14 @@ export const airdropController = async (
   try {
     WebsocketHeader.handleWebsocket(request);
     const query: any = request.query;
-    const wallets = await WalletRepository.getWallets(query);
     let { account } = request.body as IAirdropAssetRequestBody;
-    wallets.forEach(wallet => {
-      account.push(wallet.wallet_address);
-    });
+    let wallets: any[] = [];
+    if (query.created != undefined || query.start != undefined) {
+      wallets = await WalletRepository.getWallets(query);
+      wallets.forEach(wallet => {
+        account.push(wallet.wallet_address);
+      });
+    }
     account = Array.from(new Set(account));
     if (Array.isArray(account) && account.length <= 0) {
       return reply.badRequest("Invalid request body. Required field at least one 'account'");
