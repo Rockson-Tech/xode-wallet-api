@@ -163,7 +163,8 @@ export default class ChainRepository {
       if (api instanceof Error) {
         return api;
       }
-      const contractAddress = '5GEWpoRwekYSSohumnMrWnnPf4EFhCFQ4nnk4sJzroJRwbY8';
+      const contractAddress = process.env.TRANSFER_ADDRESS as string;
+      console.log(contractAddress);
       const contract = await TXRepository.getContract(api, abi, contractAddress);
       if (contract === undefined) { 
         return Error('Contract undefined');
@@ -171,7 +172,7 @@ export default class ChainRepository {
       const chainDecimals = api.registry.chainDecimals[0];
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
-      const value = 1 * 10 ** chainDecimals;
+      const value = 2 * 10 ** chainDecimals;
       let nonce = await api.rpc.system.accountNextIndex(owner.address);
       let index = 0;
       while (index < data.length) {
