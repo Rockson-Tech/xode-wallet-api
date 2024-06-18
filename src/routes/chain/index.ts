@@ -17,7 +17,7 @@ import {
   ITokenListRequestParams,
   ITransferTokenRequestBody,
   ISubmitExtrinsicRequestBody,
-  IAirdropNativeRequestBody,
+  // IAirdropNativeRequestBody,
   IGetTotalSupplyRequestParams,
   IGetCirculatingSupplyRequestParams,
   IGetSupplyRequestParams,
@@ -79,7 +79,7 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
   );
 
   fastify.post<{
-    Querystring: IAirdropNativeRequestBody;
+    Querystring: any;
     Reply: IResponseSuccessful | IResponseError;
   }>(
     '/airdrop',
