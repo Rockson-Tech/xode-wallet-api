@@ -8,7 +8,8 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { Keyring } from '@polkadot/api';
 import { 
   ITransferTokenRequestBody,
-  ISubmitExtrinsicRequestBody 
+  ISubmitExtrinsicRequestBody,
+  ITransferAllTokenRequestBody
 } from '../schemas/ChainSchemas';
 import abi from '../smartcontracts/xode/transfer_controller.json';
 import axios from 'axios';
@@ -126,6 +127,35 @@ export default class ChainRepository {
       return { hash: result.toHex() };
     } catch (error: any) {
       console.log('tokenTransferRepo: ' + error);
+      return Error(error);
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async tokenTransferAllRepo(data: ITransferAllTokenRequestBody) {
+    console.log('tokenTransferAllRepo function was called');
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const result = await TXRepository.constructChainExtrinsicTransaction(
+        api,
+        'balances',
+        'transferAll',
+        [
+          data.target, 
+          true
+        ]
+      );
+      return { hash: result.toHex() };
+    } catch (error: any) {
+      console.log('tokenTransferAllRepo: ' + error);
       return Error(error);
     } finally {
       if (!(api instanceof Error)) {

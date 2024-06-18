@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { 
     ITokensRequestParams,
     ITransferTokenRequestBody,
+    ITransferAllTokenRequestBody,
     ISubmitExtrinsicRequestBody,
     IGetTokenPriceRequestParams,
 } from '../schemas/ChainSchemas';
@@ -123,7 +124,7 @@ export const tokenTransferController = async (
             !requestBody.target ||
             requestBody.value == null
         ) {
-            return reply.badRequest("Invalid request body. Required fields: 'to', 'value");
+            return reply.badRequest("Invalid request body. Required fields: 'target', 'value");
         }
         const result = await ChainRepository.tokenTransferRepo(requestBody);
         if (result instanceof Error) {
@@ -133,6 +134,28 @@ export const tokenTransferController = async (
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
+};
+
+export const tokenTransferAllController = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+      WebsocketHeader.handleWebsocket(request);
+      const requestBody = request.body as ITransferAllTokenRequestBody;
+      if (!requestBody || 
+          !requestBody.target
+      ) {
+          return reply.badRequest("Invalid request body. Required fields: 'target'");
+      }
+      const result = await ChainRepository.tokenTransferAllRepo(requestBody);
+      if (result instanceof Error) {
+          throw result;
+      }
+      return reply.send(result);
+  } catch (error: any) {
+      reply.status(500).send('Internal Server Error: ' + error);
+  }
 };
 
 export const submitExtrinsicController = async (
