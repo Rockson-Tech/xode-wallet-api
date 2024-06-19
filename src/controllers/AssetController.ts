@@ -154,7 +154,7 @@ export const airdropController = async (
     const query: any = request.query;
     let { account } = request.body as IAirdropAssetRequestBody;
     let wallets: any[] = [];
-    if (query.created != undefined || query.start != undefined) {
+    if (query.created_at != undefined || query.start != undefined) {
       wallets = await WalletRepository.getWallets(query);
       wallets.forEach(wallet => {
         account.push(wallet.wallet_address);
