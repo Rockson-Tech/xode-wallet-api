@@ -95,7 +95,13 @@ export const getMarketplaceNftsHandler = async (
         if (nfts instanceof Error) {
             throw nfts;
         }
-        return reply.send(nfts);
+        const updatedImages = nfts.map((nft: { imagePath: string; }) => {
+            return {
+                ...nft,
+                imagePath: nft.imagePath.replace('.ipfs.cf-ipfs.com/', '.ipfs.w3s.link/')
+            };
+        });
+        return reply.send(updatedImages);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
@@ -115,7 +121,13 @@ export const getUserNftsHandler = async (
         if (nfts instanceof Error) {
             throw nfts;
         }
-        return reply.send(nfts);
+        const updatedImages = nfts.map((nft: { imagePath: string; }) => {
+            return {
+                ...nft,
+                imagePath: nft.imagePath.replace('.ipfs.cf-ipfs.com/', '.ipfs.w3s.link/')
+            };
+        });
+        return reply.send(updatedImages);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     }
@@ -138,7 +150,11 @@ export const getNftByIdHandler = async (
         if (nfts == null) {
             return reply.send([]);
         } else {
-            return reply.send(nfts);
+            const updatedImage = {
+                ...nfts,
+                imagePath: nfts.imagePath.replace('.ipfs.cf-ipfs.com/', '.ipfs.w3s.link/')
+            };
+            return reply.send(updatedImage);
         }
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
@@ -217,7 +233,13 @@ export const dashboardNftHandler = async (
                 astro.push(nftEntry);
             }
         }
-        return reply.send(astro);
+        const updatedImages = astro.map((nft: any) => {
+            return {
+                ...nft,
+                imagePath: nft.imagePath.replace('.ipfs.cf-ipfs.com/', '.ipfs.w3s.link/')
+            };
+        });
+        return reply.send(updatedImages);
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
     } 
