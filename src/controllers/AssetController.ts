@@ -11,7 +11,7 @@ import XaverRepository from '../repositories/XaverRepository';
 import XGameRepository from '../repositories/XGameRepository';
 import ChainRepository from '../repositories/ChainRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
-// import WalletRepository from '../repositories/WalletRepository';
+import WalletRepository from '../repositories/WalletRepository';
 
 export const mintController = async (
   request: FastifyRequest,
@@ -151,15 +151,21 @@ export const airdropController = async (
 ) => {
   try {
     WebsocketHeader.handleWebsocket(request);
-    // const query: any = request.query;
-    let { account } = request.body as IAirdropAssetRequestBody;
-    // let wallets: any[] = [];
-    // if (query.created_at != undefined || query.start != undefined) {
-    //   wallets = await WalletRepository.getWallets(query);
-    //   wallets.forEach(wallet => {
-    //     account.push(wallet.wallet_address);
-    //   });
-    // }
+    const query: any = request.query;
+    let { account }: { account: string[] } = request.body as IAirdropAssetRequestBody;
+    let wallets: any[] = [];
+
+    // Ensure `account` is initialized
+    if (!Array.isArray(account)) {
+      account = [];
+    }
+
+    if (query.created_at !== undefined || query.start !== undefined) {
+      wallets = await WalletRepository.getWallets(query);
+      wallets.forEach(wallet => {
+        account.push(wallet.wallet_address);
+      });
+    }
     account = Array.from(new Set(account));
     if (Array.isArray(account) && account.length <= 0) {
       return reply.badRequest("Invalid request body. Required field at least one 'account'");
