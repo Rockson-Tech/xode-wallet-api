@@ -11,7 +11,7 @@ import XaverRepository from '../repositories/XaverRepository';
 import XGameRepository from '../repositories/XGameRepository';
 import ChainRepository from '../repositories/ChainRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
-import WalletRepository from '../repositories/WalletRepository';
+// import WalletRepository from '../repositories/WalletRepository';
 
 export const mintController = async (
   request: FastifyRequest,
@@ -151,28 +151,26 @@ export const airdropController = async (
 ) => {
   try {
     WebsocketHeader.handleWebsocket(request);
-    const query: any = request.query;
-    let all_wallets: any[] = [];
+    // const query: any = request.query;
     let { account } = request.body as IAirdropAssetRequestBody;
-    all_wallets = account;
-    let wallets: any[] = [];
-    if (query.created_at != undefined || query.start != undefined) {
-      wallets = await WalletRepository.getWallets(query);
-      wallets.forEach(wallet => {
-        all_wallets.push(wallet.wallet_address);
-      });
-    }
-    all_wallets = Array.from(new Set(all_wallets));
-    if (Array.isArray(all_wallets) && all_wallets.length <= 0) {
+    // let wallets: any[] = [];
+    // if (query.created_at != undefined || query.start != undefined) {
+    //   wallets = await WalletRepository.getWallets(query);
+    //   wallets.forEach(wallet => {
+    //     account.push(wallet.wallet_address);
+    //   });
+    // }
+    account = Array.from(new Set(account));
+    if (Array.isArray(account) && account.length <= 0) {
       return reply.badRequest("Invalid request body. Required field at least one 'account'");
     }
     let result;
     if (request.url.includes("azk")) {
-      result = await AzkalRepository.airdropAZKRepo(all_wallets);
+      result = await AzkalRepository.airdropAZKRepo(account);
     } else if (request.url.includes("xgm")) {
-      result = await XGameRepository.airdropXGMRepo(all_wallets);
+      result = await XGameRepository.airdropXGMRepo(account);
     } else if (request.url.includes("chain")) {
-      result = await ChainRepository.airdropXONRepo(all_wallets);
+      result = await ChainRepository.airdropXONRepo(account);
     }
     if (result instanceof Error) {
       throw result;
