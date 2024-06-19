@@ -152,25 +152,27 @@ export const airdropController = async (
   try {
     WebsocketHeader.handleWebsocket(request);
     const query: any = request.query;
+    let all_wallets: any[] = [];
     let { account } = request.body as IAirdropAssetRequestBody;
+    all_wallets = account;
     let wallets: any[] = [];
     if (query.created_at != undefined || query.start != undefined) {
       wallets = await WalletRepository.getWallets(query);
       wallets.forEach(wallet => {
-        account.push(wallet.wallet_address);
+        all_wallets.push(wallet.wallet_address);
       });
     }
-    account = Array.from(new Set(account));
-    if (Array.isArray(account) && account.length <= 0) {
+    all_wallets = Array.from(new Set(all_wallets));
+    if (Array.isArray(all_wallets) && all_wallets.length <= 0) {
       return reply.badRequest("Invalid request body. Required field at least one 'account'");
     }
     let result;
     if (request.url.includes("azk")) {
-      result = await AzkalRepository.airdropAZKRepo(account);
+      result = await AzkalRepository.airdropAZKRepo(all_wallets);
     } else if (request.url.includes("xgm")) {
-      result = await XGameRepository.airdropXGMRepo(account);
+      result = await XGameRepository.airdropXGMRepo(all_wallets);
     } else if (request.url.includes("chain")) {
-      result = await ChainRepository.airdropXONRepo(account);
+      result = await ChainRepository.airdropXONRepo(all_wallets);
     }
     if (result instanceof Error) {
       throw result;
