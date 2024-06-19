@@ -5,6 +5,7 @@ import {
   tokenListController,
   submitExtrinsicController,
   tokenTransferController,
+  tokenTransferAllController,
   getTotalSupplyController,
   getCirculatingSupplyController,
   getSupplyController,
@@ -16,6 +17,7 @@ import {
   ITokensRequestParams,
   ITokenListRequestParams,
   ITransferTokenRequestBody,
+  ITransferAllTokenRequestBody,
   ISubmitExtrinsicRequestBody,
   // IAirdropNativeRequestBody,
   IGetTotalSupplyRequestParams,
@@ -28,6 +30,7 @@ import {
 import { token_list } from '../../swaggerschema/chain/token_list';
 import { user_token_balance } from '../../swaggerschema/chain/user_token_balance';
 import { token_transfer } from '../../swaggerschema/chain/token_transfer';
+import { token_transfer_all } from '../../swaggerschema/chain/token_transfer_all';
 import { submit_extrinsic } from '../../swaggerschema/chain/submit_extrinsic';
 import { total_supply } from '../../swaggerschema/chain/total_supply';
 import { circulating_supply } from '../../swaggerschema/chain/circulating_supply';
@@ -67,6 +70,15 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     '/transfer',
     { schema: token_transfer },
     tokenTransferController
+  );
+
+  fastify.post<{
+    Querystring: ITransferAllTokenRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/transferall',
+    { schema: token_transfer_all },
+    tokenTransferAllController
   );
 
   fastify.post<{

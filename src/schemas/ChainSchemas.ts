@@ -20,6 +20,11 @@ export interface ITransferTokenRequestBody {
   value: string
 }
 
+// ----- TRANSFER ALL TOKEN -----
+export interface ITransferAllTokenRequestBody {
+  target: string,
+}
+
 // ----- SUBMIT EXTRINSIC -----
 export interface ISubmitExtrinsicRequestBody {
   extrinsic: string;
