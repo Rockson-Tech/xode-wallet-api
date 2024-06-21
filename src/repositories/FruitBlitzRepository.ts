@@ -166,11 +166,12 @@ export default class FruitBlitzRepository {
       } catch (error: any) {
         console.log('getUserNFTRepo: ', error);
         return Error(error);
-      } finally {
-        if (!(api instanceof Error)) {
-          await api.disconnect();
-        }
-      }
+      } 
+      // finally {
+      //   if (!(api instanceof Error)) {
+      //     await api.disconnect();
+      //   }
+      // }
     }
 
     static async getNFTByIdRepo(token_id: string) {
