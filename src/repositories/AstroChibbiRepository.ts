@@ -195,16 +195,16 @@ export default class AstroChibbiRepository {
       }
   }
   
-  static async getUserNFTRepo(wallet_address: string) {
+  static async getUserNFTRepo(api: any, wallet_address: string) {
       console.log('getUserNFTRepo function was called');
       const instance = new AstroChibbiRepository();
       var api: any;
       try {
-        await cryptoWaitReady();
-        api = await InitializeAPI.apiInitialization();
-        if (api instanceof Error) {
-          return api;
-        }
+        // await cryptoWaitReady();
+        // api = await InitializeAPI.apiInitialization();
+        // if (api instanceof Error) {
+        //   return api;
+        // }
         const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
         const player_wallet_address = wallet_address;
     
@@ -260,11 +260,12 @@ export default class AstroChibbiRepository {
       } catch (error: any) {
         console.log('getUserNFTRepo: ', error);
         return Error(error);
-      } finally {
-        if (!(api instanceof Error)) {
-          await api.disconnect();
-        }
-      }
+      } 
+      // finally {
+      //   if (!(api instanceof Error)) {
+      //     await api.disconnect();
+      //   }
+      // }
   }
   
   static async getNFTByIdRepo(token_id: string) {

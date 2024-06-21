@@ -12,6 +12,8 @@ import XGameRepository from '../repositories/XGameRepository';
 import ChainRepository from '../repositories/ChainRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 import WalletRepository from '../repositories/WalletRepository';
+import InitializeAPI from '../modules/InitializeAPI';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 export const mintController = async (
   request: FastifyRequest,
@@ -128,13 +130,18 @@ export const balanceOfController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
+  var api: any;
   try {
     WebsocketHeader.handleWebsocket(request);
+    await cryptoWaitReady();
+    api = await InitializeAPI.apiInitialization();
+    if (api instanceof Error) {
+      throw api;
+    }
     const requestParams = request.params as IBalanceOfRequestParams;
     if (!requestParams || !requestParams.account) {
       return reply.badRequest("Invalid request parameter. Required fields: 'account'");
     }
-    const api: any ='';
     const result = await AzkalRepository.balanceOfRepo(api, requestParams.account);
     if (result instanceof Error) {
       throw result;
@@ -142,6 +149,10 @@ export const balanceOfController = async (
     return await reply.send(result);
   } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);
+  } finally {
+    if (!(api instanceof Error)) {
+      await api.disconnect();
+    }
   }
 };
 
