@@ -138,16 +138,16 @@ export default class FruitBlitzRepository {
       }
     }
 
-    static async getUserNFTRepo(wallet_address: string) {
+    static async getUserNFTRepo(api: any, wallet_address: string) {
       console.log('getUserNFTRepo function was called');
       const instance = new FruitBlitzRepository();
-      var api: any;
+      // var api: any;
       try {
-        await cryptoWaitReady();
-        api = await InitializeAPI.apiInitialization();
-        if (api instanceof Error) {
-          return api;
-        }
+        // await cryptoWaitReady();
+        // api = await InitializeAPI.apiInitialization();
+        // if (api instanceof Error) {
+        //   return api;
+        // }
         const contract = await TXRepository.getContract(api, abi, instance.contractAddress);
         if (!contract) {
           return Error('Contract not initialized.');
