@@ -12,6 +12,8 @@ import AstroRepository from '../repositories/AstroRepository';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XGameRepository from '../repositories/XGameRepository';
 import XaverRepository from '../repositories/XaverRepository';
+import InitializeAPI from '../modules/InitializeAPI';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 // Get smart contract
 export const getSmartContractController = async (
@@ -49,8 +51,14 @@ export const getTokensController = async (
     request: FastifyRequest,
     reply: FastifyReply
 ) => {
+    var api: any;
     try {
       WebsocketHeader.handleWebsocket(request);
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+          throw api;
+      }
       const requestParams = request.params as ITokensRequestParams;
       let requestQuery: any = request.query;
       if (!requestParams || !requestParams.wallet_address) {
@@ -59,11 +67,11 @@ export const getTokensController = async (
       requestQuery.currency = requestQuery.currency === undefined ? 'USD' : requestQuery.currency;
       const [tokenResults, rateResult] = await Promise.all([
           Promise.all([
-              ChainRepository.getTokensRepo(requestParams.wallet_address),
-              AstroRepository.balanceOfRepo(requestParams.wallet_address),
-              AzkalRepository.balanceOfRepo(requestParams.wallet_address),
-              XGameRepository.balanceOfRepo(requestParams.wallet_address),
-              XaverRepository.balanceOfRepo(requestParams.wallet_address)
+              ChainRepository.getTokensRepo(api, requestParams.wallet_address),
+              // AstroRepository.balanceOfRepo(requestParams.wallet_address),
+              AzkalRepository.balanceOfRepo(api, requestParams.wallet_address),
+              XGameRepository.balanceOfRepo(api, requestParams.wallet_address),
+              XaverRepository.balanceOfRepo(api, requestParams.wallet_address)
           ]),
           ChainRepository.forexRepo(requestQuery.currency)
       ]);
@@ -80,7 +88,7 @@ export const getTokensController = async (
           }
           return acc;
       }, 0);
-      return await reply.send({ 
+      return reply.send({ 
           tokens: validTokenResults, 
           currency: rateResult.currency, 
           rate: (rateResult.rate).toFixed(4), 
@@ -88,6 +96,10 @@ export const getTokensController = async (
       });
     } catch (error: any) {
         reply.status(500).send('Internal Server Error: ' + error);
+    } finally {
+        if (!(api instanceof Error)) {
+            await api.disconnect();
+        }
     }
 };
 

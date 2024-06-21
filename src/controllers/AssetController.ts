@@ -134,8 +134,8 @@ export const balanceOfController = async (
     if (!requestParams || !requestParams.account) {
       return reply.badRequest("Invalid request parameter. Required fields: 'account'");
     }
-    
-    const result = await AzkalRepository.balanceOfRepo(requestParams.account);
+    const api: any ='';
+    const result = await AzkalRepository.balanceOfRepo(api, requestParams.account);
     if (result instanceof Error) {
       throw result;
     }

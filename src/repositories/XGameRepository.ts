@@ -135,16 +135,16 @@ export default class XGameRepository {
     }
   }
 
-  static async balanceOfRepo(account: string) {
+  static async balanceOfRepo(api: any, account: string) {
     console.log('balanceOfRepo function was called');
     const instance = new XGameRepository();
-    var api: any;
+    // var api: any;
     try {
-      await cryptoWaitReady();
-      api = await InitializeAPI.apiInitialization();
-      if (api instanceof Error) {
-        return api;
-      }
+      // await cryptoWaitReady();
+      // api = await InitializeAPI.apiInitialization();
+      // if (api instanceof Error) {
+      //   return api;
+      // }
       const [accountInfo, metadata] = await Promise.all([
         api.query.assets.account(instance.assetId, account),
         api.query.assets.metadata(instance.assetId)
@@ -176,11 +176,12 @@ export default class XGameRepository {
       };
     } catch (error: any) {
       return Error(error || 'balanceOfRepo error occurred.');
-    } finally {
-      if (!(api instanceof Error)) {
-        await api.disconnect();
-      }
-    }
+    } 
+    // finally {
+    //   if (!(api instanceof Error)) {
+    //     await api.disconnect();
+    //   }
+    // }
   }
   
   static async totalSupplyRepo() {
