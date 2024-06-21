@@ -134,8 +134,8 @@ export const balanceOfController = async (
     if (!requestParams || !requestParams.account) {
       return reply.badRequest("Invalid request parameter. Required fields: 'account'");
     }
-    
-    const result = await AzkalRepository.balanceOfRepo(requestParams.account);
+    const api: any ='';
+    const result = await AzkalRepository.balanceOfRepo(api, requestParams.account);
     if (result instanceof Error) {
       throw result;
     }
@@ -154,12 +154,9 @@ export const airdropController = async (
     const query: any = request.query;
     let { account }: { account: string[] } = request.body as IAirdropAssetRequestBody;
     let wallets: any[] = [];
-
-    // Ensure `account` is initialized
     if (!Array.isArray(account)) {
       account = [];
     }
-
     if (query.created_at !== undefined || query.start !== undefined) {
       wallets = await WalletRepository.getWallets(query);
       wallets.forEach(wallet => {

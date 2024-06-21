@@ -41,16 +41,16 @@ export default class ChainRepository {
     }
   }
 
-  static async getTokensRepo(wallet_address: string) {
+  static async getTokensRepo(api: any, wallet_address: string) {
     console.log('getSmartContractRepo function was called');
     const instance = new ChainRepository();
-    var api: any;
+    // var api: any;
     try {
-      await cryptoWaitReady();
-      api = await InitializeAPI.apiInitialization();
-      if (api instanceof Error) {
-        return api;
-      }
+      // await cryptoWaitReady();
+      // api = await InitializeAPI.apiInitialization();
+      // if (api instanceof Error) {
+      //   return api;
+      // }
       const balance = await api.derive.balances.all(wallet_address);
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
@@ -70,11 +70,12 @@ export default class ChainRepository {
       }
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
-    } finally {
-      if (!(api instanceof Error)) {
-        await api.disconnect();
-      }
-    }
+    } 
+    // finally {
+    //   if (!(api instanceof Error)) {
+    //     await api.disconnect();
+    //   }
+    // }
   }
 
   static async getTokenMetadataRepo() {
@@ -124,6 +125,10 @@ export default class ChainRepository {
           value
         ]
       );
+      // const { partialFee, weight } = await result.paymentInfo('5FJ9VWpubQXeiLKGcVmo3zD627UAJCiW6bupSUATeyNXTH1m');
+      // const finalFee = (parseFloat(partialFee.toHuman()) / 1000).toFixed(4);
+      // console.log(finalFee);
+      // console.log(weight.toHuman());
       return { hash: result.toHex() };
     } catch (error: any) {
       console.log('tokenTransferRepo: ' + error);
