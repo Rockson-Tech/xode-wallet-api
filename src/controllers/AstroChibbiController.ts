@@ -9,7 +9,7 @@ import {
     IGetUserNFTRequestParams
 } from '../schemas/NFTSchemas';
 import AstroChibbiRepository from '../repositories/AstroChibbiRepository';
-import FruitBlitzRepository from '../repositories/FruitBlitzRepository';
+// import FruitBlitzRepository from '../repositories/FruitBlitzRepository';
 import WebsocketHeader from '../modules/WebsocketHeader';
 import EnergyRepository from '../repositories/EnergyRepository';
 import InitializeAPI from '../modules/InitializeAPI';
@@ -189,19 +189,19 @@ export const dashboardNftHandler = async (
         if (!requestParams || !requestParams.wallet_address) {
             return reply.badRequest("Invalid request parameters. Required parameter: wallet address");
         }
-        const [astro, blitz, energy] = await Promise.all([
+        const [astro, energy] = await Promise.all([
             AstroChibbiRepository.getUserNFTRepo(api, requestParams.wallet_address),
-            FruitBlitzRepository.getUserNFTRepo(api, requestParams.wallet_address),
+            // FruitBlitzRepository.getUserNFTRepo(api, requestParams.wallet_address),
             EnergyRepository.getEnergyRepo(api, requestParams.wallet_address),
         ]);
         if (astro instanceof Error || energy instanceof Error) {
             throw astro || energy;
         }
-        if (blitz.length > 0 || blitz != undefined) {
-            blitz.forEach((data: any) => {
-                astro.push(data);
-            });
-        }
+        // if (blitz.length > 0 || blitz != undefined) {
+        //     blitz.forEach((data: any) => {
+        //         astro.push(data);
+        //     });
+        // }
         let result: any;
         if (astro.length > 0 && astro.every((nft: any) => nft.collection.includes('AstroChibbi Conquest: Galactic Delight'))) {
             if (energy == null) {
