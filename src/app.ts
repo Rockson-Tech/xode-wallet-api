@@ -78,7 +78,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
         '\n' + 'AstroChibbi: ' + process.env.TESTNET_ASTROCHIBBI_ADDRESS as string +
         '\n' + 'Energy Capsule: ' + process.env.TESTNET_ASTRO_ENERGY_ADDRESS as string +
         '\n' + 'Astro Economy: ' + process.env.TESTNET_ASTRO_ECONOMY_ADDRESS as string,
-        version: '0.1.2'
+        version: '0.1.3'
       },
       externalDocs: {
         url: 'https://docs.google.com/document/d/1n-jd_0BXUCzcrUL9df1_uUgGUpkkDADLMRw_fgx41ko',
@@ -116,7 +116,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
     }
     return crypto.timingSafeEqual(a, b)
   }
-  
+
   const user = process.env.USERNAME == undefined ? 'NEXGEN' : process.env.USERNAME;
   const pass = process.env.PASSWORD == undefined ? '@1234Abcd' : process.env.PASSWORD;
   await fastify.register(require('@fastify/basic-auth'), {
