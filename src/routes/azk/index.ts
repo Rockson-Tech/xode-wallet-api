@@ -5,7 +5,7 @@ import {
   burnController,
   totalSupplyController,
   balanceOfController,
-  // airdropController
+  airdropController
 } from '../../controllers/AssetController';
 import { 
   IBalanceOfRequestParams, 
@@ -13,7 +13,7 @@ import {
   IMintRequestBody, 
   ITotalSupplyRequestParams, 
   ITransferRequestBody,
-  // IAirdropAssetRequestBody,
+  IAirdropAssetRequestBody,
   IResponseSuccessful, 
   IResponseError, 
 } from '../../schemas/AssetSchemas';
@@ -69,13 +69,13 @@ const azk: FastifyPluginAsync = async (fastify, opts) => {
     balanceOfController
   );
 
-  // fastify.post<{
-  //   Querystring: IAirdropAssetRequestBody;
-  //   Reply: IResponseSuccessful | IResponseError;
-  // }>(
-  //   '/airdrop',
-  //   airdropController
-  // );
+  fastify.post<{
+    Querystring: IAirdropAssetRequestBody;
+    Reply: IResponseSuccessful | IResponseError;
+  }>(
+    '/airdrop',
+    airdropController
+  );
 };
 
 export default azk;
