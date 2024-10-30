@@ -5,7 +5,7 @@ import { updateAccountData } from '../services/accountService';
 import prisma from '../db';
 
 export default class MarketingRepository {
-	ownerSeed = process.env.ASTROCHIBBI_SEED as string;
+	ownerSeed = process.env.MARKETING_SEED as string;
 
 	static async sendTokenRepo(data: string[]) {
 		console.log('sendTokenRepo function was called');
@@ -17,12 +17,10 @@ export default class MarketingRepository {
 			if (api instanceof Error) {
 				return api;
 			}
-			console.log(process.env.WS_PROVIDER_ENDPOINT as string)
 			const chainDecimals = api.registry.chainDecimals[0];
 			const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
 			const owner = keyring.addFromUri(instance.ownerSeed);
 			const value = 0.001 * 10 ** chainDecimals;
-			console.log(`Value: ${value}`);
 			let nonce = await api.rpc.system.accountNextIndex(owner.address);
 			let index = 0;
 			while (index < data.length) {
