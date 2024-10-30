@@ -3,6 +3,9 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { Keyring } from '@polkadot/api';
 import { updateAccountData } from '../services/accountService';
 import prisma from '../db';
+import { PrismaClient } from "@prisma/client";
+import extension from "prisma-paginate";
+import { IReadMarketingWalletsQuery } from '../schemas/MarketingSchemas';
 
 export default class MarketingRepository {
 	ownerSeed = process.env.MARKETING_SEED as string;
@@ -20,7 +23,7 @@ export default class MarketingRepository {
 			const chainDecimals = api.registry.chainDecimals[0];
 			const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
 			const owner = keyring.addFromUri(instance.ownerSeed);
-			const value = 0.001 * 10 ** chainDecimals;
+			const value = 0.0001 * 10 ** chainDecimals;
 			let nonce = await api.rpc.system.accountNextIndex(owner.address);
 			let index = 0;
 			while (index < data.length) {
@@ -73,6 +76,38 @@ export default class MarketingRepository {
 			return createdWallet;
 		} catch (error) {
 			throw String(error || 'Unknown error occurred.');
+		}
+	};
+
+	static getMarketWallets = async (query: Partial<IReadMarketingWalletsQuery>) => {
+		try {
+			const validQuery = {
+				AND: [
+					...(query.wallet ? [{ wallet: query.wallet }] : []),
+					...(query.amount ? [{ amount: query.amount }] : []),
+					...(query.fee ? [{ fee: query.fee }] : []),
+					...(query.hash ? [{ hash: query.hash }] : []),
+					...(query.date_start ? [{ date: { gte: new Date(query.date_start) } }] : []),
+					...(query.date_end ? [{ date: { lte: new Date(query.date_end) } }] : []),
+				],
+			};
+			const prisma = new PrismaClient();
+			const xprisma = prisma.$extends(extension);
+			const paginatedResult = await xprisma.marketing_wallets.paginate(
+				{
+					where: validQuery,
+					orderBy: {
+						id: 'desc',
+					},
+				},
+				{
+					limit: Number(query.entry),
+					page: Number(query.page),
+				}
+			);
+			return paginatedResult;
+		} catch (error: any) {
+			return Error(error);
 		}
 	};
 }
