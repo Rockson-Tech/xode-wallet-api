@@ -42,7 +42,13 @@ export default class MarketingRepository {
 					const unitFactor = 10 ** 12
 					const partialFee  = info.partialFee.toString();
 					const fee = parseFloat(partialFee) / unitFactor;
-					if (result) await this.storeMarketingData(address, String(value), String(fee.toFixed(12)), result.toHex())
+					if (result) await this.storeMarketingData(
+						address,
+						String(value),
+						String(fee.toFixed(12)),
+						result.toHex(),
+						"Game"
+					)
 				}
 				index += 1;
 				const newNonce = await api.rpc.system.accountNextIndex(owner.address);
@@ -63,6 +69,7 @@ export default class MarketingRepository {
 		amount: string,
 		fee: string,
 		hash: string,
+		received_type: string,
 	) => {
 		try {
 			const createdWallet = await prisma.marketing_wallets.create({
@@ -71,6 +78,7 @@ export default class MarketingRepository {
 					amount,
 					fee,
 					hash,
+					received_type,
 				},
 			});
 			return createdWallet;
@@ -87,6 +95,7 @@ export default class MarketingRepository {
 					...(query.amount ? [{ amount: query.amount }] : []),
 					...(query.fee ? [{ fee: query.fee }] : []),
 					...(query.hash ? [{ hash: query.hash }] : []),
+					...(query.received_type ? [{ received_type: query.received_type }] : []),
 					...(query.date_start ? [{ date: { gte: new Date(query.date_start) } }] : []),
 					...(query.date_end ? [{ date: { lte: new Date(query.date_end) } }] : []),
 				],
