@@ -11,6 +11,10 @@ export interface IReadMarketingWalletsQuery {
 	entry: number;
 }
 
+// POST
+export interface ISendTokenFeedbackBody {
+	address: string;
+}
 
 // ----- SUCCESS & ERROR -----
 export interface IResponseSuccessful {
