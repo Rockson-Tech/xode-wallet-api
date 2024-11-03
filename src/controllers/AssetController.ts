@@ -14,6 +14,7 @@ import WebsocketHeader from '../modules/WebsocketHeader';
 import WalletRepository from '../repositories/WalletRepository';
 import InitializeAPI from '../modules/InitializeAPI';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
+import IXONRepository from '../repositories/IXONRepository';
 
 export const mintController = async (
   request: FastifyRequest,
@@ -65,9 +66,13 @@ export const transferController = async (
       result = await AzkalRepository.transferRepo(requestBody);
     } else if (request.url.includes("xav")) {
       result = await XaverRepository.transferRepo(requestBody);
-    } else if (request.url.includes("xgm")) {
+    } else if (request.url.includes("ixon")) {
+      result = await IXONRepository.transferRepo(requestBody);
+    }
+    else if (request.url.includes("xgm")) {
       result = await XGameRepository.transferRepo(requestBody);
     }
+    
     if (result instanceof Error) {
       throw result;
     }
@@ -146,6 +151,7 @@ export const balanceOfController = async (
     if (result instanceof Error) {
       throw result;
     }
+    console.log('azk',result)
     return await reply.send(result);
   } catch (error: any) {
     reply.status(500).send('Internal Server Error: ' + error);

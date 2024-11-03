@@ -42,21 +42,14 @@ export default class ChainRepository {
   }
 
   static async getTokensRepo(api: any, wallet_address: string) {
-    console.log('getSmartContractRepo function was called');
     const instance = new ChainRepository();
-    // var api: any;
     try {
-      // await cryptoWaitReady();
-      // api = await InitializeAPI.apiInitialization();
-      // if (api instanceof Error) {
-      //   return api;
-      // }
       const balance = await api.derive.balances.all(wallet_address);
       const available = balance.availableBalance;
       const chainDecimals = api.registry.chainDecimals[0];
       const tokens = api.registry.chainTokens;
-      const token_name = 'Xode';
-      const free = PolkadotUtility.balanceFormatter(
+      const token_name = 'Xode Native Token';
+      const free = await PolkadotUtility.balanceFormatter(
         chainDecimals,
         tokens,
         available
@@ -71,11 +64,40 @@ export default class ChainRepository {
     } catch (error: any) {
       return Error(error || 'getSmartContractRepo error occurred.');
     } 
-    // finally {
-    //   if (!(api instanceof Error)) {
-    //     await api.disconnect();
-    //   }
-    // }
+  }
+
+  static async getTokenRepo(api: any,wallet_address: string) {
+    const instance = new ChainRepository();
+    try {
+      const balance = await api.derive.balances.all(wallet_address);
+      const available = balance.availableBalance;
+      const chainDecimals = api.registry.chainDecimals[0];
+      const tokens = api.registry.chainTokens;
+      const token_name = 'Xode Native Token';
+      const free = await PolkadotUtility.balanceFormatter(
+        chainDecimals,
+        tokens,
+        available
+      );
+      return {
+        status: 200,
+        messase: "Ok",
+        data: {
+          balance: free,
+          symbol: tokens[0],
+          name: token_name,
+          price: instance.xonPrice,
+          image: instance.xonImage,
+        }
+      }
+    } catch (error: any) {
+      return {
+        status: 500,
+        messase: "Error",
+        data: {errormage: instance.xonImage,
+        }
+      }
+    } 
   }
 
   static async getTokenMetadataRepo() {
@@ -89,13 +111,14 @@ export default class ChainRepository {
         return api;
       }
       const properties = await api.rpc.system.properties();
-      return {
+      let data = {
         name: 'Xode Native Token',
         symbol: properties.toHuman().tokenSymbol[0],
         decimals: properties.toHuman().tokenDecimals[0],
         image: instance.xonImage,
-        price: instance.xonPrice,
-      }
+      };
+      console.log("Xode Native Token",data);
+      return data;
     } catch (error: any) {
       return Error(error || 'getTokenMetadataRepo error occurred.');
     } finally {
