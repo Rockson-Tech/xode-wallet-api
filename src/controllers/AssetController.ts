@@ -37,7 +37,10 @@ export const mintController = async (
       result = await XaverRepository.mintRepo(requestBody);
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.mintRepo(requestBody);
+    } else if (request.url.includes("ixon")) {
+      result = await IXONRepository.mintRepo(requestBody);
     }
+    
     if (result instanceof Error) {
       throw result;
     }
@@ -66,13 +69,12 @@ export const transferController = async (
       result = await AzkalRepository.transferRepo(requestBody);
     } else if (request.url.includes("xav")) {
       result = await XaverRepository.transferRepo(requestBody);
+    } else if (request.url.includes("xgm")) {
+      result = await XGameRepository.transferRepo(requestBody);
     } else if (request.url.includes("ixon")) {
       result = await IXONRepository.transferRepo(requestBody);
     }
-    else if (request.url.includes("xgm")) {
-      result = await XGameRepository.transferRepo(requestBody);
-    }
-    
+
     if (result instanceof Error) {
       throw result;
     }
@@ -103,6 +105,8 @@ export const burnController = async (
       result = await XaverRepository.burnRepo(requestBody);
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.burnRepo(requestBody);
+    } else if (request.url.includes("ixon")) {
+      result = await IXONRepository.burnRepo(requestBody);
     }
     if (result instanceof Error) {
       throw result;
@@ -189,6 +193,8 @@ export const airdropController = async (
       result = await AzkalRepository.airdropAZKRepo(account);
     } else if (request.url.includes("xgm")) {
       result = await XGameRepository.airdropXGMRepo(account);
+    } else if (request.url.includes("ixon")) {
+      result = await IXONRepository.airdropIXONRepo(account);
     } else if (request.url.includes("chain")) {
       result = await ChainRepository.airdropXONRepo(account);
     }

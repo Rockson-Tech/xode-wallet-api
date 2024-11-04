@@ -72,7 +72,8 @@ export const getTokensController = async (
               // AstroRepository.balanceOfRepo(requestParams.wallet_address),
               AzkalRepository.balanceOfRepo(api, requestParams.wallet_address),
               XGameRepository.balanceOfRepo(api, requestParams.wallet_address),
-              XaverRepository.balanceOfRepo(api, requestParams.wallet_address)
+              XaverRepository.balanceOfRepo(api, requestParams.wallet_address),
+              IXONRepository.balanceOfRepo(api, requestParams.wallet_address)
           ]),
           ChainRepository.forexRepo(requestQuery.currency)
       ]);

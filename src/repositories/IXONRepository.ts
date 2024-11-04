@@ -7,11 +7,13 @@ import {
   ITransferRequestBody,
   IBurnRequestBody,
 } from '../schemas/AssetSchemas';
+import { Keyring } from '@polkadot/api';
 
 export default class IXONRepository {
-  assetId = '4';
-  xavPrice = '2';
-  xonImage = 'https://bafkreia5hy2nh46tarcpqybz37mey3lkhoyyxw4qecs7bxw22d4nftz4nm.ipfs.w3s.link/';
+  assetId = process.env.IXON_ASSET_ID as string ?? '4';
+  ownerSeed = process.env.IXON_SEED as string;
+  ixonPrice = '0';
+  ixonImage = 'https://bafkreia5hy2nh46tarcpqybz37mey3lkhoyyxw4qecs7bxw22d4nftz4nm.ipfs.w3s.link/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
@@ -160,16 +162,16 @@ export default class IXONRepository {
           balance: balances,
           symbol: symbol,
           name: name,
-          price: instance.xavPrice,
-          image: instance.xonImage,
+          price: instance.ixonPrice,
+          image: instance.ixonImage,
         };
       } else {
         return {
           balance: '0.0000',
           symbol: 'IXON',
           name: 'Private XON',
-          price: instance.xavPrice,
-          image: instance.xonImage,
+          price: instance.ixonPrice,
+          image: instance.ixonImage,
         };
       };
     } catch (error: any) {
@@ -226,11 +228,58 @@ export default class IXONRepository {
         name: metadata.toHuman().name,
         symbol: metadata.toHuman().symbol,
         decimals: metadata.toHuman().decimals,
-        image: instance.xonImage,
+        image: instance.ixonImage,
         price: 0,
       }
     } catch (error: any) {
       return Error(error || 'getAssetMetadataRepo error occurred.');
+    } finally {
+      if (!(api instanceof Error)) {
+        await api.disconnect();
+      }
+    }
+  }
+
+  static async airdropIXONRepo(data: any) {
+    console.log('airdropIXONRepo function was called');
+    const instance = new IXONRepository();
+    var api: any;
+    try {
+      await cryptoWaitReady();
+      api = await InitializeAPI.apiInitialization();
+      if (api instanceof Error) {
+        return api;
+      }
+      const metadata: any = await api.query.assets.metadata(
+        instance.assetId,
+      );
+      if (metadata.toHuman() == null) {
+        return Error('No corresponding asset found.');
+      }
+      const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+      const owner = keyring.addFromUri(instance.ownerSeed);
+      const { decimals } = metadata.toJSON();
+      const value = 10 * 10 ** decimals;
+      let nonce = await api.rpc.system.accountNextIndex(owner.address);
+      let index = 0;
+      while (index < data.length) {
+        const batch = data.slice(index, index + 1);
+        for (const address of batch) {
+          console.log(`Index: ${index} - `, address);
+          const tx = api.tx.assets.transfer(instance.assetId, address, value); 
+          await tx.signAndSend(owner, { nonce });
+        }
+        index += 1;
+        const newNonce = await api.rpc.system.accountNextIndex(owner.address);
+        if (newNonce.gt(nonce)) {
+          nonce = newNonce;
+        }
+      }
+      const tx = api.tx.assets.freezeAsset(instance.assetId); 
+      await tx.signAndSend(owner, { nonce });
+      return;
+    } catch (error: any) {
+      return Error(error || 'airdropIXONRepo error occurred.');
     } finally {
       if (!(api instanceof Error)) {
         await api.disconnect();

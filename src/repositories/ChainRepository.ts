@@ -13,6 +13,7 @@ import {
 } from '../schemas/ChainSchemas';
 import abi from '../smartcontracts/xode/transfer_controller.json';
 import axios from 'axios';
+import IXONRepository from './IXONRepository';
 
 export default class ChainRepository {
   ownerSeed = process.env.ASTROCHIBBI_SEED as string;
@@ -357,16 +358,19 @@ export default class ChainRepository {
     const azk_instance = new AzkalRepository();
     const xav_instance = new XaverRepository();
     const xgm_instance = new XGameRepository();
+    const ixon_instance = new IXONRepository();
     try {
       const xonPrice: number = parseFloat(xon_instance.xonPrice);
       const azkPrice: number = parseFloat(azk_instance.azkPrice);
       const xavPrice: number = parseFloat(xav_instance.xavPrice);
       const xgmPrice: number = parseFloat(xgm_instance.xgmPrice);
+      const ixonPrice: number = parseFloat(ixon_instance.ixonPrice);
       const prices = {
         XON: xonPrice * data.rate,
         AZK: azkPrice * data.rate,
         XAV: xavPrice * data.rate,
-        XGM: xgmPrice * data.rate
+        XGM: xgmPrice * data.rate,
+        IXON: ixonPrice * data.rate
       };
       return { currency: data.currency, prices };
     } catch (error: any) {
