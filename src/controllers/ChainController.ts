@@ -8,7 +8,7 @@ import {
 } from '../schemas/ChainSchemas';
 import WebsocketHeader from '../modules/WebsocketHeader';
 import ChainRepository from '../repositories/ChainRepository';
-// import AstroRepository from '../repositories/AstroRepository';
+import AstroRepository from '../repositories/AstroRepository';
 import AzkalRepository from '../repositories/AzkalRepository';
 import XGameRepository from '../repositories/XGameRepository';
 import XaverRepository from '../repositories/XaverRepository';
