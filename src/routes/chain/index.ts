@@ -12,7 +12,7 @@ import {
   getTokenPricesController,
   getBalanceController,
 } from '../../controllers/ChainController';
-import { airdropController } from '../../controllers/AssetController';
+// import { airdropController } from '../../controllers/AssetController';
 import {
   IGetSmartContractRequestBody,
   ITokensRequestParams,
@@ -100,13 +100,13 @@ const chain: FastifyPluginAsync = async (fastify, opts) => {
     submitExtrinsicController
   );
 
-  fastify.post<{
-    Querystring: any;
-    Reply: IResponseSuccessful | IResponseError;
-  }>(
-    '/airdrop',
-    airdropController
-  );
+//   fastify.post<{
+//     Querystring: any;
+//     Reply: IResponseSuccessful | IResponseError;
+//   }>(
+//     '/airdrop',
+//     airdropController
+//   );
 
   fastify.get<{
     Querystring: IGetTotalSupplyRequestParams;
