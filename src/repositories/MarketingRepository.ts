@@ -1,7 +1,7 @@
 import InitializeAPI from '../modules/InitializeAPI';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { Keyring } from '@polkadot/api';
-import { updateAccountData } from '../services/accountService';
+import { updateAccountData, getFeedbackData } from '../services/accountService';
 import prisma from '../db';
 import { PrismaClient } from "@prisma/client";
 import extension from "prisma-paginate";
@@ -37,11 +37,11 @@ export default class MarketingRepository {
 						address,
 						value
 					);
-					const [info, result, ] = await Promise.all([
+					const [info, result, wallet] = await Promise.all([
 						tx.paymentInfo(owner),
 						tx.signAndSend(owner, { nonce }),
 						updateAccountData(address)
-					])
+					]);
 					const unitFactor = 10 ** 12
 					const partialFee  = info.partialFee.toString();
 					const fee = parseFloat(partialFee) / unitFactor;
@@ -51,7 +51,7 @@ export default class MarketingRepository {
 						amount.toFixed(12),
 						fee.toFixed(12),
 						result.toHex(),
-						"Game"
+						wallet instanceof Error ? 'XGame' : wallet.games.game_name || 'XGame'
 					)
 				}
 				index += 1;
@@ -68,7 +68,7 @@ export default class MarketingRepository {
 		}
 	}
 
-	static async sendTokenByFeedbackRepo(data: ISendTokenFeedbackBody) {
+	static async sendTokenByFeedbackRepo(data: ISendTokenFeedbackBody, token: string) {
 		console.log('sendTokenByFeedbackRepo function was called');
 		const instance = new MarketingRepository();
 		var api: any;
@@ -87,10 +87,18 @@ export default class MarketingRepository {
 				data.address,
 				value
 			);
-			const [info, result] = await Promise.all([
+			const [info, result, feedback] = await Promise.all([
 				tx.paymentInfo(owner),
 				tx.signAndSend(owner, { nonce }),
+				getFeedbackData(String(data.feedback_id), token)
 			])
+			if (
+				feedback instanceof Error ||
+				feedback.wallet_address != data.address ||
+				feedback.status != 'Approve'
+			) {
+				return Error('Feedback provider does not match or not approved!');
+			}
 			const unitFactor = 10 ** 12
 			const partialFee  = info.partialFee.toString();
 			const fee = parseFloat(partialFee) / unitFactor;
@@ -100,7 +108,7 @@ export default class MarketingRepository {
 				amount.toFixed(12),
 				fee.toFixed(12),
 				result.toHex(),
-				"Feedback"
+				String(data.feedback_id) || 'Feedback'
 			)
 			return amount;
 		} catch (error: any) {
