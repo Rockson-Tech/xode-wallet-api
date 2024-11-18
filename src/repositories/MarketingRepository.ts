@@ -82,16 +82,10 @@ export default class MarketingRepository {
 			const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
 			const owner = keyring.addFromUri(instance.ownerSeed);
 			const value = 1 * 10 ** chainDecimals;
-			let nonce = await api.rpc.system.accountNextIndex(owner.address);
-			const tx = api.tx.balances.transferKeepAlive(
-				data.address,
-				value
-			);
-			const [info, result, feedback] = await Promise.all([
-				tx.paymentInfo(owner),
-				tx.signAndSend(owner, { nonce }),
+			const [nonce, feedback] = await Promise.all([
+				api.rpc.system.accountNextIndex(owner.address),
 				getFeedbackData(String(data.feedback_id), token)
-			])
+			]);
 			if (
 				feedback instanceof Error ||
 				feedback.wallet_address != data.address ||
@@ -99,6 +93,14 @@ export default class MarketingRepository {
 			) {
 				return Error('Feedback provider does not match or not approved!');
 			}
+			const tx = api.tx.balances.transferKeepAlive(
+				data.address,
+				value
+			);
+			const [info, result] = await Promise.all([
+				tx.paymentInfo(owner),
+				tx.signAndSend(owner, { nonce }),
+			])
 			const unitFactor = 10 ** 12
 			const partialFee  = info.partialFee.toString();
 			const fee = parseFloat(partialFee) / unitFactor;
