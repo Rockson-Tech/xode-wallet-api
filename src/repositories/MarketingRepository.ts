@@ -61,10 +61,6 @@ export default class MarketingRepository {
 			return;
 		} catch (error: any) {
 			return Error(error || 'sendTokenRepo error occurred.');
-		} finally {
-			if (!(api instanceof Error)) {
-				await api.disconnect();
-			}
 		}
 	}
 
@@ -115,10 +111,6 @@ export default class MarketingRepository {
 			return amount;
 		} catch (error: any) {
 			return Error(error || 'sendTokenByFeedbackRepo error occurred.');
-		} finally {
-			if (!(api instanceof Error)) {
-				await api.disconnect();
-			}
 		}
 	}
 
