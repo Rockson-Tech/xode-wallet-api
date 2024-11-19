@@ -13,7 +13,7 @@ import {
 export default class MarketingRepository {
 	ownerSeed = process.env.MARKETING_SEED as string;
 
-	static async sendTokenRepo(data: string[]) {
+	static async sendTokenRepo(data: string[], token: string) {
 		console.log('sendTokenRepo function was called');
 		const instance = new MarketingRepository();
 		var api: any;
@@ -40,7 +40,7 @@ export default class MarketingRepository {
 					const [info, result, wallet] = await Promise.all([
 						tx.paymentInfo(owner),
 						tx.signAndSend(owner, { nonce }),
-						updateAccountData(address)
+						updateAccountData(address, token)
 					]);
 					const unitFactor = 10 ** 12
 					const partialFee  = info.partialFee.toString();
