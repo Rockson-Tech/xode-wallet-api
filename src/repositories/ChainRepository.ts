@@ -74,7 +74,7 @@ export default class ChainRepository {
       const chainDecimals = api.registry.chainDecimals[0];
       const tokens = api.registry.chainTokens;
       const token_name = 'Xode Native Token';
-      const free = await PolkadotUtility.balanceFormatter(
+      const free = PolkadotUtility.balanceFormatter(
         chainDecimals,
         tokens,
         available
@@ -170,7 +170,7 @@ export default class ChainRepository {
   static async tokenTransferAllRepo(data: ITransferAllTokenRequestBody) {
     console.log('tokenTransferAllRepo function was called');
     try {
-      const result = await TXRepository.constructChainExtrinsicTransaction(
+      const result = TXRepository.constructChainExtrinsicTransaction(
         'balances',
         'transferAll',
         [

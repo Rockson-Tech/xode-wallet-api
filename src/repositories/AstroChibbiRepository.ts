@@ -81,7 +81,7 @@ export default class AstroChibbiRepository {
         const instance = new AstroChibbiRepository();
         try {
           const contractAddress = instance.contractAddress;
-          const contract = await TXRepository.getContract(abi, contractAddress);
+          const contract = TXRepository.getContract(abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
           const owner = keyring.addFromUri(instance.ownerSeed);
           const storageDepositLimit = null;
@@ -121,7 +121,7 @@ export default class AstroChibbiRepository {
         const instance = new AstroChibbiRepository();
         try {
           const contractAddress = instance.contractAddress;
-          const contract = await TXRepository.getContract(abi, contractAddress);
+          const contract = TXRepository.getContract(abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
           const owner = keyring.addFromUri(instance.ownerSeed);
           const storageDepositLimit = null;
@@ -146,7 +146,7 @@ export default class AstroChibbiRepository {
       console.log('getMarketplaceNftsByCollectionIdRepo function was called');
       const instance = new AstroChibbiRepository();
       try {
-        const contract = await TXRepository.getContract(abi, instance.contractAddress);
+        const contract = TXRepository.getContract(abi, instance.contractAddress);
         if (contract !== undefined) {
           const nft = await TXRepository.sendContractQuery(
             contract,
@@ -165,7 +165,7 @@ export default class AstroChibbiRepository {
       console.log('getUserNFTRepo function was called');
       const instance = new AstroChibbiRepository();
       try {
-        const contract = await TXRepository.getContract(abi, instance.contractAddress);
+        const contract = TXRepository.getContract(abi, instance.contractAddress);
         const player_wallet_address = wallet_address;
     
         if (!contract) {
@@ -227,7 +227,7 @@ export default class AstroChibbiRepository {
       console.log('getNFTByIdRepo function was called');
       const instance = new AstroChibbiRepository();
       try {
-        const contract = await TXRepository.getContract(abi, instance.contractAddress);
+        const contract = TXRepository.getContract(abi, instance.contractAddress);
         const tokenId = token_id;
     
         if (!contract) {

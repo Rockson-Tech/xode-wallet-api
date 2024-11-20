@@ -18,7 +18,7 @@ export default class FruitBlitzRepository {
       const instance = new FruitBlitzRepository();
       try {
         const contractAddress = instance.contractAddress;
-        const contract = await TXRepository.getContract(abi, contractAddress);
+        const contract = TXRepository.getContract(abi, contractAddress);
         const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
         const owner = keyring.addFromUri(instance.ownerSeed);
         const storageDepositLimit = null;
@@ -54,7 +54,7 @@ export default class FruitBlitzRepository {
         const instance = new FruitBlitzRepository();
         try {
           const contractAddress = instance.contractAddress;
-          const contract = await TXRepository.getContract(abi, contractAddress);
+          const contract = TXRepository.getContract(abi, contractAddress);
           const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
           const owner = keyring.addFromUri(instance.ownerSeed);
           const storageDepositLimit = null;
@@ -88,7 +88,7 @@ export default class FruitBlitzRepository {
       console.log('getMarketplaceNftsByCollectionIdRepo function was called');
       const instance = new FruitBlitzRepository();
       try {
-        const contract = await TXRepository.getContract(abi, instance.contractAddress);
+        const contract = TXRepository.getContract(abi, instance.contractAddress);
         if (contract !== undefined) {
           const nft = await TXRepository.sendContractQuery(
             contract,
@@ -131,7 +131,7 @@ export default class FruitBlitzRepository {
       console.log('getNFTByIdRepo function was called');
       const instance = new FruitBlitzRepository();
       try {
-        const contract = await TXRepository.getContract(abi, instance.contractAddress);
+        const contract = TXRepository.getContract(abi, instance.contractAddress);
         if (!contract) {
           return Error('Contract not initialized.');
         }

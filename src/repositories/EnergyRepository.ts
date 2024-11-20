@@ -15,7 +15,7 @@ export default class EnergyRepository {
     const instance = new EnergyRepository();
     try {
       const contractAddress = instance.energyAddress;
-      const contract = await TXRepository.getContract(abi, contractAddress);
+      const contract = TXRepository.getContract(abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const storageDepositLimit = null;
@@ -44,7 +44,7 @@ export default class EnergyRepository {
     const instance = new EnergyRepository();
     try {
       const contractAddress = instance.energyAddress;
-      const contract = await TXRepository.getContract(abi, contractAddress);
+      const contract = TXRepository.getContract(abi, contractAddress);
       const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
       const owner = keyring.addFromUri(instance.ownerSeed);
       const storageDepositLimit = null;

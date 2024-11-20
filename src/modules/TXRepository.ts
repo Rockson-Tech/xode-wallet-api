@@ -32,7 +32,7 @@ export default class TXRepository {
                 const tx = api.tx[pallet][method](
                 ...params
                 )
-                await await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
+                await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
                     if (result.dispatchError) {
                         if (result.dispatchError.isModule) {
                             const decoded = api.registry.findMetaError(result.dispatchError.asModule);
@@ -85,7 +85,7 @@ export default class TXRepository {
                         ...params
                     );
                 }
-                await await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
+                await tx.signAndSend(owner, { nonce: -1 }, async (result: any) => {
                     if (result.dispatchError) {
                         if (result.dispatchError.isModule) {
                             const decoded = api.registry.findMetaError(result.dispatchError.asModule);

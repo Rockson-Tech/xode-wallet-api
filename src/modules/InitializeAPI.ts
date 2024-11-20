@@ -9,7 +9,6 @@ export default class InitializeAPI {
     static apiInitialization = async () => {
         try {
 			const rpc_endpoint = process.env.WS_PROVIDER_ENDPOINT as string;
-			console.log(rpc_endpoint);
 			if (rpc_endpoint.includes('n7yoxCmcIrCF6VziCcDmYTwL8R03a')) {
 				if (!api_mainnet) {
 					const client = await this.create_api(rpc_endpoint);
