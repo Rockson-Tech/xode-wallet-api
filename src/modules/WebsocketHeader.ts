@@ -38,7 +38,7 @@ export default class WebsocketHeader {
 
     static defaultWebsocket = async () => {
         try {
-			process.env.WS_PROVIDER_ENDPOINT = 'wss://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc';
+			process.env.WS_PROVIDER_ENDPOINT = 'wss://rpc1.paseo.popnetwork.xyz';
             this.setEnvAddresses(
                 process.env.TESTNET_ASTROCHIBBI_ADDRESS as string,
                 process.env.TESTNET_ASTRO_ECONOMY_ADDRESS as string,
