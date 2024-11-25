@@ -1,27 +1,31 @@
-// Schema for getting user NFTs
-export const token_transfer_all = {
-    summary: 'Transfer an all remaining XON token that returns TX',
-    tags: ['Chain'],
-    description: 'Schema for transferring all token and return tx to be signed. ',
-    // headers: {
-    //     type: 'object',
-    //     properties: {
-    //       'Websocket': { 
-    //         type: 'string',
-    //         enum: [
-    //             'wss://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc',
-    //             'wss://rpcnodea01.xode.net/n7yoxCmcIrCF6VziCcDmYTwL8R03a/rpc', 
-    //         ]
-    //       }
-    //     },
-    // },
+// Schema for getting NFTs
+export const burn = {
+    summary: 'Burn IXAV token',
+    tags: ['Private XAV Token'],
+    description: 'Schema for burning IXAV token.',
+    headers: {
+        type: 'object',
+        properties: {
+          'Websocket': { 
+            type: 'string',
+            enum: [
+                'wss://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc',
+                'wss://rpcnodea01.xode.net/n7yoxCmcIrCF6VziCcDmYTwL8R03a/rpc', 
+            ]
+          }
+        },
+    },
     // Request body schema
     body: {
         type: 'object',
         properties: {
-            target: { type: 'string' },
+            from: { type: 'string' },
+            value: { type: 'number' },
         },
-        required: ['target'],
+        required: [
+            'from',
+            'value',
+        ],
     },
     // Response schema
     response: {

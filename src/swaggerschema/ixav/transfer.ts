@@ -1,8 +1,8 @@
-// Schema for getting user NFTs
-export const token_prices = {
-    summary: 'Get token prices.',
-    tags: ['Chain'],
-    description: 'Schema for token prices using currency. ',
+// Schema for getting NFTs
+export const transfer = {
+    summary: 'Transfer IXAV token',
+    tags: ['Private XAV Token'],
+    description: 'Schema for transferring IXAV token.',
     headers: {
         type: 'object',
         properties: {
@@ -15,34 +15,25 @@ export const token_prices = {
           }
         },
     },
-    // Request params schema
-    params: {
+    // Request body schema
+    body: {
         type: 'object',
         properties: {
-            currency: { type: 'string' },
+            target: { type: 'string' },
+            value: { type: 'number' },
         },
         required: [
-            'currency',
+            'target',
+            'value',
         ],
     },
     // Response schema for success
     response: {
         200: {
-            description: 'Succesful response token prices',
+            description: 'Returns hash to be signed and submitted on /chain/extrinsic/submit.',
             type: 'object',
             properties: {
-                currency: { type: 'string' },
-                prices: { 
-                    type: 'object',
-                    properties: {
-                        XON: { type: 'number' },
-                        AZK: { type: 'number' },
-                        XAV: { type: 'number' },
-                        XGM: { type: 'number' },
-                        IXON: { type: 'number' },
-                        IXAV: { type: 'number' },
-                    }, 
-                },
+                hash: { type: 'string' },
             },
         },
         // Response schema for unspecified code
@@ -55,4 +46,9 @@ export const token_prices = {
             },
         }
     },
+    security: [
+        {
+          "apiKey": []
+        }
+    ]
 };
