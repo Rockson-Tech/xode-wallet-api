@@ -3,18 +3,18 @@ export const balanceOf = {
     summary: 'Get IXAV balance of the account',
     tags: ['Private XAV Token'],
     description: 'Schema for getting IXAV balance of the account.',
-    headers: {
-        type: 'object',
-        properties: {
-          'Websocket': { 
-            type: 'string',
-            enum: [
-                'wss://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc',
-                'wss://rpcnodea01.xode.net/n7yoxCmcIrCF6VziCcDmYTwL8R03a/rpc', 
-            ]
-          }
-        },
-    },
+    // headers: {
+    //     type: 'object',
+    //     properties: {
+    //       'Websocket': { 
+    //         type: 'string',
+    //         enum: [
+    //             'wss://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc',
+    //             'wss://rpcnodea01.xode.net/n7yoxCmcIrCF6VziCcDmYTwL8R03a/rpc', 
+    //         ]
+    //       }
+    //     },
+    // },
     // Request body schema
     params: {
         type: 'object',

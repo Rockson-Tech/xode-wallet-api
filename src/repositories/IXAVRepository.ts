@@ -12,7 +12,7 @@ export default class IXAVRepository {
   assetId = process.env.IXAV_ASSET_ID as string ?? '5';
   ownerSeed = process.env.IXAV_SEED as string;
   ixavPrice = '0';
-  ixavImage = 'https://bafybeiaoftsn6vpmpa726ccq4c37ljxzylyxoedtwv747p66s264vdhrsm.ipfs.dweb.link/';
+  ixavImage = 'https://bafybeidcgg2scf2g42ztbpvi6dkjckgxtbp36mvpvys7yaizpdde6zigma.ipfs.dweb.link/';
   // These are required and changeable
   REFTIME: number = 300000000000;
   PROOFSIZE: number = 500000;
