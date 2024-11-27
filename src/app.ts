@@ -94,9 +94,9 @@ const app: FastifyPluginAsync<AppOptions> = async (
 				description: 'Fastify swagger of XODE to smart contract.\n\n' +
 				'\n' + 'AstroChibbi: ' + process.env.ASTROCHIBBI_ADDRESS as string +
 				'\n' + 'Energy Capsule: ' + process.env.ASTRO_ECONOMY_ADDRESS as string +
-				'\n' + 'Astro Economy: |' + process.env.ASTRO_ENERGY_ADDRESS as string+ '|' +
+				'\n' + 'Astro Economy: ' + process.env.ASTRO_ENERGY_ADDRESS as string +
 
-				'\n\n' + 'Astro Economy: |' + process.env.WS_PROVIDER_ENDPOINT + '|',
+				'\n\n' + 'Astro Economy: ' + process.env.WS_PROVIDER_ENDPOINT,
 				
 				version: '0.1.3'
 			},
