@@ -23,7 +23,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
 	const fs = require('fs');
 	const dotenv = require('dotenv');
 	dotenv.config({ path: '.env' });
-	console.log(`|${process.env.NODE_ENV}|`)
 	const envFile = `.env.${process.env.NODE_ENV || 'staging'}`;
 	if (fs.existsSync(envFile)) {
 		const envConfig = dotenv.parse(fs.readFileSync(envFile));
