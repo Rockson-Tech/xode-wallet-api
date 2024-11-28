@@ -30,7 +30,7 @@ export async function getAccountData(
 	start?: number,
 	end?: number
 ): Promise<WalletResponse[] | Error> {
-	const result = await signMessage('marketing');
+	const result = signMessage('marketing');
 	if (!result.is_valid) return Error('Invalid signature.');
     try {
 		const params: { start?: number; end?: number } = {};
