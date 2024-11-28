@@ -46,8 +46,6 @@ export async function getAccountData(
                 },
 			}
 		);
-		console.log('axios');
-		console.log(result);
         return response.data.data;
     } catch (error: any) {
         return Error(error.message);
