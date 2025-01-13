@@ -96,3 +96,26 @@ export async function getFeedbackData(
     return Error(error.message);
   }
 }
+
+export async function emailtokenReceiver(
+  wallet: string,
+  token: string
+): Promise<{} | Error> {
+  const result = signMessage('marketing');
+  if (!result.is_valid) return Error('Invalid signature.');
+  try {
+    const response = await axios.post<{ data: {} }>(
+      `${BASE_URL}/emails/email-token-receiver`,
+      { wallet },
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Token: result.token,
+        },
+      }
+    );
+    return response.data.data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+}
