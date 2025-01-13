@@ -21,7 +21,7 @@ interface UpdateResponse {
 
 interface FeedbackResponse {
   id: number;
-  wallet_address: String;
+  wallets: { wallet_address: string };
   status: String;
 }
 
@@ -82,16 +82,16 @@ export async function getFeedbackData(
   const result = await signMessage('marketing');
   if (!result.is_valid) return Error('Invalid signature.');
   try {
-    const response = await axios.get<{ data: FeedbackResponse }>(
-      `${BASE_URL}/feed_back/getFeedBack/${id}`,
+    const response = await axios.get<FeedbackResponse>(
+      `${BASE_URL}/feedbacks/${id}`,
       {
         headers: {
-          // Authorization: `Bearer ${token}`,
-          Token: result.token,
+          Authorization: `Bearer ${token}`,
+          // Token: result.token,
         },
       }
     );
-    return response.data.data;
+    return response.data;
   } catch (error: any) {
     return Error(error.message);
   }

@@ -63,23 +63,25 @@ export default class MarketingRepository {
             tx.paymentInfo(owner),
             tx.signAndSend(owner, { nonce }),
             updateAccountData(account.wallet_address, token),
-            emailtokenReceiver(account.wallet_address, token),
           ]);
           const unitFactor = 10 ** 12;
           const partialFee = info.partialFee.toString();
           const fee = parseFloat(partialFee) / unitFactor;
           const amount = value / unitFactor;
           if (result)
-            await this.storeMarketingData(
-              account.wallet_address,
-              account.email_address,
-              amount.toFixed(12),
-              fee.toFixed(12),
-              result.toHex(),
-              wallet instanceof Error
-                ? 'XGame'
-                : wallet.games.game_name || 'XGame'
-            );
+            await Promise.all([
+              emailtokenReceiver(account.wallet_address, token),
+              this.storeMarketingData(
+                account.wallet_address,
+                account.email_address,
+                amount.toFixed(12),
+                fee.toFixed(12),
+                result.toHex(),
+                wallet instanceof Error
+                  ? 'XGame'
+                  : wallet.games.game_name || 'XGame'
+              ),
+            ]);
           processedAccounts.add(result.toHex());
         }
         index += 1;
@@ -110,7 +112,7 @@ export default class MarketingRepository {
       ]);
       if (
         feedback instanceof Error ||
-        feedback.wallet_address != data.address ||
+        feedback.wallets.wallet_address != data.address ||
         feedback.status != 'Approve'
       ) {
         return Error('Feedback provider does not match or not approved!');
@@ -125,14 +127,17 @@ export default class MarketingRepository {
       const fee = parseFloat(partialFee) / unitFactor;
       const amount = value / unitFactor;
       if (result)
-        await this.storeMarketingData(
-          data.address,
-          data.address,
-          amount.toFixed(12),
-          fee.toFixed(12),
-          result.toHex(),
-          String(data.feedback_id) || 'Feedback'
-        );
+        await Promise.all([
+          await this.storeMarketingData(
+            data.address,
+            data.address,
+            amount.toFixed(12),
+            fee.toFixed(12),
+            result.toHex(),
+            String(data.feedback_id) || 'Feedback'
+          ),
+          emailtokenReceiver(data.address, token),
+        ]);
       return amount;
     } catch (error: any) {
       return Error(error || 'sendTokenByFeedbackRepo error occurred.');
