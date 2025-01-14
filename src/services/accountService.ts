@@ -168,3 +168,26 @@ export async function storeTokenTransaction(
     return Error(error.message);
   }
 }
+
+export async function updateTokenTransaction(
+  tx_hash: string,
+  block_hash: string
+): Promise<{} | Error> {
+  const result = signMessage('marketing');
+  if (!result.is_valid) return Error('Invalid signature.');
+  try {
+    const response = await axios.put<{ data: {} }>(
+      `${BASE_URL}/token-transactions/${tx_hash}`,
+      { block_hash },
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Token: result.token,
+        },
+      }
+    );
+    return response.data.data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+}

@@ -4,7 +4,7 @@ import {
   getFeedbackData,
   emailtokenReceiver,
 } from '../services/accountService';
-import prisma from '../db';
+// import prisma from '../db';
 import { PrismaClient } from '@prisma/client';
 import extension from 'prisma-paginate';
 import {
@@ -15,6 +15,7 @@ import { api } from '../modules/InitializeAPI';
 import {
   WalletResponse,
   storeTokenTransaction,
+  updateTokenTransaction,
 } from '../services/accountService';
 
 let processedAccounts = new Set<string>();
@@ -33,7 +34,7 @@ export default class MarketingRepository {
         for (const extrinsic of signedBlock.block.extrinsics) {
           const tx_hash = extrinsic.hash.toHex();
           if (processedAccounts.has(tx_hash)) {
-            this.updateBlockHash(tx_hash, blockHash.toString());
+            updateTokenTransaction(tx_hash, blockHash.toString());
             processedAccounts.delete(tx_hash);
           }
         }
@@ -223,15 +224,15 @@ export default class MarketingRepository {
     }
   };
 
-  static updateBlockHash = async (tx_hash: string, block_hash: string) => {
-    try {
-      const updatedHash = await prisma.marketing_wallets.update({
-        where: { tx_hash },
-        data: { block_hash },
-      });
-      return updatedHash;
-    } catch (error) {
-      throw String(error || 'Unknown error occurred.');
-    }
-  };
+  // static updateBlockHash = async (tx_hash: string, block_hash: string) => {
+  //   try {
+  //     const updatedHash = await prisma.marketing_wallets.update({
+  //       where: { tx_hash },
+  //       data: { block_hash },
+  //     });
+  //     return updatedHash;
+  //   } catch (error) {
+  //     throw String(error || 'Unknown error occurred.');
+  //   }
+  // };
 }
