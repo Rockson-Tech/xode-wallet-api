@@ -121,33 +121,33 @@ export async function emailtokenReceiver(
 }
 
 interface TokenTransaction {
-  from: string;
-  to: string;
+  sender_wallet_address: string;
+  receiver_wallet_address: string;
   email_address: string;
-  amount: string;
-  fee: string;
+  airdrop: string;
+  gas_fee: string;
   tx_hash: string;
   block_hash: string;
   received_type: string;
 }
 
 export async function storeTokenTransaction(
-  from: string,
-  to: string,
+  sender_wallet_address: string,
+  receiver_wallet_address: string,
   email_address: string,
-  amount: string,
-  fee: string,
+  airdrop: string,
+  gas_fee: string,
   tx_hash: string,
   received_type: string
 ): Promise<{} | Error> {
   const result = signMessage('marketing');
   if (!result.is_valid) return Error('Invalid signature.');
   const data: TokenTransaction = {
-    from,
-    to,
+    sender_wallet_address,
+    receiver_wallet_address,
     email_address,
-    amount,
-    fee,
+    airdrop,
+    gas_fee,
     tx_hash,
     block_hash: '',
     received_type,
