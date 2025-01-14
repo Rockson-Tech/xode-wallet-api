@@ -119,3 +119,52 @@ export async function emailtokenReceiver(
     return Error(error.message);
   }
 }
+
+interface TokenTransaction {
+  from: string;
+  to: string;
+  email_address: string;
+  amount: string;
+  fee: string;
+  tx_hash: string;
+  block_hash: string;
+  received_type: string;
+}
+
+export async function storeTokenTransaction(
+  from: string,
+  to: string,
+  email_address: string,
+  amount: string,
+  fee: string,
+  tx_hash: string,
+  received_type: string
+): Promise<{} | Error> {
+  const result = signMessage('marketing');
+  if (!result.is_valid) return Error('Invalid signature.');
+  const data: TokenTransaction = {
+    from,
+    to,
+    email_address,
+    amount,
+    fee,
+    tx_hash,
+    block_hash: '',
+    received_type,
+  };
+  try {
+    const response = await axios.post<{ data: {} }>(
+      `${BASE_URL}/token-transactions`,
+      data,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Token: result.token,
+        },
+      }
+    );
+    return response.data.data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+}

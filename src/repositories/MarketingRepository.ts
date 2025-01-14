@@ -12,7 +12,10 @@ import {
   ISendTokenFeedbackBody,
 } from '../schemas/MarketingSchemas';
 import { api } from '../modules/InitializeAPI';
-import { WalletResponse } from '../services/accountService';
+import {
+  WalletResponse,
+  storeTokenTransaction,
+} from '../services/accountService';
 
 let processedAccounts = new Set<string>();
 let isRunning: boolean = false;
@@ -71,7 +74,8 @@ export default class MarketingRepository {
           if (result)
             await Promise.all([
               emailtokenReceiver(account.wallet_address, token),
-              this.storeMarketingData(
+              storeTokenTransaction(
+                owner.address,
                 account.wallet_address,
                 account.email_address,
                 amount.toFixed(12),
@@ -128,7 +132,8 @@ export default class MarketingRepository {
       const amount = value / unitFactor;
       if (result)
         await Promise.all([
-          await this.storeMarketingData(
+          storeTokenTransaction(
+            owner.address,
             data.address,
             data.address,
             amount.toFixed(12),
@@ -144,30 +149,30 @@ export default class MarketingRepository {
     }
   }
 
-  static storeMarketingData = async (
-    wallet: string,
-    email: string,
-    amount: string,
-    fee: string,
-    tx_hash: string,
-    received_type: string
-  ) => {
-    try {
-      const createdWallet = await prisma.marketing_wallets.create({
-        data: {
-          wallet_address: wallet,
-          email_address: email,
-          amount,
-          fee,
-          tx_hash,
-          received_type,
-        },
-      });
-      return createdWallet;
-    } catch (error) {
-      throw String(error || 'Unknown error occurred.');
-    }
-  };
+  // static storeMarketingData = async (
+  //   wallet: string,
+  //   email: string,
+  //   amount: string,
+  //   fee: string,
+  //   tx_hash: string,
+  //   received_type: string
+  // ) => {
+  //   try {
+  //     const createdWallet = await prisma.marketing_wallets.create({
+  //       data: {
+  //         wallet_address: wallet,
+  //         email_address: email,
+  //         amount,
+  //         fee,
+  //         tx_hash,
+  //         received_type,
+  //       },
+  //     });
+  //     return createdWallet;
+  //   } catch (error) {
+  //     throw String(error || 'Unknown error occurred.');
+  //   }
+  // };
 
   static getMarketWallets = async (
     query: Partial<IReadMarketingWalletsQuery>
