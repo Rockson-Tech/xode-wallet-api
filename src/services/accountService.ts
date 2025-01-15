@@ -33,10 +33,16 @@ export async function getAccountData(
   const result = signMessage('marketing');
   if (!result.is_valid) return Error('Invalid signature.');
   try {
-    const params: { start?: number; end?: number; did_receive?: boolean } = {};
+    const params: {
+      start?: number;
+      end?: number;
+      did_receive?: boolean;
+      verified?: boolean;
+    } = {};
     if (start !== undefined) params.start = start;
     if (end !== undefined) params.end = end;
     params.did_receive = false;
+    params.verified = true;
     const response = await axios.get<{ result: WalletResponse[] }>(
       `${BASE_URL}/wallets`,
       {
