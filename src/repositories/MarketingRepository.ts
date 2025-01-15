@@ -61,7 +61,7 @@ export default class MarketingRepository {
             account.wallet_address,
             value
           );
-          const [info, result, wallet] = await Promise.all([
+          const [info, result] = await Promise.all([
             tx.paymentInfo(owner),
             tx.signAndSend(owner, { nonce }),
             updateAccountData(account.wallet_address, token),
@@ -71,10 +71,7 @@ export default class MarketingRepository {
           const fee = parseFloat(partialFee) / unitFactor;
           const amount = value / unitFactor;
           if (result) {
-            const gameName =
-              wallet instanceof Error
-                ? 'XGame Beta Test'
-                : wallet?.games?.game_name || 'XGame Beta Test';
+            const received_type = 'XGame Beta Test';
             await Promise.all([
               storeTokenTransaction(
                 owner.address,
@@ -83,7 +80,7 @@ export default class MarketingRepository {
                 amount.toFixed(12),
                 fee.toFixed(12),
                 result.toHex(),
-                gameName
+                received_type
               ),
               emailtokenReceiver(account.emails.email_address, token),
             ]);
