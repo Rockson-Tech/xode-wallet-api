@@ -5,7 +5,7 @@ const BASE_URL = process.env.PRODUCT_API;
 
 export interface WalletResponse {
   wallet_address: string;
-  email_address: string;
+  emails: { email_address: string };
 }
 
 interface UpdateResponse {
@@ -33,10 +33,11 @@ export async function getAccountData(
   const result = signMessage('marketing');
   if (!result.is_valid) return Error('Invalid signature.');
   try {
-    const params: { start?: number; end?: number } = {};
+    const params: { start?: number; end?: number; did_receive?: boolean } = {};
     if (start !== undefined) params.start = start;
     if (end !== undefined) params.end = end;
-    const response = await axios.get<{ data: WalletResponse[] }>(
+    params.did_receive = false;
+    const response = await axios.get<{ result: WalletResponse[] }>(
       `${BASE_URL}/wallets`,
       {
         params,
@@ -46,7 +47,7 @@ export async function getAccountData(
         },
       }
     );
-    return response.data.data;
+    return response.data.result;
   } catch (error: any) {
     return Error(error.message);
   }
@@ -98,19 +99,16 @@ export async function getFeedbackData(
 }
 
 export async function emailtokenReceiver(
-  wallet: string,
+  email: string,
   token: string
 ): Promise<{} | Error> {
-  const result = signMessage('marketing');
-  if (!result.is_valid) return Error('Invalid signature.');
   try {
     const response = await axios.post<{ data: {} }>(
       `${BASE_URL}/emails/email-token-receiver`,
-      { wallet },
+      { email },
       {
         headers: {
-          // Authorization: `Bearer ${token}`,
-          Token: result.token,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -1,8 +1,11 @@
 import { Keyring } from '@polkadot/api';
 import {
+  WalletResponse,
   updateAccountData,
   getFeedbackData,
   emailtokenReceiver,
+  storeTokenTransaction,
+  updateTokenTransaction,
 } from '../services/accountService';
 // import prisma from '../db';
 import { PrismaClient } from '@prisma/client';
@@ -12,11 +15,6 @@ import {
   ISendTokenFeedbackBody,
 } from '../schemas/MarketingSchemas';
 import { api } from '../modules/InitializeAPI';
-import {
-  WalletResponse,
-  storeTokenTransaction,
-  updateTokenTransaction,
-} from '../services/accountService';
 
 let processedAccounts = new Set<string>();
 let isRunning: boolean = false;
@@ -72,22 +70,25 @@ export default class MarketingRepository {
           const partialFee = info.partialFee.toString();
           const fee = parseFloat(partialFee) / unitFactor;
           const amount = value / unitFactor;
-          if (result)
+          if (result) {
+            const gameName =
+              wallet instanceof Error
+                ? 'XGame Beta Test'
+                : wallet?.games?.game_name || 'XGame Beta Test';
             await Promise.all([
-              emailtokenReceiver(account.wallet_address, token),
               storeTokenTransaction(
                 owner.address,
                 account.wallet_address,
-                account.email_address,
+                account.emails.email_address,
                 amount.toFixed(12),
                 fee.toFixed(12),
                 result.toHex(),
-                wallet instanceof Error
-                  ? 'XGame'
-                  : wallet.games.game_name || 'XGame'
+                gameName
               ),
+              emailtokenReceiver(account.emails.email_address, token),
             ]);
-          processedAccounts.add(result.toHex());
+            processedAccounts.add(result.toHex());
+          }
         }
         index += 1;
         const newNonce = await api.rpc.system.accountNextIndex(owner.address);
@@ -131,7 +132,7 @@ export default class MarketingRepository {
       const partialFee = info.partialFee.toString();
       const fee = parseFloat(partialFee) / unitFactor;
       const amount = value / unitFactor;
-      if (result)
+      if (result) {
         await Promise.all([
           storeTokenTransaction(
             owner.address,
@@ -144,6 +145,7 @@ export default class MarketingRepository {
           ),
           emailtokenReceiver(data.address, token),
         ]);
+      }
       return amount;
     } catch (error: any) {
       return Error(error || 'sendTokenByFeedbackRepo error occurred.');

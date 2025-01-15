@@ -78,7 +78,11 @@ export const startController = async (
             }
             lastEndTimestamp = now;
             console.log(
-              `${now}: List of wallets - ${JSON.stringify(account, null, 2)}`
+              `${now}: List of wallets - ${JSON.stringify(
+                account.map((wallet) => wallet.wallet_address),
+                null,
+                2
+              )}`
             );
           } else {
             lastEndTimestamp = now;
