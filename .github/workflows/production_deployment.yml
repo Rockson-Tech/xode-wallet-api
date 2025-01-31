@@ -12,11 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build Docker image
-        run: docker build --build-arg NODE_ENV=production -t ${{ secrets.DOCKER_HUB_NAMESPACE }}/xode-wallet-api:latest .
+        run: docker build --build-arg NODE_ENV=production -t ${{ secrets.DOCKER_HUB_NAMESPACE_STAGING }}/xode-wallet-api:latest .
       - name: Push image to DockerHub
         run: |
-          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-          docker push ${{ secrets.DOCKER_HUB_NAMESPACE }}/xode-wallet-api:latest
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME_STAGING }} -p ${{ secrets.DOCKER_HUB_PASSWORD_STAGING }}
+          docker push ${{ secrets.DOCKER_HUB_NAMESPACE_STAGING }}/xode-wallet-api:latest
       - name: SSH to Xgame Server
         run: |
           mkdir ~/.ssh
@@ -24,5 +24,5 @@ jobs:
           chmod 400 ~/.ssh/ssh-key
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh-key ${{ secrets.PRODUCTION_USERNAME }}@${{ secrets.PRODUCTION_HOST }} -p ${{ secrets.PRODUCTION_SSH_PORT }} \
             'cd ${{ secrets.PRODUCTION_PATH }} && \
-            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }} && \
+            docker login -u ${{ secrets.DOCKER_HUB_USERNAME_STAGING }} -p ${{ secrets.DOCKER_HUB_PASSWORD_STAGING }} && \
             sh deploy_production.sh'
